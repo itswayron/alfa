@@ -1,0 +1,70 @@
+spring:
+  application:
+    name: book_tracker_api
+
+  main:
+    lazy-initialization: true
+
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      initialization-fail-timeout: 0
+      minimum-idle: 1
+      idle-timeout: 10000
+
+  jpa:
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+
+  flyway:
+    enabled: false # Enable only when doing migrations.
+
+  devtools:
+    restart:
+      enabled: true
+    livereload:
+      enabled: false
+    add-properties: false
+
+  server:
+    servlet:
+      multipart:
+        max-file-size: 5MB
+        max-request-size: 5MB
+
+  mail:
+    host: ${MAIL_HOST}
+    port: ${MAIL_PORT}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        transport: smtp
+      debug: false
+      smtp:
+        auth: true
+      starttls:
+        enable: true
+
+jwt:
+  key: ${JWT_KEY}
+  access-token-expiration: 3600000000
+
+logging:
+  pattern:
+    console: "[ %highlight(%-5level)] <%green(%d{yy-MM-dd HH:mm:ss}) %cyan(%logger{10})> %highlight(%msg%n)"
+  level:
+    dev.wayron.book_tracker_api: info
+    org.hibernate: warn
+    org.springframework.security: error
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
