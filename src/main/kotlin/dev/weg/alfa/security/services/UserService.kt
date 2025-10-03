@@ -50,7 +50,7 @@ class UserService(
     return response
   }
 
-  fun findUserById(id: String): UserResponse {
+  fun findUserById(id: Int): UserResponse {
     logger.info("Fetching user with id: $id")
     val user = repository.findById(id).orElseThrow()
     logger.info("Retrieved the book with ID: $id - Username: ${user.usernameField}")

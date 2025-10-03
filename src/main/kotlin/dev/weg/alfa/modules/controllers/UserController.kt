@@ -21,7 +21,7 @@ class UserController(
   }
 
   @GetMapping("/{id}")
-  fun findUserById(@PathVariable id: String): ResponseEntity<UserResponse> {
+  fun findUserById(@PathVariable id: Int): ResponseEntity<UserResponse> {
     val response = service.findUserById(id)
     return ResponseEntity(response, HttpStatus.OK)
   }

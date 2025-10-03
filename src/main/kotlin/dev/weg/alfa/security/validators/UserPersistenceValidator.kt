@@ -37,7 +37,7 @@ class UserPersistenceValidator(private val repository: UserRepository) {
 
   private fun validateEmailIsAvailable(email: String, errors: MutableList<String>) {
     logger.debug("Validating if email is available.")
-    if (repository.existsByEmail(email)) {
+    if (repository.existsByEmailField(email)) {
       logger.error("Email is not available.")
       errors.add(ValidationErrorMessages.EMAIL_NOT_AVAILABLE.message)
     } else {

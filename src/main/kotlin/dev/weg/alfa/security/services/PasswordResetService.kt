@@ -32,7 +32,7 @@ class PasswordResetService(
     val email = request.email
     logger.info("Searching for email: '{}'", email)
 
-    val user = userRepository.findByEmail(email)
+    val user = userRepository.findByEmailField(email)
     if (user == null) {
       logger.info("No user found with email: '{}', aborting password reset process.", email)
       return

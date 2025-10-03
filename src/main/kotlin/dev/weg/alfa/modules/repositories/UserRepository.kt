@@ -3,9 +3,9 @@ package dev.weg.alfa.modules.repositories
 import dev.weg.alfa.modules.models.user.User
 import org.springframework.data.jpa.repository.JpaRepository
 
-interface UserRepository : JpaRepository<User, String>, UserRepositoryCustom {
+interface UserRepository : JpaRepository<User, Int>, UserRepositoryCustom {
   fun findByUsernameField(username: String): User?
-  fun findByEmail(email: String): User?
-  fun existsByEmail(email: String): Boolean
+  fun findByEmailField(email: String): User?
+  fun existsByEmailField(email: String): Boolean
   fun existsByUsernameField(username: String): Boolean
 }

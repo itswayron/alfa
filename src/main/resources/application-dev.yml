@@ -1,6 +1,6 @@
 spring:
   application:
-    name: book_tracker_api
+    name: alfa_api
 
   main:
     lazy-initialization: true
