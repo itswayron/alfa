@@ -45,17 +45,6 @@ CREATE TABLE position (
 
 CREATE TYPE role_enum AS ENUM ('USER', 'ADMIN');
 
-CREATE TABLE users (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    username_field VARCHAR(255) NOT NULL UNIQUE,
-    email VARCHAR(150) NOT NULL UNIQUE,
-    password TEXT NOT NULL,
-    role role_enum DEFAULT 'USER',
-    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
-    updated_at TIMESTAMP NOT NULL DEFAULT NOW()
-);
-
 CREATE TABLE employee (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
