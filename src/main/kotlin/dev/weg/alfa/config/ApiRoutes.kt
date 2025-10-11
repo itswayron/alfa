@@ -2,5 +2,6 @@ package dev.weg.alfa.config
 
 object ApiRoutes {
   const val USER = "/user"
-  const val AUTH = "/auth"
+    const val AUTH = "/auth"
+    const val GROUP = "/group"
 }
