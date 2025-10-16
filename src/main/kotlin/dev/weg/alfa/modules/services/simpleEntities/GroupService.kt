@@ -19,7 +19,7 @@ class GroupService(private val repository: GroupRepository) {
 
     fun createGroup(request: NameRequest): Group {
         logger.info("Creating area with name: ${request.name}.")
-        return repository.save(Group(id = 0, name = request.name))
+        return repository.save(Group(id = null, name = request.name))
     }
 
     fun getAllGroups(): List<Group> {
@@ -40,7 +40,7 @@ class GroupService(private val repository: GroupRepository) {
 
     fun deleteGroupById(id: Int) {
         logger.info("Deleting Group with id: $id.")
-        findGroupByIdOrThrow(id)
-        repository.deleteById(id)
+        val delete = findGroupByIdOrThrow(id)
+        repository.delete(delete)
     }
 }

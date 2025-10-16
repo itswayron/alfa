@@ -5,13 +5,16 @@ import jakarta.persistence.Entity
 import jakarta.persistence.*
 
 
-@Entity(name = "Groups")
-@Table(name = "groups")
+@Entity(name = "Group")
+@Table(name = "app_group")
 @JsonIgnoreProperties("hibernateLazyInitializer","handler")
 data class Group(  // (Consumos, indireto, direto)
   @Id
   @GeneratedValue(strategy=GenerationType.IDENTITY)
-  val id: Int,
+  val id: Int?,
   @Column(unique = true, nullable = false, length = 100)
-  val name: String
+  val name: String,
 )
+{
+    public constructor() : this(id = null, name = "")
+}

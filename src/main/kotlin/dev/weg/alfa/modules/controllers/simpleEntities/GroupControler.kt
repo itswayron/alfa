@@ -21,7 +21,7 @@ class GroupController(private val service: GroupService) {
 
     @GetMapping
     fun getAllGroups(): ResponseEntity<List<Group>> {
-        val response = ResponseEntity.status(HttpStatus.OK).body(service.getAllGroup())
+        val response = ResponseEntity.status(HttpStatus.OK).body(service.getAllGroups())
         return response
     }
 
