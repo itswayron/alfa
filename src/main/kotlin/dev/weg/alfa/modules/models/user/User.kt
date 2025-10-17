@@ -12,35 +12,43 @@ import java.time.temporal.ChronoUnit
 @Table(name = "users")
 @JsonIgnoreProperties("hibernateLazyInitializer", "handler")
 data class User(
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  val id: Int = 0,
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Int = 0,
 
-  var name: String,
+    var name: String,
 
-  @Column(unique = true)
-  var usernameField: String,
+    @Column(name = "username", unique = true)
+    var usernameField: String,
 
-  @Column(name = "email", unique = true)
-  var emailField: String,
+    @Column(name = "email", unique = true)
+    var emailField: String,
 
-  @Column(name = "password")
-  var passwordField: String,
+    @Column(name = "password")
+    var passwordField: String,
 
-  @Enumerated(EnumType.STRING)
-  var role: Role = Role.USER,
+    @Enumerated(EnumType.STRING)
+    var role: Role = Role.USER,
 
-  val createdAt: LocalDateTime = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS),
-  var updatedAt: LocalDateTime = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS),
+    val createdAt: LocalDateTime = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS),
+    var updatedAt: LocalDateTime = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS),
 
-  ) : UserDetails {
-  override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
-    return mutableListOf(SimpleGrantedAuthority("ROLE_${role.name}"))
-  }
+    ) : UserDetails {
 
-  override fun getPassword() = passwordField
+    constructor() : this(
+        id = 0,
+        name = "",
+        usernameField = "",
+        emailField = "",
+        passwordField = "",
+        role = Role.USER,
+    )
 
-  override fun getUsername() = usernameField
+    override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
+        return mutableListOf(SimpleGrantedAuthority("ROLE_${role.name}"))
+    }
 
-  override fun isEnabled() = true
+    override fun getPassword() = passwordField
+    override fun getUsername() = usernameField
+    override fun isEnabled() = true
 }
