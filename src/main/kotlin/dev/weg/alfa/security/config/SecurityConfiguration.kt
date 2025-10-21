@@ -1,5 +1,6 @@
 package dev.weg.alfa.security.config
 
+import dev.weg.alfa.config.ApiRoutes
 import dev.weg.alfa.modules.models.user.Role
 import dev.weg.alfa.config.ApiRoutes
 import org.springframework.context.annotation.Bean
@@ -22,33 +23,36 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 @EnableMethodSecurity(prePostEnabled = true)
 class SecurityConfiguration(private val authenticationProvider: AuthenticationProvider) {
 
-  @Bean
-  fun securityFilterChain(
-    http: HttpSecurity,
-    jwtAuthenticationFilter: JwtAuthenticationFilter
-  ): DefaultSecurityFilterChain =
-    http
-      .csrf { it.disable() }
-      .cors {}
-      .authorizeHttpRequests { registry ->
-        registry.requestMatchers("/auth/**", "/auth/**", "/user/**", "/error").permitAll()
-        registry.requestMatchers(HttpMethod.GET, "/swagger-ui/**", "/v3/api-docs/**").permitAll()
-        registry.requestMatchers(HttpMethod.GET, "/images/**").permitAll()
+    @Bean
+    fun securityFilterChain(
+        http: HttpSecurity,
+        jwtAuthenticationFilter: JwtAuthenticationFilter
+    ): DefaultSecurityFilterChain =
+        http
+            .csrf { it.disable() }
+            .cors {}
+            .authorizeHttpRequests { registry ->
+                registry
+                    .requestMatchers("${ApiRoutes.AUTH}/**").permitAll()
+                    .requestMatchers("${ApiRoutes.USER}/**").permitAll()
+                    .requestMatchers("/error").permitAll()
+                registry.requestMatchers(HttpMethod.GET, "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                registry.requestMatchers(HttpMethod.GET, "/images/**").permitAll()
 
         listOf(
-          "${ApiRoutes.GROUP}/**"
+          "${ApiRoutes.GROUP}/**",
+          "${ApiRoutes.PARTNER}/**",
         ).forEach {
           registry.requestMatchers(HttpMethod.GET, it).authenticated()
           registry.requestMatchers(it).authenticated()
         }
 
-        registry.requestMatchers("/**").hasRole(Role.ADMIN.name)
-        registry.anyRequest().fullyAuthenticated()
-      }
-      .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
-      .authenticationProvider(authenticationProvider)
-      .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
-      .build()
+                registry.anyRequest().fullyAuthenticated()
+            }
+            .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
+            .authenticationProvider(authenticationProvider)
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
+            .build()
 
   @Bean
   fun corsConfigurationSource(): CorsConfigurationSource {

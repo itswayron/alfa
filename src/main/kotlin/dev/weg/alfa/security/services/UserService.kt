@@ -4,7 +4,7 @@ import dev.weg.alfa.modules.exceptions.user.UserNotFoundException
 import dev.weg.alfa.modules.models.user.User
 import dev.weg.alfa.modules.models.user.UserRequest
 import dev.weg.alfa.modules.models.user.UserResponse
-import dev.weg.alfa.modules.repositories.UserRepository
+import dev.weg.alfa.modules.repositories.user.UserRepository
 import dev.weg.alfa.modules.validators.Validator
 import dev.weg.alfa.security.validators.UserPersistenceValidator
 import org.slf4j.LoggerFactory
@@ -12,7 +12,6 @@ import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
-
 
 @Service
 class UserService(
@@ -24,11 +23,13 @@ class UserService(
 ) : UserDetailsService {
   private val logger = LoggerFactory.getLogger(this::class.java)
 
-  override fun loadUserByUsername(username: String): UserDetails {
-    return repository.findByUsernameField(username) ?: throw UserNotFoundException(username)
-  }
+    override fun loadUserByUsername(usernameOrEmail: String): UserDetails {
+        return repository.findByUsernameField(usernameOrEmail)
+            ?: repository.findByEmailField(usernameOrEmail)
+            ?: throw UserNotFoundException(usernameOrEmail)
+    }
 
-  fun createUser(request: UserRequest): UserResponse {
+    fun createUser(request: UserRequest): UserResponse {
     val sanitizedRequest = request.sanitized()
     logger.info("Creating user with username: ${sanitizedRequest.name}")
 

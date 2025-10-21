@@ -2,7 +2,7 @@ package dev.weg.alfa.security.validators
 
 import dev.weg.alfa.modules.exceptions.user.UserNotValidException
 import dev.weg.alfa.modules.models.user.User
-import dev.weg.alfa.modules.repositories.UserRepository
+import dev.weg.alfa.modules.repositories.user.UserRepository
 import dev.weg.alfa.modules.validators.ValidationErrorMessages
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
