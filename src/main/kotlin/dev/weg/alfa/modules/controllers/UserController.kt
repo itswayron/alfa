@@ -25,4 +25,10 @@ class UserController(
     val response = service.findUserById(id)
     return ResponseEntity(response, HttpStatus.OK)
   }
+
+    @GetMapping("/me")
+    fun getCurrentUser(): ResponseEntity<UserResponse> {
+        val response = service.findCurrentUser()
+        return ResponseEntity(response, HttpStatus.OK)
+    }
 }

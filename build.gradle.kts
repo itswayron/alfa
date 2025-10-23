@@ -44,7 +44,8 @@ dependencies {
 	runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.6")
 	implementation("com.github.f4b6a3:uuid-creator:4.3.1")
 	implementation("org.springframework.boot:spring-boot-starter-mail:3.5.3")
-
+// https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.9")
 }
 
 kotlin {

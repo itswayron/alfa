@@ -15,7 +15,6 @@ import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.CorsConfigurationSource
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 
-
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true)
@@ -30,6 +29,7 @@ class SecurityConfiguration(private val authenticationProvider: AuthenticationPr
             .csrf { it.disable() }
             .cors {}
             .authorizeHttpRequests { registry ->
+                registry.requestMatchers("${ApiRoutes.AUTH}/status").authenticated()
                 registry
                     .requestMatchers("${ApiRoutes.AUTH}/**").permitAll()
                     .requestMatchers("${ApiRoutes.USER}/**").permitAll()
@@ -37,14 +37,14 @@ class SecurityConfiguration(private val authenticationProvider: AuthenticationPr
                 registry.requestMatchers(HttpMethod.GET, "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 registry.requestMatchers(HttpMethod.GET, "/images/**").permitAll()
 
-        listOf(
-          "${ApiRoutes.GROUP}/**",
-          "${ApiRoutes.PARTNER}/**",
-          "${ApiRoutes.MEASURAMENT_UNITS}/**",
-        ).forEach {
-          registry.requestMatchers(HttpMethod.GET, it).authenticated()
-          registry.requestMatchers(it).authenticated()
-        }
+                listOf(
+                    "${ApiRoutes.GROUP}/**",
+                    "${ApiRoutes.PARTNER}/**",
+                    "${ApiRoutes.MEASURAMENT_UNITS}/**",
+                ).forEach {
+                    registry.requestMatchers(HttpMethod.GET, it).authenticated()
+                    registry.requestMatchers(it).authenticated()
+                }
 
                 registry.anyRequest().fullyAuthenticated()
             }
@@ -53,15 +53,15 @@ class SecurityConfiguration(private val authenticationProvider: AuthenticationPr
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
             .build()
 
-  @Bean
-  fun corsConfigurationSource(): CorsConfigurationSource {
-    val configuration = CorsConfiguration()
-    configuration.allowedOrigins = listOf("http://localhost:5174","http://localhost:15433", "http://localhost:5174", "http://localhost:4000")
-    configuration.allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
-    configuration.allowedHeaders = listOf("*")
-    configuration.allowCredentials = true
-    val source = UrlBasedCorsConfigurationSource()
-    source.registerCorsConfiguration("/**", configuration)
-    return source
-  }
+    @Bean
+    fun corsConfigurationSource(): CorsConfigurationSource {
+        val configuration = CorsConfiguration()
+        configuration.allowedOrigins = listOf("http://localhost:5173", "http://localhost:5174", "http://localhost:4000")
+        configuration.allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
+        configuration.allowedHeaders = listOf("*")
+        configuration.allowCredentials = true
+        val source = UrlBasedCorsConfigurationSource()
+        source.registerCorsConfiguration("/**", configuration)
+        return source
+    }
 }
