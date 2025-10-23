@@ -1,6 +1,5 @@
 package dev.weg.alfa.modules.controllers.simpleEntities
 
-
 import dev.weg.alfa.config.ApiRoutes
 import dev.weg.alfa.modules.models.NameRequest
 import dev.weg.alfa.modules.models.simpleModels.Group
@@ -36,5 +35,4 @@ class GroupController(private val service: GroupService) {
         service.deleteGroupById(id)
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build()
     }
-
 }

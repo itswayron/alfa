@@ -1,0 +1,48 @@
+package dev.weg.alfa.modules.exceptions
+
+import jakarta.persistence.EntityNotFoundException
+import jakarta.servlet.http.HttpServletRequest
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.ExceptionHandler
+import org.springframework.web.bind.annotation.ResponseBody
+import org.springframework.web.bind.annotation.RestControllerAdvice
+
+@RestControllerAdvice
+class GlobalExceptionHandler {
+
+    @ExceptionHandler(
+        EntityNotFoundException::class
+    )
+    @ResponseBody
+    fun handleCustomExceptions(exception: Exception, request: HttpServletRequest): ResponseEntity<ApiError> {
+        return if (exception is ApiException) {
+            val apiError = exception.toApiError(request)
+            ResponseEntity(apiError, HttpStatus.valueOf(apiError.status))
+        } else {
+            val status = HttpStatus.INTERNAL_SERVER_ERROR
+            val apiError = ApiError(
+                status = status.value(),
+                error = status.reasonPhrase,
+                message = exception.message ?: "An error occurred.",
+                path = request.requestURI,
+                details = arrayListOf(exception.message),
+            )
+            ResponseEntity(apiError, status)
+        }
+    }
+
+    @ExceptionHandler(Exception::class)
+    @ResponseBody
+    fun handleUnknownException(exception: Exception, request: HttpServletRequest): ResponseEntity<ApiError> {
+        val status = HttpStatus.INTERNAL_SERVER_ERROR
+        val apiError = ApiError(
+            status = status.value(),
+            error = status.reasonPhrase,
+            message = exception.message ?: "An unexpected error occurred.",
+            path = request.requestURI,
+            details = arrayListOf(exception.localizedMessage)
+        )
+        return ResponseEntity(apiError, status)
+    }
+}

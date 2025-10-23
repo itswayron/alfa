@@ -35,15 +35,6 @@ data class User(
 
     ) : UserDetails {
 
-    constructor() : this(
-        id = 0,
-        name = "",
-        usernameField = "",
-        emailField = "",
-        passwordField = "",
-        role = Role.USER,
-    )
-
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
         return mutableListOf(SimpleGrantedAuthority("ROLE_${role.name}"))
     }

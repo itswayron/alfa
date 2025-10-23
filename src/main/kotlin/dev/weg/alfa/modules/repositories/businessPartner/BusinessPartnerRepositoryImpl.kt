@@ -6,7 +6,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class BusinessPartnerRepositoryImpl : ExceptionProvider<Int> {
-    override fun notFoundException(id: Int): EntityNotFoundException {
-        TODO("Not yet implemented")
-    }
+    override fun notFoundException(id: Int) = EntityNotFoundException("Parceiro id: $id não encontrado!")
 }

@@ -8,9 +8,8 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
-
 @RestController
-@RequestMapping(ApiRoutes.MUNITYS)
+@RequestMapping(ApiRoutes.MEASURAMENT_UNITS)
     class MeasurementUnityController(private val service: MeasurementUnityService) {
 
     @PostMapping
@@ -36,5 +35,4 @@ import org.springframework.web.bind.annotation.*
         service.deleteMeasurementUnityById(id)
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build()
     }
-
 }

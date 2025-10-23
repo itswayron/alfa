@@ -1,8 +1,6 @@
 package dev.weg.alfa.security.config
 
 import dev.weg.alfa.config.ApiRoutes
-import dev.weg.alfa.modules.models.user.Role
-import dev.weg.alfa.config.ApiRoutes
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod
@@ -42,6 +40,7 @@ class SecurityConfiguration(private val authenticationProvider: AuthenticationPr
         listOf(
           "${ApiRoutes.GROUP}/**",
           "${ApiRoutes.PARTNER}/**",
+          "${ApiRoutes.MEASURAMENT_UNITS}/**",
         ).forEach {
           registry.requestMatchers(HttpMethod.GET, it).authenticated()
           registry.requestMatchers(it).authenticated()

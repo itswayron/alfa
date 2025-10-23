@@ -3,8 +3,8 @@ package dev.weg.alfa.modules.services.simpleEntities
 
 import dev.weg.alfa.modules.models.NameRequest
 import dev.weg.alfa.modules.models.simpleModels.Group
+import dev.weg.alfa.modules.repositories.findByIdOrThrow
 import dev.weg.alfa.modules.repositories.simpleEntities.GroupRepository
-import jakarta.persistence.EntityNotFoundException
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
@@ -12,14 +12,9 @@ import org.springframework.stereotype.Service
 class GroupService(private val repository: GroupRepository) {
     private val logger = LoggerFactory.getLogger(this::class.java)
 
-    private fun findGroupByIdOrThrow(id: Int): Group = repository.findById(id).orElseThrow {
-        logger.error("Group with id: $id does not exits.")
-        throw EntityNotFoundException("Group with id: $id does not exits.")
-    }
-
     fun createGroup(request: NameRequest): Group {
         logger.info("Creating area with name: ${request.name}.")
-        return repository.save(Group(id = null, name = request.name))
+        return repository.save(Group(name = request.name))
     }
 
     fun getAllGroups(): List<Group> {
@@ -32,7 +27,7 @@ class GroupService(private val repository: GroupRepository) {
     fun editGroup(command: Pair<Int, NameRequest>): Group {
         val (id, newGroup) = command
         logger.info("Updating area with $id with name: ${newGroup.name}.")
-        val oldGroup = findGroupByIdOrThrow(id)
+        val oldGroup = repository.findByIdOrThrow(id)
         val updatedGroup = repository.save(Group(id = oldGroup.id, name = newGroup.name))
         logger.info("Group name updated to ${newGroup.name}")
         return updatedGroup
@@ -40,7 +35,7 @@ class GroupService(private val repository: GroupRepository) {
 
     fun deleteGroupById(id: Int) {
         logger.info("Deleting Group with id: $id.")
-        val delete = findGroupByIdOrThrow(id)
+        val delete = repository.findByIdOrThrow(id)
         repository.delete(delete)
     }
 }
