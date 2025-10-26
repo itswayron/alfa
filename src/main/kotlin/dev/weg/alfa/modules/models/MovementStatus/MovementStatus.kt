@@ -17,5 +17,5 @@ data class MovementStatus( // (reservado, concluído, previsto etc)
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   val id: Int =0,
   @Enumerated(EnumType.STRING)
-  val status: Status
+  val name: Status
 )

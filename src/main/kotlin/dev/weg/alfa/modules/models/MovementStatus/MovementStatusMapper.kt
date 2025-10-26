@@ -4,12 +4,12 @@ fun MovementStatus.toResponse(): MovementStatusResponse {
 
         return MovementStatusResponse(
             id = this.id,
-            status = this.status
+            status = this.name
         )
 }
 fun MovementStatusRequest.toEntity(): MovementStatus {
 
     return MovementStatus(
-        status = this.status
+        name = this.status
     )
 }

@@ -32,7 +32,7 @@ class MovimentStatausService(private val repository: MovementStatausRepository) 
 
         logger.info("Updating MovimentStataus with $id with status: ${request.status}.")
         val oldMovimentStataus = repository.findByIdOrThrow(id)
-        val updatedMovimentStataus = repository.save(MovementStatus(id = oldMovimentStataus.id, status = request.status))
+        val updatedMovimentStataus = repository.save(MovementStatus(id = oldMovimentStataus.id, name = request.status))
         logger.info("MovimentStataus name updated to ${request.status}")
         return updatedMovimentStataus.toResponse()
     }
