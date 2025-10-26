@@ -6,5 +6,6 @@ object ApiRoutes {
     const val GROUP = "/group"
     const val SUBGROUP = "/subgroup"
     const val MEASURAMENT_UNITS = "/measurament_unit"
+    const val MOVEMENT_STATUS = "/movement_status"
     const val PARTNER = "/partner"
 }

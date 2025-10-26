@@ -1,4 +1,4 @@
-package dev.weg.alfa.modules.controllers.simpleEntities
+    package dev.weg.alfa.modules.controllers.simpleEntities
 
 import dev.weg.alfa.config.ApiRoutes
 import dev.weg.alfa.modules.models.NameRequest
@@ -30,7 +30,7 @@ class SubGroupController(private val service: SubgroupService) {
         return response
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping( "/{id}")
     fun deleteSubGroup(@PathVariable id: Int): ResponseEntity<Unit> {
         service.deleteSubGroupById(id)
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build()
