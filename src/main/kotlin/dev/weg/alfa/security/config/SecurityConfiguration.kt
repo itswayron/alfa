@@ -39,9 +39,10 @@ class SecurityConfiguration(private val authenticationProvider: AuthenticationPr
 
                 listOf(
                     "${ApiRoutes.GROUP}/**",
-                    "${ApiRoutes.PARTNER}/**",
-                    "${ApiRoutes.MEASURAMENT_UNITS}/**",
                     "${ApiRoutes.SUBGROUP}/**",
+                    "${ApiRoutes.MEASUREMENT_UNITS}/**",
+                    "${ApiRoutes.PARTNER}/**",
+                    "${ApiRoutes.ITEM}/**",
                 ).forEach {
                     registry.requestMatchers(HttpMethod.GET, it).authenticated()
                     registry.requestMatchers(it).authenticated()

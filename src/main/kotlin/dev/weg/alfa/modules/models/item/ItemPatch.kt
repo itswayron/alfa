@@ -8,5 +8,7 @@ data class ItemPatch(
     val dimensions: String? = null,
     val material: String? = null,
     val measurementUnityId: Int? = null,
-    val mainSupplier: Int? = null,
+    val mainSupplierId: Int? = null,
+    val imagePath: String? = null,
+    val isActive: Boolean? = null,
 )

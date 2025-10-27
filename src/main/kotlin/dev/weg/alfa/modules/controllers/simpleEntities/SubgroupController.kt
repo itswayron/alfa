@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping(ApiRoutes.SUBGROUP)
-class SubGroupController(private val service: SubgroupService) {
+class SubgroupController(private val service: SubgroupService) {
 
     @PostMapping
     fun createSubGroup(@RequestBody request: NameRequest): ResponseEntity<Subgroup> {
@@ -32,7 +32,7 @@ class SubGroupController(private val service: SubgroupService) {
 
     @DeleteMapping("/{id}")
     fun deleteSubGroup(@PathVariable id: Int): ResponseEntity<Unit> {
-        service.deleteSubGroupById(id)
+        service.deleteSubgroupById(id)
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build()
     }
 }

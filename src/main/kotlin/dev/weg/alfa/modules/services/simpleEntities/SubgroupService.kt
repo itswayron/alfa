@@ -4,12 +4,12 @@ package dev.weg.alfa.modules.services.simpleEntities
 import dev.weg.alfa.modules.models.NameRequest
 import dev.weg.alfa.modules.models.simpleModels.Subgroup
 import dev.weg.alfa.modules.repositories.findByIdOrThrow
-import dev.weg.alfa.modules.repositories.simpleEntities.SubGroupRepository
+import dev.weg.alfa.modules.repositories.simpleEntities.SubgroupRepository
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
 @Service
-class SubgroupService(private val repository: SubGroupRepository) {
+class SubgroupService(private val repository: SubgroupRepository) {
     private val logger = LoggerFactory.getLogger(this::class.java)
 
     fun createSubgroup(request: NameRequest): Subgroup {
@@ -25,16 +25,16 @@ class SubgroupService(private val repository: SubGroupRepository) {
     }
 
     fun editSubgroup(command: Pair<Int, NameRequest>): Subgroup {
-        val (id, newSubGroup) = command
-        logger.info("Updating Subgroup with $id with name: ${newSubGroup.name}.")
+        val (id, newSubgroup) = command
+        logger.info("Updating Subgroup with $id with name: ${newSubgroup.name}.")
         val oldSubgroup = repository.findByIdOrThrow(id)
-        val updateSubGroup = repository.save(Subgroup(id = oldSubgroup.id, name = newSubGroup.name))
-        logger.info("SubGroup name updated to ${newSubGroup.name}")
-        return updateSubGroup
+        val updateSubgroup = repository.save(Subgroup(id = oldSubgroup.id, name = newSubgroup.name))
+        logger.info("Subgroup name updated to ${newSubgroup.name}")
+        return updateSubgroup
     }
 
-    fun deleteSubGroupById(id: Int) {
-        logger.info("Deleting SubGroup with id: $id.")
+    fun deleteSubgroupById(id: Int) {
+        logger.info("Deleting Subgroup with id: $id.")
         val delete = repository.findByIdOrThrow(id)
         repository.delete(delete)
     }

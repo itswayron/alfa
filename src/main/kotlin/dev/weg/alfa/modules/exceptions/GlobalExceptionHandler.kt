@@ -20,7 +20,11 @@ class GlobalExceptionHandler {
             val apiError = exception.toApiError(request)
             ResponseEntity(apiError, HttpStatus.valueOf(apiError.status))
         } else {
-            val status = HttpStatus.INTERNAL_SERVER_ERROR
+            val status = if(exception is EntityNotFoundException) {
+                HttpStatus.NOT_FOUND
+            } else {
+                HttpStatus.INTERNAL_SERVER_ERROR
+            }
             val apiError = ApiError(
                 status = status.value(),
                 error = status.reasonPhrase,

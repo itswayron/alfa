@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping(ApiRoutes.MEASURAMENT_UNITS)
+@RequestMapping(ApiRoutes.MEASUREMENT_UNITS)
     class MeasurementUnityController(private val service: MeasurementUnityService) {
 
     @PostMapping
