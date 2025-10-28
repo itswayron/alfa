@@ -44,6 +44,7 @@ class SecurityConfiguration(private val authenticationProvider: AuthenticationPr
                     "${ApiRoutes.SUBGROUP}/**",
                     "${ApiRoutes.MOVEMENT_STATUS}/**",
                     "${ApiRoutes.MOVEMENT_TYPES}/**",
+                    "${ApiRoutes.SECTOR}/**",
                 ).forEach {
                     registry.requestMatchers(HttpMethod.GET, it).authenticated()
                     registry.requestMatchers(it).authenticated()
