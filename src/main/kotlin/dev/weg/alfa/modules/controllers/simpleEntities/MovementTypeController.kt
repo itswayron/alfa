@@ -11,12 +11,11 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping(ApiRoutes.MOVEMENT_TYPES)
-class MovementTypeController (private val service: MovementTypeService ){
+class MovementTypeController (private val service: MovementTypeService){
 
     @GetMapping
-    fun getAllMovementType(): ResponseEntity<List<MovementType>>{
+    fun getAllMovementType(): ResponseEntity<List<MovementType>> {
         val response = ResponseEntity.status(HttpStatus.OK).body(service.getAllMovementTypes())
         return response
     }
-
 }

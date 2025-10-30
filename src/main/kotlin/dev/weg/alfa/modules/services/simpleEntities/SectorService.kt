@@ -8,33 +8,34 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
 @Service
-class SectorService (private val repository: SectorRepository){
+class SectorService(private val repository: SectorRepository) {
     private val logger = LoggerFactory.getLogger(this::class.java)
-    fun createSector(request: NameRequest): Sector{
+
+    fun createSector(request: NameRequest): Sector {
         logger.info("Creating Sector with name: ${request.name}")
-        return repository.save(Sector(name = request.name))
-
+        val response = repository.save(Sector(name = request.name))
+        return response
     }
 
-    fun getAllSectors(): List<Sector>{
+    fun getAllSectors(): List<Sector> {
         logger.info("Retrieving all sectors from the database")
-        val sectors = repository.findAll()
-        logger.info("Found ${sectors.size} sectors on the database")
-        return sectors
+        val response = repository.findAll()
+        logger.info("Found ${response.size} sectors on the database")
+        return response
     }
 
-    fun editSector(command: Pair<Int, NameRequest>): Sector{
+    fun editSector(command: Pair<Int, NameRequest>): Sector {
         val (id, newSector) = command
         logger.info("Update Sector with $id with name:${newSector.name}")
         val oldSector = repository.findByIdOrThrow(id)
-        val updateSector = repository.save(Sector(id = oldSector.id, name = newSector.name))
+        val response = repository.save(Sector(id = oldSector.id, name = newSector.name))
         logger.info("Sector name update to ${newSector.name}")
-        return  updateSector
+        return response
     }
 
-    fun deleteSectorById(id: Int){
+    fun deleteSectorById(id: Int) {
         logger.info("Deleting Sector With Id $id")
-        val delete= repository.findByIdOrThrow(id)
+        val delete = repository.findByIdOrThrow(id)
         repository.delete(delete)
     }
 }

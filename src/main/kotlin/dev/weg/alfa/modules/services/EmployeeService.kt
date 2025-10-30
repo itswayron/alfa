@@ -2,7 +2,6 @@ package dev.weg.alfa.modules.services
 
 import dev.weg.alfa.modules.models.employee.Employee
 import dev.weg.alfa.modules.models.employee.EmployeeDTO
-import dev.weg.alfa.modules.models.simpleModels.Sector
 import dev.weg.alfa.modules.repositories.EmployeeRepository
 import dev.weg.alfa.modules.repositories.findByIdOrThrow
 import dev.weg.alfa.modules.repositories.simpleEntities.SectorRepository
@@ -10,30 +9,39 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
 @Service
-class EmployeeService (private val employeeRepository: EmployeeRepository,
-                       private val sectorRepository: SectorRepository){
+class EmployeeService(
+    private val employeeRepository: EmployeeRepository,
+    private val sectorRepository: SectorRepository
+) {
     private val logger = LoggerFactory.getLogger(this::class.java)
 
     fun createEmployee(request: EmployeeDTO): Employee {
-        logger.info("Creating Employee with name: ${request.name}. and sector with id ${request.sectorId}")
-        val sector: Sector = sectorRepository.findByIdOrThrow(request.sectorId)
+        logger.info("Creating Employee with name: ${request.name} and sector with id ${request.sectorId}.")
+        val sector = sectorRepository.findByIdOrThrow(request.sectorId)
         val employee = Employee(name = request.name, sector = sector)
-        return employeeRepository.save(employee)
+        val response = employeeRepository.save(employee)
+        return response
     }
 
     fun getAllEmployee(): List<Employee> {
-        logger.info("Retrieving all Employees from the database.")
-        val employee = employeeRepository.findAll()
-        logger.info("Found ${employee.size} Employee on the database.")
-        return employee
+        logger.info("Retrieving all employees from the database.")
+        val response = employeeRepository.findAll()
+        logger.info("Found ${response.size} employees on the database.")
+        return response
     }
 
     fun editEmployee(command: Pair<Int, EmployeeDTO>): Employee {
         val (id, request) = command
         logger.info("Updating Employee with $id with name: ${request.name}.")
         val oldEmployee = employeeRepository.findByIdOrThrow(id)
-        val newSector = sectorRepository.findByIdOrThrow((request.sectorId))
-        val updatedEmployee = employeeRepository.save(Employee(id = oldEmployee.id, name = request.name, sector = newSector))
+        val newSector = sectorRepository.findByIdOrThrow(request.sectorId)
+        val updatedEmployee = employeeRepository.save(
+            Employee(
+                id = oldEmployee.id,
+                name = request.name,
+                sector = newSector
+            )
+        )
         logger.info("Sucessfully, Employee name updated to ${request.name}")
         return updatedEmployee
     }

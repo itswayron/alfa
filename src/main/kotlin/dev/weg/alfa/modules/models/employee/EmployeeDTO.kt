@@ -4,8 +4,8 @@ import jakarta.validation.constraints.*
 
 data class EmployeeDTO(
     @field:NotBlank(message = "name is mandatory")
-    val name :  String,
+    val name: String,
 
     @field:NotNull(message = "the Id is mandatory")
-    val sectorId : Int,
+    val sectorId: Int,
 )

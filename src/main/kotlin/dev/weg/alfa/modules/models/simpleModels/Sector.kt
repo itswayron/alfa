@@ -7,8 +7,7 @@ import jakarta.persistence.*
 @Table(name = "sector")
 @JsonIgnoreProperties("hibernateLazyInitializer","handler")
 data class Sector(
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
   val id: Int = 0,
   @Column(name = "name")
   val name: String,

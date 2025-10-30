@@ -4,33 +4,34 @@ package dev.weg.alfa.modules.services.simpleEntities
 import dev.weg.alfa.modules.models.NameRequest
 import dev.weg.alfa.modules.models.simpleModels.Subgroup
 import dev.weg.alfa.modules.repositories.findByIdOrThrow
-import dev.weg.alfa.modules.repositories.simpleEntities.SubGroupRepository
+import dev.weg.alfa.modules.repositories.simpleEntities.SubgroupRepository
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
 @Service
-class SubgroupService(private val repository: SubGroupRepository) {
+class SubgroupService(private val repository: SubgroupRepository) {
     private val logger = LoggerFactory.getLogger(this::class.java)
 
     fun createSubgroup(request: NameRequest): Subgroup {
         logger.info("Creating Subgroup with name: ${request.name}.")
-        return repository.save(Subgroup(name = request.name))
+        val response = repository.save(Subgroup(name = request.name))
+        return response
     }
 
     fun getAllSubgroups(): List<Subgroup> {
-        logger.info("Retrieving all subgroup from the database.")
+        logger.info("Retrieving all subgroups from the database.")
         val subgroup = repository.findAll()
-        logger.info("Found ${subgroup.size} subgroup on the database.")
+        logger.info("Found ${subgroup.size} subgroups on the database.")
         return subgroup
     }
 
     fun editSubgroup(command: Pair<Int, NameRequest>): Subgroup {
-        val (id, newSubGroup) = command
-        logger.info("Updating Subgroup with $id with name: ${newSubGroup.name}.")
+        val (id, newSubgroup) = command
+        logger.info("Updating Subgroup with $id with name: ${newSubgroup.name}.")
         val oldSubgroup = repository.findByIdOrThrow(id)
-        val updateSubGroup = repository.save(Subgroup(id = oldSubgroup.id, name = newSubGroup.name))
-        logger.info("SubGroup name updated to ${newSubGroup.name}")
-        return updateSubGroup
+        val updateSubgroup = repository.save(Subgroup(id = oldSubgroup.id, name = newSubgroup.name))
+        logger.info("SubGroup name updated to ${newSubgroup.name}")
+        return updateSubgroup
     }
 
     fun deleteSubGroupById(id: Int) {
