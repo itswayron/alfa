@@ -22,38 +22,32 @@ class SecurityConfiguration(private val authenticationProvider: AuthenticationPr
 
     @Bean
     fun securityFilterChain(
-        http: HttpSecurity,
-        jwtAuthenticationFilter: JwtAuthenticationFilter
-    ): DefaultSecurityFilterChain =
-        http
-            .csrf { it.disable() }
-            .cors {}
-            .authorizeHttpRequests { registry ->
-                registry.requestMatchers("${ApiRoutes.AUTH}/status").authenticated()
-                registry
-                    .requestMatchers("${ApiRoutes.AUTH}/**").permitAll()
-                    .requestMatchers("${ApiRoutes.USER}/**").permitAll()
-                    .requestMatchers("/error").permitAll()
-                registry.requestMatchers(HttpMethod.GET, "/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                registry.requestMatchers(HttpMethod.GET, "/images/**").permitAll()
+        http: HttpSecurity, jwtAuthenticationFilter: JwtAuthenticationFilter
+    ): DefaultSecurityFilterChain = http.csrf { it.disable() }.cors {}.authorizeHttpRequests { registry ->
+            registry.requestMatchers("${ApiRoutes.AUTH}/status").authenticated()
+            registry.requestMatchers("${ApiRoutes.AUTH}/**").permitAll().requestMatchers("${ApiRoutes.USER}/**")
+                .permitAll().requestMatchers("/error").permitAll()
+            registry.requestMatchers(HttpMethod.GET, "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+            registry.requestMatchers(HttpMethod.GET, "/images/**").permitAll()
 
-                listOf(
-                    "${ApiRoutes.GROUP}/**",
-                    "${ApiRoutes.SUBGROUP}/**",
-                    "${ApiRoutes.MEASUREMENT_UNITS}/**",
-                    "${ApiRoutes.PARTNER}/**",
-                    "${ApiRoutes.ITEM}/**",
-                ).forEach {
-                    registry.requestMatchers(HttpMethod.GET, it).authenticated()
-                    registry.requestMatchers(it).authenticated()
-                }
-
-                registry.anyRequest().fullyAuthenticated()
+            listOf(
+                "${ApiRoutes.GROUP}/**",
+                "${ApiRoutes.PARTNER}/**",
+                "${ApiRoutes.MEASUREMENT_UNITS}/**",
+                "${ApiRoutes.SUBGROUP}/**",
+                "${ApiRoutes.MOVEMENT_STATUS}/**",
+                "${ApiRoutes.MOVEMENT_TYPES}/**",
+                "${ApiRoutes.SECTOR}/**",
+                "${ApiRoutes.EMPLOYEE}/**",
+            ).forEach {
+                registry.requestMatchers(HttpMethod.GET, it).authenticated()
+                registry.requestMatchers(it).authenticated()
             }
-            .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
-            .authenticationProvider(authenticationProvider)
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
-            .build()
+
+            registry.anyRequest().fullyAuthenticated()
+        }.sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
+        .authenticationProvider(authenticationProvider)
+        .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java).build()
 
     @Bean
     fun corsConfigurationSource(): CorsConfigurationSource {

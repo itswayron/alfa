@@ -1,6 +1,14 @@
 package dev.weg.alfa.modules.models.simpleModels
 
-data class MovementStatus( // (reservado, concluído, previsto etc)
-  val id: Int,
-  val name: String,
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import jakarta.persistence.*
+
+@Entity
+@Table(name = "movement_status")
+@JsonIgnoreProperties("hibernateLazyInitializer", "handler")
+data class MovementStatus(
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Int = 0,
+    @Column(name = "name")
+    val name: String
 )
