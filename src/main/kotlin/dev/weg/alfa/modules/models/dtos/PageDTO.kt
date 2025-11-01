@@ -1,4 +1,4 @@
-package dev.weg.alfa.modules.models
+package dev.weg.alfa.modules.models.dtos
 
 data class PageDTO<T>(
     val content: List<T>,

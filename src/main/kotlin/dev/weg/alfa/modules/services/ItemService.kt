@@ -1,6 +1,6 @@
 package dev.weg.alfa.modules.services
 
-import dev.weg.alfa.modules.models.PageDTO
+import dev.weg.alfa.modules.models.dtos.PageDTO
 import dev.weg.alfa.modules.models.item.ItemPatch
 import dev.weg.alfa.modules.models.item.ItemRequest
 import dev.weg.alfa.modules.models.item.ItemResponse

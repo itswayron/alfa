@@ -1,5 +1,6 @@
 package dev.weg.alfa.modules.models
 
+import dev.weg.alfa.modules.models.productionOrder.ProductionOrder
 import dev.weg.alfa.modules.models.employee.Employee
 import dev.weg.alfa.modules.models.simpleModels.MovementStatus
 import dev.weg.alfa.modules.models.simpleModels.MovementType

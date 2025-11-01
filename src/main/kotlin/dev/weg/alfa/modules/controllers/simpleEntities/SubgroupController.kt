@@ -1,7 +1,7 @@
     package dev.weg.alfa.modules.controllers.simpleEntities
 
 import dev.weg.alfa.config.ApiRoutes
-import dev.weg.alfa.modules.models.NameRequest
+import dev.weg.alfa.modules.models.dtos.NameRequest
 import dev.weg.alfa.modules.models.simpleModels.Subgroup
 import dev.weg.alfa.modules.services.simpleEntities.SubgroupService
 import org.springframework.http.HttpStatus
