@@ -42,7 +42,7 @@ fun Item.toResponse(): ItemResponse = ItemResponse(
     mainSupplier = this.mainSupplier?.name,
 )
 
-fun Item.updateWith(
+fun Item.applyPatch(
     patch: ItemPatch,
     group: Group?,
     subgroup: Subgroup?,

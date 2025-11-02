@@ -22,7 +22,7 @@ fun ProductionOrder.toResponse(): ProductionOrderResponse = ProductionOrderRespo
     businessPartner = this.businessPartner.name
 )
 
-fun ProductionOrder.updateWith(patch: ProductionOrderPatch, partner: BusinessPartner?): ProductionOrder = ProductionOrder(
+fun ProductionOrder.applyPatch(patch: ProductionOrderPatch, partner: BusinessPartner?): ProductionOrder = ProductionOrder(
     id = this.id,
     code = patch.code ?: this.code,
     document = patch.document ?: this.document,

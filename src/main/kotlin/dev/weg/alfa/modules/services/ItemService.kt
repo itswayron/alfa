@@ -7,7 +7,7 @@ import dev.weg.alfa.modules.models.item.ItemResponse
 import dev.weg.alfa.modules.models.mappers.toDTO
 import dev.weg.alfa.modules.models.mappers.toEntity
 import dev.weg.alfa.modules.models.mappers.toResponse
-import dev.weg.alfa.modules.models.mappers.updateWith
+import dev.weg.alfa.modules.models.mappers.applyPatch
 import dev.weg.alfa.modules.repositories.businessPartner.BusinessPartnerRepository
 import dev.weg.alfa.modules.repositories.findByIdOrThrow
 import dev.weg.alfa.modules.repositories.item.ItemRepository
@@ -83,7 +83,7 @@ class ItemService(
         val unit = unitRepository.findByIdIfNotNull(itemUpdated.measurementUnityId)
         val supplier = partnerRepository.findByIdIfNotNull(itemUpdated.mainSupplierId)
 
-        val newItem = oldItem.updateWith(
+        val newItem = oldItem.applyPatch(
             patch = itemUpdated, group = group, subgroup = subgroup, unit = unit, supplier = supplier
         )
 

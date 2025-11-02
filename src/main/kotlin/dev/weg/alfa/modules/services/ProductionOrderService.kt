@@ -4,7 +4,7 @@ import dev.weg.alfa.modules.models.dtos.PageDTO
 import dev.weg.alfa.modules.models.mappers.toDTO
 import dev.weg.alfa.modules.models.mappers.toEntity
 import dev.weg.alfa.modules.models.mappers.toResponse
-import dev.weg.alfa.modules.models.mappers.updateWith
+import dev.weg.alfa.modules.models.mappers.applyPatch
 import dev.weg.alfa.modules.models.productionOrder.ProductionOrderPatch
 import dev.weg.alfa.modules.models.productionOrder.ProductionOrderRequest
 import dev.weg.alfa.modules.models.productionOrder.ProductionOrderResponse
@@ -65,7 +65,7 @@ class ProductionOrderService(
 
         val newSupplier = partnerRepository.findByIdIfNotNull(patch.mainSupplierId)
 
-        val updatedOrder = oldOrder.updateWith(
+        val updatedOrder = oldOrder.applyPatch(
             patch = patch, partner = newSupplier
         )
 
