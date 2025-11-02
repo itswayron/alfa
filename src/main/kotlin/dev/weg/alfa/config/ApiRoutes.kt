@@ -13,4 +13,5 @@ object ApiRoutes {
     const val MOVEMENT_TYPES = "/movement_types"
     const val PARTNER = "/partner"
     const val PRODUCTION_ORDER = "/production_order"
+    const val POSITION = "/position"
 }
