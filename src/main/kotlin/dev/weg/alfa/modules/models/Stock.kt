@@ -1,6 +1,7 @@
 package dev.weg.alfa.modules.models
 
 import dev.weg.alfa.modules.models.item.Item
+import dev.weg.alfa.modules.models.position.Position
 import dev.weg.alfa.modules.models.simpleModels.Sector
 import java.time.LocalDateTime
 

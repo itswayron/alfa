@@ -14,12 +14,8 @@ import jakarta.persistence.Table
 data class Position(
   @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
   val id: Int = 0 ,
-  @Column(name = "floor")
   val floor: String,
-  @Column(name = "side")
   val side: String,
-  @Column(name = "column")
   val column: String,
-  @Column(name = "box")
-  val box: String="",
+  val box: String,
 )
