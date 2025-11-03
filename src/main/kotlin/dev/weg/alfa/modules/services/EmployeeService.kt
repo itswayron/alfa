@@ -1,7 +1,7 @@
 package dev.weg.alfa.modules.services
 
 import dev.weg.alfa.modules.models.employee.Employee
-import dev.weg.alfa.modules.models.employee.EmployeeDTO
+import dev.weg.alfa.modules.models.employee.EmployeeRequest
 import dev.weg.alfa.modules.repositories.EmployeeRepository
 import dev.weg.alfa.modules.repositories.findByIdOrThrow
 import dev.weg.alfa.modules.repositories.simpleEntities.SectorRepository
@@ -15,7 +15,7 @@ class EmployeeService(
 ) {
     private val logger = LoggerFactory.getLogger(this::class.java)
 
-    fun createEmployee(request: EmployeeDTO): Employee {
+    fun createEmployee(request: EmployeeRequest): Employee {
         logger.info("Creating Employee with name: ${request.name} and sector with id ${request.sectorId}.")
         val sector = sectorRepository.findByIdOrThrow(request.sectorId)
         val employee = Employee(name = request.name, sector = sector)
@@ -30,7 +30,7 @@ class EmployeeService(
         return response
     }
 
-    fun editEmployee(command: Pair<Int, EmployeeDTO>): Employee {
+    fun editEmployee(command: Pair<Int, EmployeeRequest>): Employee {
         val (id, request) = command
         logger.info("Updating Employee with $id with name: ${request.name}.")
         val oldEmployee = employeeRepository.findByIdOrThrow(id)
@@ -42,7 +42,7 @@ class EmployeeService(
                 sector = newSector
             )
         )
-        logger.info("Sucessfully, Employee name updated to ${request.name}")
+        logger.info("Successfully, Employee name updated to ${request.name}")
         return updatedEmployee
     }
 

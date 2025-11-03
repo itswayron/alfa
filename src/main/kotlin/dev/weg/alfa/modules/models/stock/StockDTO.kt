@@ -1,5 +1,12 @@
 package dev.weg.alfa.modules.models.stock
 
+data class StockPatch(
+    val minimumAmount: Double? = null,
+    val maximumAmount: Double? = null,
+    val sectorId: Int? = null,
+    val positionId: Int? = null
+)
+
 data class StockResponse(
     val id: Int,
     val itemId: Int,
@@ -16,5 +23,13 @@ data class StockResponse(
     val positionFloor: String,
     val positionSide: String,
     val positionColumn: String,
-    val positionBox: String
+    val positionBox: String,
+)
+
+data class StockRequest(
+    val itemId: Int,
+    val minimumAmount: Double? = null,
+    val maximumAmount: Double? = null,
+    val sectorId: Int,
+    val positionId: Int,
 )

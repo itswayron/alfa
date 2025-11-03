@@ -5,10 +5,10 @@ import jakarta.persistence.*
 
 @Entity
 @Table(name = "sector")
-@JsonIgnoreProperties("hibernateLazyInitializer","handler")
+@JsonIgnoreProperties("hibernateLazyInitializer", "handler")
 data class Sector(
-  @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-  val id: Int = 0,
-  @Column(name = "name")
-  val name: String,
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Int = 0,
+    @Column(name = "name")
+    val name: String,
 )

@@ -5,11 +5,10 @@ import jakarta.persistence.*
 
 @Entity
 @Table(name = "movement_type")
-@JsonIgnoreProperties("hibernateLazyInitializer","handler")
+@JsonIgnoreProperties("hibernateLazyInitializer", "handler")
 data class MovementType( // (entradas, saídas, movimentação interna, consumo etc)
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  val id: Int= 0,
-  @Column(name = "name")
-  val name: String,
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Int = 0,
+    @Column(name = "name")
+    val name: String,
 )

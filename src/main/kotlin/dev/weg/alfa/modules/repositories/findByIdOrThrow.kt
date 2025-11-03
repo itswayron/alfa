@@ -12,12 +12,13 @@ inline fun <reified T : Any, ID : Any> JpaRepository<T, ID>.findByIdOrThrow(id: 
 
     logger.debug("Searching for {} with ID: {}", entityName, id)
     return this.findById(id).orElseThrow {
-        logger.error("$entityName with id: $id does not exist.")
+        val errorMessage = "$entityName with id: $id does not exist."
+        logger.error(errorMessage)
         if (this is ExceptionProvider<*>) {
             @Suppress("UNCHECKED_CAST")
             (this as ExceptionProvider<ID>).notFoundException(id)
         } else {
-            EntityNotFoundException("$entityName with id: $id does not exist.")
+            EntityNotFoundException(errorMessage)
         }
     }.also {
         logger.debug("Successfully found {} with ID: {}", entityName, id)

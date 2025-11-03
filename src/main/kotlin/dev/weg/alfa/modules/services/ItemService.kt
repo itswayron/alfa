@@ -4,11 +4,12 @@ import dev.weg.alfa.modules.models.dtos.PageDTO
 import dev.weg.alfa.modules.models.item.ItemPatch
 import dev.weg.alfa.modules.models.item.ItemRequest
 import dev.weg.alfa.modules.models.item.ItemResponse
+import dev.weg.alfa.modules.models.mappers.applyPatch
 import dev.weg.alfa.modules.models.mappers.toDTO
 import dev.weg.alfa.modules.models.mappers.toEntity
 import dev.weg.alfa.modules.models.mappers.toResponse
-import dev.weg.alfa.modules.models.mappers.applyPatch
 import dev.weg.alfa.modules.repositories.businessPartner.BusinessPartnerRepository
+import dev.weg.alfa.modules.repositories.findByIdIfNotNull
 import dev.weg.alfa.modules.repositories.findByIdOrThrow
 import dev.weg.alfa.modules.repositories.item.ItemRepository
 import dev.weg.alfa.modules.repositories.simpleEntities.GroupRepository
@@ -16,7 +17,6 @@ import dev.weg.alfa.modules.repositories.simpleEntities.MeasurementUnityReposito
 import dev.weg.alfa.modules.repositories.simpleEntities.SubgroupRepository
 import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Pageable
-import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Service
 
 @Service
@@ -114,7 +114,4 @@ class ItemService(
         measurementUnityId = this.measurementUnityId,
         mainSupplierId = this.mainSupplierId
     )
-
-    private inline fun <reified T : Any, ID : Any> JpaRepository<T, ID>.findByIdIfNotNull(id: ID?): T? =
-        id?.let { findByIdOrThrow(it) }
 }

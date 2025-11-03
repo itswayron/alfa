@@ -10,6 +10,7 @@ import dev.weg.alfa.modules.models.productionOrder.ProductionOrderRequest
 import dev.weg.alfa.modules.models.productionOrder.ProductionOrderResponse
 import dev.weg.alfa.modules.repositories.ProductionOrderRepository
 import dev.weg.alfa.modules.repositories.businessPartner.BusinessPartnerRepository
+import dev.weg.alfa.modules.repositories.findByIdIfNotNull
 import dev.weg.alfa.modules.repositories.findByIdOrThrow
 import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Pageable
@@ -84,7 +85,4 @@ class ProductionOrderService(
         repository.deleteById(deletedOrder.id)
         logger.info("Production Order deleted successfully. ID='{}'", id)
     }
-
-    private inline fun <reified T : Any> JpaRepository<T, Int>.findByIdIfNotNull(id: Int?): T? =
-        id?.let { findByIdOrThrow(it) }
 }
