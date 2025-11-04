@@ -1,6 +1,7 @@
 package dev.weg.alfa.modules.models
 
 import dev.weg.alfa.modules.models.employee.Employee
+import dev.weg.alfa.modules.models.tool.Tool
 import java.time.LocalDateTime
 
 data class Lending(
