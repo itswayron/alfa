@@ -13,7 +13,7 @@ data class RequestTool(
 data class ResponseTool(
     val id: Int,
     val name: String,
-    val description: String?,
+    val description: String,
     val maximumUsages: Int,
     val actualUsages: Int,
     val subgroupID: Int,
