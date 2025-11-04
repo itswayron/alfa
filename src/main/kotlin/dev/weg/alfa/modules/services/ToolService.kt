@@ -16,7 +16,7 @@ class ToolService(
     private val subgroupRepository: SubgroupRepository) {
     private val logger = LoggerFactory.getLogger(this::class.java)
 
-    fun createTool(request: RequestTool ): ResponseTool{
+    fun createTool(request: ToolRequest ): ToolResponse{
         logger.info("Creating Tool with name: ${request.name}")
         val subgroup = subgroupRepository.findByIdOrThrow(request.subgroupID)
         val tool = Tool(
@@ -30,13 +30,15 @@ class ToolService(
         val response = toolRepository.save(tool)
         return response.toResponse()
     }
-    fun getAllTool(): List<ResponseTool>{
+
+    fun getAllTool(): List<ToolResponse>{
         logger.info("Retrieving all tools from the database.")
         val response = toolRepository.findAll()
         logger.info("Found ${response.size} tools on the database.")
         return response.map {it.toResponse()}
     }
-    fun updateTool(command: Pair<Int, UpdateTool>): ResponseTool{
+
+    fun updateTool(command: Pair<Int, ToolPatch>): ToolResponse{
         val (id , request) = command
         logger.info("Updating tool with $id with name: ${request.name}.")
         val oldTool = toolRepository.findByIdOrThrow(id)
@@ -54,6 +56,7 @@ class ToolService(
 
         return newTool.toResponse()
     }
+
     fun deleteToolById(id: Int) {
         logger.info("Deleting Tool with id: $id.")
         val delete = toolRepository.findByIdOrThrow(id)

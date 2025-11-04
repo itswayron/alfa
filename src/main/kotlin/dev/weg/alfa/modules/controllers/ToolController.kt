@@ -1,9 +1,9 @@
 package dev.weg.alfa.modules.controllers
 
 import dev.weg.alfa.config.ApiRoutes
-import dev.weg.alfa.modules.models.tool.RequestTool
-import dev.weg.alfa.modules.models.tool.ResponseTool
-import dev.weg.alfa.modules.models.tool.UpdateTool
+import dev.weg.alfa.modules.models.tool.ToolPatch
+import dev.weg.alfa.modules.models.tool.ToolRequest
+import dev.weg.alfa.modules.models.tool.ToolResponse
 import dev.weg.alfa.modules.services.ToolService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.*
 class ToolController(private val service: ToolService) {
 
     @PostMapping
-    fun createTool(@RequestBody request: RequestTool): ResponseEntity<ResponseTool> {
+    fun createTool(@RequestBody request: ToolRequest): ResponseEntity<ToolResponse> {
         val response = service.createTool(request)
         return ResponseEntity.status(HttpStatus.CREATED).body(response)
     }
 
     @GetMapping
-    fun getAllTool(): ResponseEntity<List<ResponseTool>> {
+    fun getAllTool(): ResponseEntity<List<ToolResponse>> {
         val response = service.getAllTool()
         return ResponseEntity.status(HttpStatus.OK).body(response)
     }
@@ -28,8 +28,8 @@ class ToolController(private val service: ToolService) {
     @PatchMapping("/{id}")
     fun updateTool(
         @PathVariable id: Int,
-        @RequestBody request: UpdateTool
-    ): ResponseEntity<ResponseTool> {
+        @RequestBody request: ToolPatch
+    ): ResponseEntity<ToolResponse> {
         val response = service.updateTool(command = Pair(id, request))
         return ResponseEntity.status(HttpStatus.OK).body(response)
     }
