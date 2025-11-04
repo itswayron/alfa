@@ -43,6 +43,7 @@ class SecurityConfiguration(private val authenticationProvider: AuthenticationPr
                 "${ApiRoutes.PRODUCTION_ORDER}/**",
                 "${ApiRoutes.STOCK}/**",
                 "${ApiRoutes.ITEM}/**",
+                "${ApiRoutes.MOVEMENT}/**",
             ).forEach {
                 registry.requestMatchers(HttpMethod.GET, it).authenticated()
                 registry.requestMatchers(it).authenticated()

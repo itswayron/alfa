@@ -57,7 +57,6 @@ class BusinessPartnerService(
 
     fun deletePartner(id: Int) {
         logger.info("Deleting partner with id: $id")
-        val entity = repository.findByIdOrThrow(id)
         repository.deleteById(id)
         logger.info("Partner deleted")
     }

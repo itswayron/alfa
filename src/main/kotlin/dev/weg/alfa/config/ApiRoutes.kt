@@ -15,4 +15,5 @@ object ApiRoutes {
     const val PRODUCTION_ORDER = "/production_order"
     const val POSITION = "/position"
     const val STOCK = "/stock"
+    const val MOVEMENT = "/movement"
 }
