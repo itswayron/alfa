@@ -1,7 +1,5 @@
 package dev.weg.alfa.modules.models.tool
 
-import jakarta.persistence.Id
-
 data class RequestTool(
     val name: String,
     val description: String,
