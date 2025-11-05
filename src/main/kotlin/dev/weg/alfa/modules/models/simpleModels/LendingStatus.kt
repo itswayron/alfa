@@ -10,9 +10,9 @@ import jakarta.persistence.Table
 @Entity
 @Table(name = "statuslending")
 @JsonIgnoreProperties("hibernateLazyInitializer", "handler")
-data class StatusLending (
+data class LendingStatus (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int,
-    val statusLending: String,
+    val lendingStatus: String,
     )

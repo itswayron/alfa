@@ -11,7 +11,7 @@ object ApiRoutes {
     const val MEASUREMENT_UNITS = "/measurement_unit"
     const val MOVEMENT_STATUS = "/movement_status"
     const val MOVEMENT_TYPES = "/movement_types"
-    const val STATUS_LENDING = "/statusLending"
+    const val LENDING_STATUS = "/lending_status"
     const val PARTNER = "/partner"
     const val PRODUCTION_ORDER = "/production_order"
     const val POSITION = "/position"

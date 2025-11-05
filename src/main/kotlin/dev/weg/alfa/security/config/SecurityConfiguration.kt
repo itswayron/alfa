@@ -44,7 +44,7 @@ class SecurityConfiguration(private val authenticationProvider: AuthenticationPr
                 "${ApiRoutes.STOCK}/**",
                 "${ApiRoutes.ITEM}/**",
                 "${ApiRoutes.TOOL}/**",
-                "${ApiRoutes.STATUS_LENDING}/**",
+                "${ApiRoutes.LENDING_STATUS}/**",
             ).forEach {
                 registry.requestMatchers(HttpMethod.GET, it).authenticated()
                 registry.requestMatchers(it).authenticated()
