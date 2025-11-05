@@ -14,5 +14,5 @@ data class LendingStatus (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int,
-    val lendingStatus: String,
+    val status_lending: String,
     )
