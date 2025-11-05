@@ -11,6 +11,7 @@ data class Position(
     val id: Int = 0,
     val floor: String,
     val side: String,
+    @Column(name = "\"column\"")
     val column: String,
     val box: String,
 )
