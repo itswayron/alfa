@@ -1,16 +1,17 @@
 package dev.weg.alfa.modules.models
 
 import dev.weg.alfa.modules.models.employee.Employee
+import dev.weg.alfa.modules.models.simpleModels.LendingStatus
 import dev.weg.alfa.modules.models.tool.Tool
 import java.time.LocalDateTime
 
 data class Lending(
-    val id: Int,
+    val id: Int = 0,
     val tool: Tool,
-    val status: String,
-    val departureTime: LocalDateTime = LocalDateTime.now(),
-    val estimatedReturn: LocalDateTime,
-    val timeOfReturn: LocalDateTime,
+    val status: LendingStatus,
+    val departureAt: LocalDateTime = LocalDateTime.now(),
+    val estimatedReturnAt: LocalDateTime,
+    val returnedAt: LocalDateTime? = null,
     val employee: Employee,
-    val observation: String,
+    val observation: String? = null,
 )
