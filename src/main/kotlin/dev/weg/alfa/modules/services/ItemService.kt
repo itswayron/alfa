@@ -8,10 +8,10 @@ import dev.weg.alfa.modules.models.item.applyPatch
 import dev.weg.alfa.modules.models.dtos.toDTO
 import dev.weg.alfa.modules.models.item.toEntity
 import dev.weg.alfa.modules.models.item.toResponse
-import dev.weg.alfa.modules.repositories.businessPartner.BusinessPartnerRepository
-import dev.weg.alfa.modules.repositories.findByIdIfNotNull
-import dev.weg.alfa.modules.repositories.findByIdOrThrow
-import dev.weg.alfa.modules.repositories.item.ItemRepository
+import dev.weg.alfa.modules.repositories.BusinessPartnerRepository
+import dev.weg.alfa.modules.repositories.utils.findByIdIfNotNull
+import dev.weg.alfa.modules.repositories.utils.findByIdOrThrow
+import dev.weg.alfa.modules.repositories.ItemRepository
 import dev.weg.alfa.modules.repositories.simpleEntities.GroupRepository
 import dev.weg.alfa.modules.repositories.simpleEntities.MeasurementUnityRepository
 import dev.weg.alfa.modules.repositories.simpleEntities.SubgroupRepository

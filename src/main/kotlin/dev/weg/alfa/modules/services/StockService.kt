@@ -5,8 +5,8 @@ import dev.weg.alfa.modules.models.dtos.toDTO
 import dev.weg.alfa.modules.models.stock.*
 import dev.weg.alfa.modules.repositories.PositionRepository
 import dev.weg.alfa.modules.repositories.StockRepository
-import dev.weg.alfa.modules.repositories.findByIdOrThrow
-import dev.weg.alfa.modules.repositories.item.ItemRepository
+import dev.weg.alfa.modules.repositories.utils.findByIdOrThrow
+import dev.weg.alfa.modules.repositories.ItemRepository
 import dev.weg.alfa.modules.repositories.simpleEntities.SectorRepository
 import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Pageable

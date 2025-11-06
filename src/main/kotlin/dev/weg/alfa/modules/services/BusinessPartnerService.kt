@@ -2,9 +2,8 @@ package dev.weg.alfa.modules.services
 
 import dev.weg.alfa.modules.models.businessPartner.BusinessPartner
 import dev.weg.alfa.modules.models.businessPartner.BusinessPartnerPatch
-import dev.weg.alfa.modules.repositories.businessPartner.BusinessPartnerRepository
-import dev.weg.alfa.modules.repositories.findByIdOrThrow
-import dev.weg.alfa.modules.validators.Validator
+import dev.weg.alfa.modules.repositories.BusinessPartnerRepository
+import dev.weg.alfa.modules.repositories.utils.findByIdOrThrow
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 

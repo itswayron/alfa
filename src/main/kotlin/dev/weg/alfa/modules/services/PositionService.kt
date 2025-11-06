@@ -2,7 +2,7 @@ package dev.weg.alfa.modules.services
 
 import dev.weg.alfa.modules.models.position.*
 import dev.weg.alfa.modules.repositories.PositionRepository
-import dev.weg.alfa.modules.repositories.findByIdOrThrow
+import dev.weg.alfa.modules.repositories.utils.findByIdOrThrow
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 

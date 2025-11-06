@@ -5,6 +5,8 @@ import dev.weg.alfa.modules.repositories.*
 import dev.weg.alfa.modules.repositories.simpleEntities.MovementStatusRepository
 import dev.weg.alfa.modules.repositories.simpleEntities.MovementTypeRepository
 import dev.weg.alfa.modules.repositories.simpleEntities.SectorRepository
+import dev.weg.alfa.modules.repositories.utils.findByIdIfNotNull
+import dev.weg.alfa.modules.repositories.utils.findByIdOrThrow
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 

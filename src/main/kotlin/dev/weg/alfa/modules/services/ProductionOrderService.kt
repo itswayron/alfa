@@ -4,9 +4,9 @@ import dev.weg.alfa.modules.models.dtos.PageDTO
 import dev.weg.alfa.modules.models.dtos.toDTO
 import dev.weg.alfa.modules.models.productionOrder.*
 import dev.weg.alfa.modules.repositories.ProductionOrderRepository
-import dev.weg.alfa.modules.repositories.businessPartner.BusinessPartnerRepository
-import dev.weg.alfa.modules.repositories.findByIdIfNotNull
-import dev.weg.alfa.modules.repositories.findByIdOrThrow
+import dev.weg.alfa.modules.repositories.BusinessPartnerRepository
+import dev.weg.alfa.modules.repositories.utils.findByIdIfNotNull
+import dev.weg.alfa.modules.repositories.utils.findByIdOrThrow
 import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service

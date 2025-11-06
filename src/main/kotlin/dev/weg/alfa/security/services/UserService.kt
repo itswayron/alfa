@@ -5,7 +5,7 @@ import dev.weg.alfa.modules.models.user.User
 import dev.weg.alfa.modules.models.user.UserRequest
 import dev.weg.alfa.modules.models.user.UserResponse
 import dev.weg.alfa.modules.repositories.user.UserRepository
-import dev.weg.alfa.modules.repositories.user.getCurrentUser
+import dev.weg.alfa.modules.repositories.utils.getCurrentUser
 import dev.weg.alfa.modules.validators.Validator
 import dev.weg.alfa.security.validators.UserPersistenceValidator
 import org.slf4j.LoggerFactory

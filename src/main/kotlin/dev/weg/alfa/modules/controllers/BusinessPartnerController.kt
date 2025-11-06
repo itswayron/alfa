@@ -13,21 +13,29 @@ import org.springframework.web.bind.annotation.*
 class BusinessPartnerController(private val service: BusinessPartnerService) {
     @PostMapping
     fun createBusinessPartner(@RequestBody request: BusinessPartner): ResponseEntity<BusinessPartner> {
-        val response = ResponseEntity.status(HttpStatus.CREATED).body(service.createPartner(request))
-        return response
+        val response = service.createPartner(request)
+        return ResponseEntity(response, HttpStatus.CREATED)
     }
 
     @GetMapping
     fun getAllBusinessPartners(): ResponseEntity<List<BusinessPartner>> {
-        val response = ResponseEntity.status(HttpStatus.OK).body(service.findAllPartners())
-        return response
+        val response = service.findAllPartners()
+        return ResponseEntity(response, HttpStatus.OK)
+    }
+
+    @GetMapping("/{id}")
+    fun getBusinessPartnerById(@PathVariable id: Int): ResponseEntity<BusinessPartner> {
+        val response = service.findPartnerById(id)
+        return ResponseEntity(response, HttpStatus.OK)
     }
 
     @PatchMapping("/{id}")
-    fun updateBusinessPartner(@PathVariable id: Int, @RequestBody request: BusinessPartnerPatch): ResponseEntity<BusinessPartner> {
-        val response = ResponseEntity.status(HttpStatus.OK).body(
-            service.updatePartner(Pair(id, request)))
-        return response
+    fun updateBusinessPartner(
+        @PathVariable id: Int,
+        @RequestBody request: BusinessPartnerPatch
+    ): ResponseEntity<BusinessPartner> {
+        val response = service.updatePartner(Pair(id, request))
+        return ResponseEntity(response, HttpStatus.OK)
     }
 
     @DeleteMapping("/{id}")

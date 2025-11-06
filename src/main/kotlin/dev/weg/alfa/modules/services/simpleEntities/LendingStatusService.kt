@@ -1,7 +1,7 @@
 package dev.weg.alfa.modules.services.simpleEntities
 
 import dev.weg.alfa.modules.models.simpleModels.LendingStatus
-import dev.weg.alfa.modules.repositories.LendingStatusRepository
+import dev.weg.alfa.modules.repositories.simpleEntities.LendingStatusRepository
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 

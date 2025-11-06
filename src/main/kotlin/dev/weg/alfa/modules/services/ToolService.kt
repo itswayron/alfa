@@ -2,7 +2,7 @@ package dev.weg.alfa.modules.services
 
 import dev.weg.alfa.modules.models.tool.*
 import dev.weg.alfa.modules.repositories.ToolRepository
-import dev.weg.alfa.modules.repositories.findByIdOrThrow
+import dev.weg.alfa.modules.repositories.utils.findByIdOrThrow
 import dev.weg.alfa.modules.repositories.simpleEntities.SubgroupRepository
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service

@@ -3,7 +3,7 @@ package dev.weg.alfa.modules.services
 import dev.weg.alfa.modules.models.employee.Employee
 import dev.weg.alfa.modules.models.employee.EmployeeRequest
 import dev.weg.alfa.modules.repositories.EmployeeRepository
-import dev.weg.alfa.modules.repositories.findByIdOrThrow
+import dev.weg.alfa.modules.repositories.utils.findByIdOrThrow
 import dev.weg.alfa.modules.repositories.simpleEntities.SectorRepository
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service

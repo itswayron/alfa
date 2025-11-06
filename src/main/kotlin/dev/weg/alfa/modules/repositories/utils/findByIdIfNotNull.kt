@@ -1,4 +1,4 @@
-package dev.weg.alfa.modules.repositories
+package dev.weg.alfa.modules.repositories.utils
 
 import org.slf4j.LoggerFactory
 import org.springframework.data.jpa.repository.JpaRepository

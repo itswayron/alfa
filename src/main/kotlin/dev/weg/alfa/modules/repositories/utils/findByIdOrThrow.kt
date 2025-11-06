@@ -1,4 +1,4 @@
-package dev.weg.alfa.modules.repositories
+package dev.weg.alfa.modules.repositories.utils
 
 import org.slf4j.LoggerFactory
 import dev.weg.alfa.modules.exceptions.ExceptionProvider

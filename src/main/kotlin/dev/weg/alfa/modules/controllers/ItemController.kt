@@ -22,13 +22,13 @@ class ItemController(private val service: ItemService) {
     }
 
     @GetMapping("/{id}")
-    fun getBookById(@PathVariable id: Int): ResponseEntity<ItemResponse> {
+    fun getItemById(@PathVariable id: Int): ResponseEntity<ItemResponse> {
         val response = service.getItemById(id)
         return ResponseEntity(response, HttpStatus.OK)
     }
 
     @GetMapping
-    fun getBook(
+    fun getAllItems(
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "10") size: Int,
         @RequestParam(defaultValue = "description") sort: String,
