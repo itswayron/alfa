@@ -4,10 +4,10 @@ import dev.weg.alfa.modules.models.dtos.PageDTO
 import dev.weg.alfa.modules.models.item.ItemPatch
 import dev.weg.alfa.modules.models.item.ItemRequest
 import dev.weg.alfa.modules.models.item.ItemResponse
-import dev.weg.alfa.modules.models.mappers.applyPatch
-import dev.weg.alfa.modules.models.mappers.toDTO
-import dev.weg.alfa.modules.models.mappers.toEntity
-import dev.weg.alfa.modules.models.mappers.toResponse
+import dev.weg.alfa.modules.models.item.applyPatch
+import dev.weg.alfa.modules.models.dtos.toDTO
+import dev.weg.alfa.modules.models.item.toEntity
+import dev.weg.alfa.modules.models.item.toResponse
 import dev.weg.alfa.modules.repositories.businessPartner.BusinessPartnerRepository
 import dev.weg.alfa.modules.repositories.findByIdIfNotNull
 import dev.weg.alfa.modules.repositories.findByIdOrThrow

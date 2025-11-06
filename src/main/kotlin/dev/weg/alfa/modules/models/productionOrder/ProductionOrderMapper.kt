@@ -1,10 +1,6 @@
-package dev.weg.alfa.modules.models.mappers
+package dev.weg.alfa.modules.models.productionOrder
 
 import dev.weg.alfa.modules.models.businessPartner.BusinessPartner
-import dev.weg.alfa.modules.models.productionOrder.ProductionOrder
-import dev.weg.alfa.modules.models.productionOrder.ProductionOrderPatch
-import dev.weg.alfa.modules.models.productionOrder.ProductionOrderRequest
-import dev.weg.alfa.modules.models.productionOrder.ProductionOrderResponse
 
 fun ProductionOrderRequest.toEntity(partner: BusinessPartner): ProductionOrder =
     ProductionOrder(

@@ -1,10 +1,6 @@
-package dev.weg.alfa.modules.models.mappers
+package dev.weg.alfa.modules.models.item
 
 import dev.weg.alfa.modules.models.businessPartner.BusinessPartner
-import dev.weg.alfa.modules.models.item.Item
-import dev.weg.alfa.modules.models.item.ItemPatch
-import dev.weg.alfa.modules.models.item.ItemRequest
-import dev.weg.alfa.modules.models.item.ItemResponse
 import dev.weg.alfa.modules.models.simpleModels.Group
 import dev.weg.alfa.modules.models.simpleModels.MeasurementUnity
 import dev.weg.alfa.modules.models.simpleModels.Subgroup

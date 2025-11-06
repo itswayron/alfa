@@ -1,6 +1,5 @@
-package dev.weg.alfa.modules.models.mappers
+package dev.weg.alfa.modules.models.movement
 
-import dev.weg.alfa.modules.models.movement.*
 import dev.weg.alfa.modules.models.employee.Employee
 import dev.weg.alfa.modules.models.productionOrder.ProductionOrder
 import dev.weg.alfa.modules.models.simpleModels.MovementStatus

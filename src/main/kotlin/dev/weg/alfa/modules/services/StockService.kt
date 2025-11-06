@@ -1,13 +1,8 @@
 package dev.weg.alfa.modules.services
 
 import dev.weg.alfa.modules.models.dtos.PageDTO
-import dev.weg.alfa.modules.models.mappers.applyPatch
-import dev.weg.alfa.modules.models.mappers.toDTO
-import dev.weg.alfa.modules.models.mappers.toEntity
-import dev.weg.alfa.modules.models.mappers.toResponse
-import dev.weg.alfa.modules.models.stock.StockPatch
-import dev.weg.alfa.modules.models.stock.StockRequest
-import dev.weg.alfa.modules.models.stock.StockResponse
+import dev.weg.alfa.modules.models.dtos.toDTO
+import dev.weg.alfa.modules.models.stock.*
 import dev.weg.alfa.modules.repositories.PositionRepository
 import dev.weg.alfa.modules.repositories.StockRepository
 import dev.weg.alfa.modules.repositories.findByIdOrThrow

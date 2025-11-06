@@ -1,12 +1,8 @@
-package dev.weg.alfa.modules.models.mappers
+package dev.weg.alfa.modules.models.stock
 
 import dev.weg.alfa.modules.models.item.Item
 import dev.weg.alfa.modules.models.position.Position
 import dev.weg.alfa.modules.models.simpleModels.Sector
-import dev.weg.alfa.modules.models.stock.Stock
-import dev.weg.alfa.modules.models.stock.StockPatch
-import dev.weg.alfa.modules.models.stock.StockRequest
-import dev.weg.alfa.modules.models.stock.StockResponse
 
 fun StockRequest.toEntity(item: Item, sector: Sector, position: Position): Stock =
     Stock(

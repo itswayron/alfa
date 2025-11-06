@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping(ApiRoutes.STOCK)
 class StockController(private val service: StockService) {
-
     @PostMapping
     fun createStock(@RequestBody request: StockRequest): ResponseEntity<StockResponse> {
         val response = service.createStock(request)

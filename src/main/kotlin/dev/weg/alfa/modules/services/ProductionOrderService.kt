@@ -1,20 +1,14 @@
 package dev.weg.alfa.modules.services
 
 import dev.weg.alfa.modules.models.dtos.PageDTO
-import dev.weg.alfa.modules.models.mappers.toDTO
-import dev.weg.alfa.modules.models.mappers.toEntity
-import dev.weg.alfa.modules.models.mappers.toResponse
-import dev.weg.alfa.modules.models.mappers.applyPatch
-import dev.weg.alfa.modules.models.productionOrder.ProductionOrderPatch
-import dev.weg.alfa.modules.models.productionOrder.ProductionOrderRequest
-import dev.weg.alfa.modules.models.productionOrder.ProductionOrderResponse
+import dev.weg.alfa.modules.models.dtos.toDTO
+import dev.weg.alfa.modules.models.productionOrder.*
 import dev.weg.alfa.modules.repositories.ProductionOrderRepository
 import dev.weg.alfa.modules.repositories.businessPartner.BusinessPartnerRepository
 import dev.weg.alfa.modules.repositories.findByIdIfNotNull
 import dev.weg.alfa.modules.repositories.findByIdOrThrow
 import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Pageable
-import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Service
 
 @Service
@@ -67,7 +61,8 @@ class ProductionOrderService(
         val newSupplier = partnerRepository.findByIdIfNotNull(patch.mainSupplierId)
 
         val updatedOrder = oldOrder.applyPatch(
-            patch = patch, partner = newSupplier
+            patch = patch,
+            partner = newSupplier
         )
 
         // validator.validate(updatedOrder)

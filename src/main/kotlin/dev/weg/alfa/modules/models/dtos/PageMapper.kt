@@ -1,6 +1,5 @@
-package dev.weg.alfa.modules.models.mappers
+package dev.weg.alfa.modules.models.dtos
 
-import dev.weg.alfa.modules.models.dtos.PageDTO
 import org.springframework.data.domain.Page
 
 fun <T> Page<T>.toDTO(): PageDTO<T> = PageDTO(

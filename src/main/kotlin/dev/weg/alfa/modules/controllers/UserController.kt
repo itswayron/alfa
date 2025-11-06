@@ -10,21 +10,18 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping(ApiRoutes.USER)
-class UserController(
-  private val service: UserService,
-) {
+class UserController(private val service: UserService) {
+    @PostMapping
+    fun createUser(@RequestBody userRequest: UserRequest): ResponseEntity<UserResponse> {
+        val userCreated = service.createUser(userRequest)
+        return ResponseEntity(userCreated, HttpStatus.CREATED)
+    }
 
-  @PostMapping
-  fun createUser(@RequestBody userRequest: UserRequest): ResponseEntity<UserResponse> {
-    val userCreated = service.createUser(userRequest)
-    return ResponseEntity(userCreated, HttpStatus.CREATED)
-  }
-
-  @GetMapping("/{id}")
-  fun findUserById(@PathVariable id: Int): ResponseEntity<UserResponse> {
-    val response = service.findUserById(id)
-    return ResponseEntity(response, HttpStatus.OK)
-  }
+    @GetMapping("/{id}")
+    fun findUserById(@PathVariable id: Int): ResponseEntity<UserResponse> {
+        val response = service.findUserById(id)
+        return ResponseEntity(response, HttpStatus.OK)
+    }
 
     @GetMapping("/me")
     fun getCurrentUser(): ResponseEntity<UserResponse> {

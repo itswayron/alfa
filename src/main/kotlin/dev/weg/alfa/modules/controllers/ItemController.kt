@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping(ApiRoutes.ITEM)
-class ItemController(
-    private val service: ItemService,
-) {
+class ItemController(private val service: ItemService) {
     @PostMapping
     fun createItem(@RequestBody item: ItemRequest): ResponseEntity<ItemResponse> {
         val response = service.createItem(item)

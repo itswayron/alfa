@@ -1,8 +1,5 @@
 package dev.weg.alfa.modules.services
 
-import dev.weg.alfa.modules.models.tool.applyPatch
-import dev.weg.alfa.modules.models.tool.toEntity
-import dev.weg.alfa.modules.models.tool.toResponse
 import dev.weg.alfa.modules.models.tool.*
 import dev.weg.alfa.modules.repositories.ToolRepository
 import dev.weg.alfa.modules.repositories.findByIdOrThrow

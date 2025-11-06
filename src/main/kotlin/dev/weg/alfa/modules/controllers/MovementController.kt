@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping(ApiRoutes.MOVEMENT)
 class MovementController(private val service: MovementService) {
-
     @PostMapping
     fun createMovement(@RequestBody request: MovementRequest): ResponseEntity<MovementResponse> {
         val response = service.createMovement(request)

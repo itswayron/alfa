@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping(ApiRoutes.TOOL)
 class ToolController(private val service: ToolService) {
-
     @PostMapping
     fun createTool(@RequestBody request: ToolRequest): ResponseEntity<ToolResponse> {
         val response = service.createTool(request)

@@ -1,21 +1,33 @@
 package dev.weg.alfa.config
 
 object ApiRoutes {
-    const val USER = "/user"
+
+    // Autenticação e usuário
     const val AUTH = "/auth"
-    const val SECTOR = "/sector"
+    const val USER = "/user"
+
+    // Recursos humanos
     const val EMPLOYEE = "/employee"
+
+    // Cadastros básicos
     const val GROUP = "/group"
     const val SUBGROUP = "/subgroup"
-    const val ITEM = "/item"
+    const val SECTOR = "/sector"
     const val MEASUREMENT_UNITS = "/measurement_unit"
-    const val MOVEMENT_STATUS = "/movement_status"
-    const val MOVEMENT_TYPES = "/movement_types"
-    const val LENDING_STATUS = "/lending_status"
+
+    // Parceiros de negócio
     const val PARTNER = "/partner"
-    const val PRODUCTION_ORDER = "/production_order"
+
+    // Produção e estoque
+    const val ITEM = "/item"
     const val POSITION = "/position"
     const val STOCK = "/stock"
-    const val MOVEMENT = "/movement"
+    const val PRODUCTION_ORDER = "/production_order"
+
+    // Empréstimos e movimentações
     const val TOOL = "/tool"
+    const val LENDING_STATUS = "/lending_status"
+    const val MOVEMENT = "/movement"
+    const val MOVEMENT_STATUS = "/movement_status"
+    const val MOVEMENT_TYPES = "/movement_types"
 }

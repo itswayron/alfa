@@ -1,8 +1,4 @@
-package dev.weg.alfa.modules.models.mappers
-
-import dev.weg.alfa.modules.models.position.Position
-import dev.weg.alfa.modules.models.position.PositionPatch
-import dev.weg.alfa.modules.models.position.PositionRequest
+package dev.weg.alfa.modules.models.position
 
 fun PositionRequest.toEntity(): Position =
     Position(
