@@ -8,11 +8,10 @@ import jakarta.persistence.Id
 import jakarta.persistence.Table
 
 @Entity
-@Table(name = "statuslending")
+@Table(name = "lending_status")
 @JsonIgnoreProperties("hibernateLazyInitializer", "handler")
 data class LendingStatus (
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int,
     val lendingStatus: String,
     )

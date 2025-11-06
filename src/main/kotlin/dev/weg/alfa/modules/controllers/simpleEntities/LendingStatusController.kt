@@ -16,7 +16,7 @@ class LendingStatusController(private val service: LendingStatusService) {
 
     @GetMapping
     fun getAllStatusLending(): ResponseEntity<List<LendingStatus>> {
-        val response = ResponseEntity(service.getAllStatusLending(), HttpStatus.OK)
-        return response
+        val response = service.getAllStatusLending()
+        return ResponseEntity(response, HttpStatus.OK)
     }
 }
