@@ -9,6 +9,7 @@ import jakarta.persistence.*
 data class MovementType( // (entradas, saídas, movimentação interna, consumo etc)
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int = 0,
-    @Column(name = "name")
     val name: String,
+    val affectsAveragePrice: Boolean = true,
+    val quantitySign: Int? = null,
 )
