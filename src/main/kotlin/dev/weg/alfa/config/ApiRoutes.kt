@@ -24,9 +24,12 @@ object ApiRoutes {
     const val STOCK = "/stock"
     const val PRODUCTION_ORDER = "/production_order"
 
-    // Empréstimos e movimentações
+    // Empréstimos
     const val TOOL = "/tool"
+    const val LENDING = "/lending"
     const val LENDING_STATUS = "/lending_status"
+
+    // Movements
     const val MOVEMENT = "/movement"
     const val MOVEMENT_STATUS = "/movement_status"
     const val MOVEMENT_TYPES = "/movement_types"

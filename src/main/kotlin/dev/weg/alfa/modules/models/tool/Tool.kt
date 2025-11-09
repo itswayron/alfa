@@ -12,7 +12,7 @@ import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 
 @Entity
-@Table(name = "Tool")
+@Table(name = "tool")
 @JsonIgnoreProperties("hibernateLazyInitializer","handler")
 data class Tool(
     @Id
