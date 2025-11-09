@@ -7,8 +7,9 @@ import dev.weg.alfa.modules.models.user.UserResponse
 import dev.weg.alfa.modules.repositories.user.UserRepository
 import dev.weg.alfa.modules.repositories.utils.getCurrentUser
 import dev.weg.alfa.modules.validators.Validator
+import dev.weg.alfa.security.config.SecurityLogger
 import dev.weg.alfa.security.validators.UserPersistenceValidator
-import org.slf4j.LoggerFactory
+import dev.weg.alfa.utils.maskLast
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -22,17 +23,27 @@ class UserService(
     private val persistenceValidator: UserPersistenceValidator,
     private val passwordValidator: Validator<String>
 ) : UserDetailsService {
-    private val logger = LoggerFactory.getLogger(this::class.java)
 
     override fun loadUserByUsername(usernameOrEmail: String): UserDetails {
-        return repository.findByUsernameField(usernameOrEmail)
+        SecurityLogger.log.debug("Attempting to load user by usernameOrEmail='{}'", usernameOrEmail)
+        val user = repository.findByUsernameField(usernameOrEmail)
             ?: repository.findByEmailField(usernameOrEmail)
-            ?: throw UserNotFoundException(usernameOrEmail)
+            ?: run {
+                SecurityLogger.log.warn("User lookup failed for identifier='{}'", usernameOrEmail)
+                throw UserNotFoundException(usernameOrEmail)
+            }
+
+        SecurityLogger.log.debug("User '{}' successfully loaded from repository", user.usernameField)
+        return user
     }
 
     fun createUser(request: UserRequest): UserResponse {
         val sanitizedRequest = request.sanitized()
-        logger.info("Creating user with username: ${sanitizedRequest.name}")
+        SecurityLogger.log.info(
+            "User creation requested for username='{}', email='{}'",
+            sanitizedRequest.username,
+            sanitizedRequest.email.maskLast(6)
+        )
 
         userRequestValidator.validate(sanitizedRequest)
         passwordValidator.validate(sanitizedRequest.password)
@@ -43,25 +54,37 @@ class UserService(
             passwordField = encoder.encode(sanitizedRequest.password),
             usernameField = sanitizedRequest.username,
         )
+
         persistenceValidator.validateNewUser(user)
+        val savedUser = repository.save(user)
 
-        repository.save(user)
+        SecurityLogger.log.info(
+            "User created successfully with id='{}', username='{}'",
+            savedUser.id,
+            savedUser.usernameField
+        )
 
-        logger.info("User created with id: ${user.id}")
-        val response = user.toResponse()
-        return response
+        return savedUser.toResponse()
     }
 
     fun findUserById(id: Int): UserResponse {
-        logger.info("Fetching user with id: $id")
-        val user = repository.findById(id).orElseThrow()
-        logger.info("Retrieved the book with ID: $id - Username: ${user.usernameField}")
-        val userResponse = user.toResponse()
-        return userResponse
+        SecurityLogger.log.debug("Fetching user by id='{}'", id)
+
+        val user = repository.findById(id).orElseThrow {
+            SecurityLogger.log.warn("User not found for id='{}'", id)
+            UserNotFoundException("User id=$id not found")
+        }
+
+        SecurityLogger.log.info("User retrieved: id='{}', username='{}'", user.id, user.usernameField)
+        return user.toResponse()
     }
 
-    fun findCurrentUser(): UserResponse =
-        repository.getCurrentUser().toResponse()
+    fun findCurrentUser(): UserResponse {
+        SecurityLogger.log.debug("Fetching currently authenticated user")
+        val user = repository.getCurrentUser()
+        SecurityLogger.log.info("Current authenticated user='{}'", user.usernameField)
+        return user.toResponse()
+    }
 
     private fun UserRequest.sanitized(): UserRequest =
         this.copy(

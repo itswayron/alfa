@@ -59,6 +59,7 @@ logging:
   pattern:
     console: "[ %highlight(%-5level)] <%green(%d{yy-MM-dd HH:mm:ss}) %cyan(%logger{10})> %highlight(%msg%n)"
   level:
+    SECURITY: info # SecurityLogger singleton logs
     dev.wayron.book_tracker_api: debug
     org.hibernate: warn
     org.springframework.security: error
