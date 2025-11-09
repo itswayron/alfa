@@ -34,6 +34,7 @@ class SecurityConfiguration(private val authenticationProvider: AuthenticationPr
             "${ApiRoutes.EMPLOYEE}/**",
             "${ApiRoutes.GROUP}/**",
             "${ApiRoutes.ITEM}/**",
+            "${ApiRoutes.LENDING}/**",
             "${ApiRoutes.LENDING_STATUS}/**",
             "${ApiRoutes.MEASUREMENT_UNITS}/**",
             "${ApiRoutes.MOVEMENT}/**",
