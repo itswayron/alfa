@@ -39,6 +39,26 @@ class StockController(private val service: StockService) {
         return ResponseEntity.status(HttpStatus.OK).body(response)
     }
 
+    @GetMapping("/filter")
+    fun getFilteredStocks(
+        @RequestParam(required = false) text: String?,
+        @RequestParam(required = false) groupId: Int?,
+        @RequestParam(required = false) subgroupId: Int?,
+        @RequestParam(required = false) supplierId: Int?,
+        @RequestParam(defaultValue = "0") page: Int,
+        @RequestParam(defaultValue = "10") size: Int,
+        @RequestParam(defaultValue = "id") sort: String,
+        @RequestParam(defaultValue = "DESC") direction: String,
+    ): ResponseEntity<PageDTO<StockResponse>> {
+        val pageable = PageRequest.of(
+            page,
+            size,
+            Sort.by(Sort.Direction.fromString(direction), sort)
+        )
+        val response = service.getFilteredStocks(text, groupId, subgroupId, supplierId, pageable)
+        return ResponseEntity(response, HttpStatus.OK)
+    }
+
     @PatchMapping("/{id}")
     fun updateStock(@PathVariable id: Int, @RequestBody patch: StockPatch): ResponseEntity<StockResponse> {
         val response = service.updateStock(id, patch)

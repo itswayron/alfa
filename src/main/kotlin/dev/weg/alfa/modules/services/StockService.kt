@@ -47,6 +47,42 @@ class StockService(
         return page.map { it.toResponse() }.toDTO()
     }
 
+    fun getFilteredStocks(
+        text: String?,
+        groupId: Int?,
+        subgroupId: Int?,
+        supplierId: Int?,
+        pageable: Pageable,
+    ): PageDTO<StockResponse> {
+        logger.info("Fetching filtered Stocks with filters: text='{}', groupId={}, subgroupId={}, supplierId={}, pageable={}",
+            text, groupId, subgroupId, supplierId, pageable
+        )
+        logger.debug("Querying database with applied filters...")
+        val stocks = stockRepository.findFiltered(
+            text = text,
+            groupId = groupId,
+            subgroupId = subgroupId,
+            supplierId = supplierId,
+            pageable = pageable
+        )
+
+        val total = stockRepository.count()
+        logger.debug("Found {} matching records out of total {} stocks", stocks.size, total)
+
+        val pageDTO = PageDTO(
+            content = stocks.map { it.toResponse() },
+            totalElements = total,
+            totalPages = (total / pageable.pageSize).toInt() + 1,
+            currentPage = pageable.pageNumber,
+            pageSize = pageable.pageSize
+        )
+        logger.info("Returning filtered Stock page with {} elements (page {}/{})",
+            pageDTO.content.size, pageDTO.currentPage + 1, pageDTO.totalPages
+        )
+
+        return pageDTO
+    }
+
     fun updateStock(stockId: Int, patch: StockPatch): StockResponse {
         logger.info("Patching Stock ID=$stockId with data: $patch")
         val oldStock = stockRepository.findByIdOrThrow(stockId)
