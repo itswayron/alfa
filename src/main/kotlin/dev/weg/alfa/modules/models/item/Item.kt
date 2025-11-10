@@ -34,7 +34,7 @@ data class Item(
     val dimensions: String? = null,
     val material: String? = null,
     val isActive: Boolean = true,
-    val imagePath: String? = null,
+    var imagePath: String? = null,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "measurement_unity_id", nullable = false)

@@ -26,8 +26,6 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.springframework.boot:spring-boot-starter-jdbc")
-	implementation("org.springframework.boot:spring-boot-starter-web")
-	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("jakarta.persistence:jakarta.persistence-api:3.1.0")
 	implementation("org.flywaydb:flyway-core")
     implementation("org.springframework.boot:spring-boot-starter-mail")
@@ -44,6 +42,8 @@ dependencies {
 	runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.6")
 	implementation("com.github.f4b6a3:uuid-creator:4.3.1")
 	implementation("org.springframework.boot:spring-boot-starter-mail:3.5.3")
+    implementation("com.twelvemonkeys.imageio:imageio-core:3.12.0")
+    implementation("com.twelvemonkeys.imageio:imageio-webp:3.12.0")
 // https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.9")
 }

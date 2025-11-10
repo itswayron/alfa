@@ -18,6 +18,8 @@ data class User(
 
     var name: String,
 
+    var profileImagePath: String? = null,
+
     @Column(name = "username", unique = true)
     var usernameField: String,
 

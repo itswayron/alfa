@@ -1,7 +1,7 @@
 package dev.weg.alfa.security.services
 
 import dev.weg.alfa.modules.repositories.user.UserRepository
-import dev.weg.alfa.modules.services.EmailService
+import dev.weg.alfa.infra.services.EmailService
 import dev.weg.alfa.modules.validators.Validator
 import dev.weg.alfa.security.config.SecurityLogger
 import dev.weg.alfa.security.exceptions.InvalidTokenException

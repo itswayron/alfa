@@ -9,8 +9,10 @@ import dev.weg.alfa.modules.services.ItemService
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
 
 @RestController
 @RequestMapping(ApiRoutes.ITEM)
@@ -52,6 +54,15 @@ class ItemController(private val service: ItemService) {
         @PathVariable id: Int
     ): ResponseEntity<Unit> {
         service.deleteItem(id)
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build()
+    }
+
+    @PostMapping("/{id}/image", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+    fun uploadImage(
+        @PathVariable id: Int,
+        @RequestPart("image") image: MultipartFile,
+    ): ResponseEntity<Unit> {
+        service.uploadItemImage(id, image)
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build()
     }
 }

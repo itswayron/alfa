@@ -13,6 +13,7 @@ data class UserResponse(
   val id: Int,
   val username: String,
   val name: String? = null,
+  val profilePath: String? = null,
   val email: String,
   val createdAt: LocalDateTime,
 )

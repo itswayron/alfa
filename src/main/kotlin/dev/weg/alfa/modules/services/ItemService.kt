@@ -1,23 +1,20 @@
 package dev.weg.alfa.modules.services
 
+import dev.weg.alfa.infra.services.ImageService
 import dev.weg.alfa.modules.models.dtos.PageDTO
-import dev.weg.alfa.modules.models.item.ItemPatch
-import dev.weg.alfa.modules.models.item.ItemRequest
-import dev.weg.alfa.modules.models.item.ItemResponse
-import dev.weg.alfa.modules.models.item.applyPatch
 import dev.weg.alfa.modules.models.dtos.toDTO
-import dev.weg.alfa.modules.models.item.toEntity
-import dev.weg.alfa.modules.models.item.toResponse
+import dev.weg.alfa.modules.models.item.*
 import dev.weg.alfa.modules.repositories.BusinessPartnerRepository
-import dev.weg.alfa.modules.repositories.utils.findByIdIfNotNull
-import dev.weg.alfa.modules.repositories.utils.findByIdOrThrow
 import dev.weg.alfa.modules.repositories.ItemRepository
 import dev.weg.alfa.modules.repositories.simpleEntities.GroupRepository
 import dev.weg.alfa.modules.repositories.simpleEntities.MeasurementUnityRepository
 import dev.weg.alfa.modules.repositories.simpleEntities.SubgroupRepository
+import dev.weg.alfa.modules.repositories.utils.findByIdIfNotNull
+import dev.weg.alfa.modules.repositories.utils.findByIdOrThrow
 import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
+import org.springframework.web.multipart.MultipartFile
 
 @Service
 class ItemService(
@@ -26,6 +23,7 @@ class ItemService(
     private val subgroupRepository: SubgroupRepository,
     private val unitRepository: MeasurementUnityRepository,
     private val partnerRepository: BusinessPartnerRepository,
+    private val imageService: ImageService,
     //private val validator: Validator<Item>,
 ) {
     private val logger = LoggerFactory.getLogger(this::class.java)
@@ -104,6 +102,18 @@ class ItemService(
         logger.info("Item deleted successfully. ID='{}'", id)
     }
 
+    fun uploadItemImage(id: Int, imageFile: MultipartFile) {
+        logger.info("Upload item photo for item ID={}", id)
+        val item = repository.findByIdOrThrow(id)
+        item.deleteImageIfExists()
+
+        val imagePath = imageService.saveImage("item", item.id.toString(), imageFile)
+        item.imagePath = imagePath
+
+        repository.save(item)
+        logger.info("Item image updated successfully for item ID={}", item.id)
+    }
+
     private fun ItemRequest.sanitized(): ItemRequest = ItemRequest(
         code = this.code.trim(),
         description = this.description.trim(),
@@ -114,4 +124,16 @@ class ItemService(
         measurementUnityId = this.measurementUnityId,
         mainSupplierId = this.mainSupplierId
     )
+
+    private fun Item.deleteImageIfExists() {
+        this.imagePath?.let { path ->
+            try {
+                logger.debug("Attempting to delete existing item image at path={}", path)
+                imageService.deleteImage(path)
+                logger.info("Item image deleted successfully. Path={}", path)
+            } catch (ex: Exception) {
+                logger.warn("Failed to delete item image. Path={}, Reason={}", path, ex.message)
+            }
+        } ?: logger.debug("No existing item image to delete for book ID={}", this.id)
+    }
 }

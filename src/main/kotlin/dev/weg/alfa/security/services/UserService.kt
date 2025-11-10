@@ -97,6 +97,7 @@ class UserService(
         UserResponse(
             id = this.id,
             name = this.name,
+            profilePath = this.profileImagePath,
             username = this.usernameField,
             email = this.emailField,
             createdAt = this.createdAt,
