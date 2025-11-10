@@ -40,4 +40,10 @@ class UserController(
         uploadUserProfileImageService.execute(profileImageFile)
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build()
     }
+
+    @DeleteMapping("/profile/image")
+    fun deleteProfilePhoto(): ResponseEntity<Unit> {
+        uploadUserProfileImageService.deleteProfilePhoto()
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build()
+    }
 }

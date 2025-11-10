@@ -65,4 +65,10 @@ class ItemController(private val service: ItemService) {
         service.uploadItemImage(id, image)
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build()
     }
+
+    @DeleteMapping("/{id}/image")
+    fun deleteImage(@PathVariable id: Int): ResponseEntity<Unit> {
+        service.deleteImage(id)
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build()
+    }
 }

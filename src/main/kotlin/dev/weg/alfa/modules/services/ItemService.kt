@@ -98,6 +98,7 @@ class ItemService(
         val deletedItem = repository.findByIdOrThrow(id)
         logger.info("Item to delete found ID='{}', description='{}'", deletedItem.id, deletedItem.description)
 
+        deletedItem.deleteImageIfExists()
         repository.deleteById(deletedItem.id)
         logger.info("Item deleted successfully. ID='{}'", id)
     }
@@ -112,6 +113,12 @@ class ItemService(
 
         repository.save(item)
         logger.info("Item image updated successfully for item ID={}", item.id)
+    }
+
+    fun deleteImage(id: Int) {
+        logger.info("Deleting image of Item ID='{}'", id)
+        val item = repository.findByIdOrThrow(id)
+        item.deleteImageIfExists()
     }
 
     private fun ItemRequest.sanitized(): ItemRequest = ItemRequest(
@@ -130,6 +137,8 @@ class ItemService(
             try {
                 logger.debug("Attempting to delete existing item image at path={}", path)
                 imageService.deleteImage(path)
+                this.imagePath = null
+                repository.save(this)
                 logger.info("Item image deleted successfully. Path={}", path)
             } catch (ex: Exception) {
                 logger.warn("Failed to delete item image. Path={}, Reason={}", path, ex.message)

@@ -32,11 +32,20 @@ class UploadUserProfileImageService(
         logger.info("Profile image updated successfully for user='{}'. New path='{}'.", user.username, imagePath)
     }
 
+
+    fun deleteProfilePhoto() {
+        val user = repository.getCurrentUser()
+        logger.info("Deleting profile photo for user ID='{}'", user.id)
+        user.deleteImageIfExists()
+    }
+
     private fun User.deleteImageIfExists() {
         this.profileImagePath?.let { path ->
             try {
                 logger.debug("Attempting to delete existing profile image at path='{}'.", path)
                 imageService.deleteImage(path)
+                this.profileImagePath = null
+                repository.save(this)
                 logger.info("Previous profile image deleted for user='{}'.", this.username)
             } catch (ex: Exception) {
                 logger.warn(
