@@ -19,21 +19,34 @@ fun StockRequest.toEntity(item: Item, sector: Sector, position: Position): Stock
 fun Stock.toResponse(): StockResponse =
     StockResponse(
         id = this.id,
-        itemId = this.item.id,
-        itemCode = this.item.code,
-        itemDescription = this.item.description,
-        currentAmount = this.currentAmount,
-        minimumAmount = this.minimumAmount,
-        maximumAmount = this.maximumAmount,
-        averagePrice = this.averagePrice,
-        priceInMoney = this.currentAmount * this.averagePrice,
-        sectorId = this.sector.id,
-        sectorName = this.sector.name,
-        positionId = this.position.id,
-        positionFloor = this.position.floor,
-        positionSide = this.position.side,
-        positionColumn = this.position.column,
-        positionBox = this.position.box
+        itemInfo = StockResponse.ItemInfo(
+            itemId = this.item.id,
+            itemCode = this.item.code,
+            itemDescription = this.item.description,
+            groupName = this.item.group.name,
+            subgroupName = this.item.subgroup.name,
+            measuramentUnitName = this.item.measurementUnity.name,
+            imagePath = this.item.imagePath,
+        ),
+        amountInfo = StockResponse.AmountInfo(
+            currentAmount = this.currentAmount,
+            minimumAmount = this.minimumAmount,
+            maximumAmount = this.maximumAmount,
+            averagePrice = this.averagePrice,
+            priceInMoney = this.currentAmount * this.averagePrice,
+
+            ),
+        sectorInfo = StockResponse.SectorInfo(
+            sectorId = this.sector.id,
+            sectorName = this.sector.name,
+        ),
+        positionInfo = StockResponse.PositionInfo(
+            positionId = this.position.id,
+            positionFloor = this.position.floor,
+            positionSide = this.position.side,
+            positionColumn = this.position.column,
+            positionBox = this.position.box
+        ),
     )
 
 fun Stock.applyPatch(

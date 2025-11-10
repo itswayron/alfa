@@ -17,6 +17,7 @@ interface StockRepository : JpaRepository<Stock, Int> {
         AND (:groupId IS NULL OR s.item.group.id = :groupId)
         AND (:subgroupId IS NULL OR s.item.subgroup.id = :subgroupId)
         AND (:supplierId IS NULL OR s.item.mainSupplier.id = :supplierId)
+        AND (:isActive IS NULL OR s.item.isActive = :isActive)
         """
     )
     fun findFiltered(
@@ -24,6 +25,7 @@ interface StockRepository : JpaRepository<Stock, Int> {
         @Param("groupId") groupId: Int?,
         @Param("subgroupId") subgroupId: Int?,
         @Param("supplierId") supplierId: Int?,
-        pageable: Pageable
+        @Param("isActive") isActive: Boolean? = true,
+        pageable: Pageable,
     ): List<Stock>
 }

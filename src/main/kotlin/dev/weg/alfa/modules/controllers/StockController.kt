@@ -45,6 +45,7 @@ class StockController(private val service: StockService) {
         @RequestParam(required = false) groupId: Int?,
         @RequestParam(required = false) subgroupId: Int?,
         @RequestParam(required = false) supplierId: Int?,
+        @RequestParam(required = false) isActive: Boolean? = true,
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "10") size: Int,
         @RequestParam(defaultValue = "id") sort: String,
@@ -55,7 +56,7 @@ class StockController(private val service: StockService) {
             size,
             Sort.by(Sort.Direction.fromString(direction), sort)
         )
-        val response = service.getFilteredStocks(text, groupId, subgroupId, supplierId, pageable)
+        val response = service.getFilteredStocks(text, groupId, subgroupId, supplierId, isActive, pageable)
         return ResponseEntity(response, HttpStatus.OK)
     }
 

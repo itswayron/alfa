@@ -52,6 +52,7 @@ class StockService(
         groupId: Int?,
         subgroupId: Int?,
         supplierId: Int?,
+        isActive: Boolean?,
         pageable: Pageable,
     ): PageDTO<StockResponse> {
         logger.info("Fetching filtered Stocks with filters: text='{}', groupId={}, subgroupId={}, supplierId={}, pageable={}",
@@ -63,7 +64,8 @@ class StockService(
             groupId = groupId,
             subgroupId = subgroupId,
             supplierId = supplierId,
-            pageable = pageable
+            isActive = isActive,
+            pageable = pageable,
         )
 
         val total = stockRepository.count()
