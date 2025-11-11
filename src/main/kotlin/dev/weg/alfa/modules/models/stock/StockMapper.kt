@@ -23,10 +23,14 @@ fun Stock.toResponse(): StockResponse =
             itemId = this.item.id,
             itemCode = this.item.code,
             itemDescription = this.item.description,
-            groupName = this.item.group.name,
-            subgroupName = this.item.subgroup.name,
-            measuramentUnitName = this.item.measurementUnity.name,
+            group = this.item.group,
+            subgroup = this.item.subgroup,
+            measurementUnit = this.item.measurementUnity,
             imagePath = this.item.imagePath,
+            isActive = this.item.isActive,
+            material = this.item.material,
+            dimensions = this.item.dimensions,
+            supplier = this.item.mainSupplier,
         ),
         amountInfo = StockResponse.AmountInfo(
             currentAmount = this.currentAmount,
@@ -34,8 +38,7 @@ fun Stock.toResponse(): StockResponse =
             maximumAmount = this.maximumAmount,
             averagePrice = this.averagePrice,
             priceInMoney = this.currentAmount * this.averagePrice,
-
-            ),
+        ),
         sectorInfo = StockResponse.SectorInfo(
             sectorId = this.sector.id,
             sectorName = this.sector.name,
