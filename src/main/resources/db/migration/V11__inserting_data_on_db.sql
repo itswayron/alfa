@@ -1,0 +1,96 @@
+INSERT INTO subgroup (name) VALUES
+('MATERIAIS DE ESCRITÓRIO'),
+('LIMPEZA E CONSERVAÇÃO'),
+('EPI'),
+('FERRAMENTAS MANUAIS'),
+('FERRAMENTAS DE CORTE'),
+('FERRAMENTAS ELÉTRICAS'),
+('INSTRUMENTOS DE MEDIÇÃO'),
+('MATÉRIA PRIMA'),
+('ITENS COMERCIAIS'),
+('ABRASIVOS'),
+('EMBALAGENS'),
+('FERRAMENTAS DE USINAGEM'),
+('PINTURA'),
+('MATERIAIS DE FIXAÇÃO'),
+('MATERIAIS ELÉTRICOS'),
+('MATERIAIS HIDRÁULICOS'),
+('MATERIAIS PNEUMÁTICOS'),
+('GASES'),
+('INSUMO DE SOLDA'),
+('LUBRIFICANTES'),
+('UNIFORMES')
+ON CONFLICT (name) DO NOTHING;
+
+INSERT INTO groups (name) VALUES
+('CONSUMO'),
+('INDIRETOS'),
+('DIRETOS')
+ON CONFLICT (name) DO NOTHING;
+
+INSERT INTO measurement_unity (name) VALUES
+('UNI'),
+('KG'),
+('GL'),
+('PAR'),
+('MTS'),
+('CT')
+ON CONFLICT (name) DO NOTHING;
+
+INSERT INTO sector (name) VALUES
+('ALMOXARIFADO'),
+('ADMINISTRATIVO'),
+('COMERCIAL'),
+('ENG. DE PROCESSO'),
+('USINAGEM'),
+('MONTAGEM'),
+('LOGISTICA'),
+('CALDEIRARIA'),
+('FASTIL'),
+('CNC'),
+('COMPRAS'),
+('DOBRA'),
+('ENGENHARIA'),
+('GERAL'),
+('LASER'),
+('LIDER'),
+('PCP'),
+('PINTURA'),
+('PRODUÇÃO'),
+('PROJETOS'),
+('QUALIDADE'),
+('TERCEIRO')
+ON CONFLICT (name) DO NOTHING;
+
+INSERT INTO movement_status (name) VALUES
+('SOLICITAÇÃO'),
+('COTAÇÃO'),
+('AGUARDANDO ENTREGA'),
+('CONCLUÍDA'),
+('AGUARDANDO ENTRADA NOTA')
+ON CONFLICT (name) DO NOTHING;
+
+INSERT INTO movement_type (name) VALUES
+('ENTRADA'),
+('REPOSIÇÃO'),
+('ADICIONADO'),
+('AUDITORIA'),
+('SAÍDA'),
+('ADEQUAÇÃO')
+ON CONFLICT (name) DO NOTHING;
+
+-- Atualizar configurações dos tipos de movimento
+UPDATE movement_type
+SET affects_average_price = TRUE,
+    quantity_sign = 1
+WHERE name IN ('ENTRADA', 'REPOSIÇÃO', 'ADICIONADO');
+
+UPDATE movement_type
+SET affects_average_price = FALSE,
+    quantity_sign = NULL
+WHERE name = 'AUDITORIA';
+
+UPDATE movement_type
+SET affects_average_price = FALSE,
+    quantity_sign = -1
+WHERE name IN ('SAÍDA', 'ADEQUAÇÃO');
