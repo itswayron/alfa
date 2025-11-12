@@ -24,4 +24,5 @@ data class ToolPatch(
     val maximumUsages: Int? = null,
     val subgroupID: Int? = null,
     val isLoan: Boolean? = null,
+    val actualUsages: Int? = null,
 )

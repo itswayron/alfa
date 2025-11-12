@@ -35,7 +35,7 @@ fun Tool.applyPatch(
         name = patch.name ?: this.name,
         description = patch.description ?: this.description,
         maximumUsages = patch.maximumUsages ?: this.maximumUsages,
-        actualUsages = this.actualUsages,
+        actualUsages = patch.actualUsages?:this.actualUsages ,
         subgroup = subgroup ?: this.subgroup,
         isLoan = patch.isLoan ?: this.isLoan,
     )
