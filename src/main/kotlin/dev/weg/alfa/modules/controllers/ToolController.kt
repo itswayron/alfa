@@ -1,10 +1,13 @@
 package dev.weg.alfa.modules.controllers
 
 import dev.weg.alfa.config.ApiRoutes
+import dev.weg.alfa.modules.models.dtos.PageDTO
 import dev.weg.alfa.modules.models.tool.ToolPatch
 import dev.weg.alfa.modules.models.tool.ToolRequest
 import dev.weg.alfa.modules.models.tool.ToolResponse
 import dev.weg.alfa.modules.services.ToolService
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -19,8 +22,18 @@ class ToolController(private val service: ToolService) {
     }
 
     @GetMapping
-    fun getAllTool(): ResponseEntity<List<ToolResponse>> {
-        val response = service.getAllTool()
+    fun getAllITools(
+        @RequestParam(required = false) searchTerm: String?,
+        @RequestParam(required = false) subgroupId: Int?,
+        @RequestParam(required = false) isLoan: Boolean?,
+        @RequestParam(required = false) conservationState: String?,
+        @RequestParam(defaultValue = "0") page: Int,
+        @RequestParam(defaultValue = "10") size: Int,
+        @RequestParam(defaultValue = "description") sort: String,
+        @RequestParam(defaultValue = "DESC") direction: String,
+    ): ResponseEntity<PageDTO<ToolResponse>> {
+        val pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(direction), sort))
+        val response = service.getAllTool(searchTerm, subgroupId, isLoan, conservationState, pageable)
         return ResponseEntity(response, HttpStatus.OK)
     }
 
