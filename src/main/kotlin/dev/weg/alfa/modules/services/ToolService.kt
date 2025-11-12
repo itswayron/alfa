@@ -2,6 +2,7 @@ package dev.weg.alfa.modules.services
 
 import dev.weg.alfa.modules.models.dtos.PageDTO
 import dev.weg.alfa.modules.models.dtos.toDTO
+import dev.weg.alfa.modules.models.simpleModels.Subgroup
 import dev.weg.alfa.modules.models.tool.*
 import dev.weg.alfa.modules.repositories.ToolRepository
 import dev.weg.alfa.modules.repositories.simpleEntities.SubgroupRepository
@@ -64,7 +65,7 @@ class ToolService(
         }
 
         filter = filter.andIf(subgroupId != null) {
-            Specification { root, query, critery -> critery.equal(root.get<Int>("subgroupId"), subgroupId) }
+            Specification { root, query, critery -> critery.equal(root.get<Subgroup>("subgroup").get<Int>("id"), subgroupId) }
         }
 
         filter = filter.andIf(isLoan != null) {
