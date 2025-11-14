@@ -1,7 +1,7 @@
 package dev.weg.alfa.modules.models.movement
 
 import dev.weg.alfa.modules.models.employee.Employee
-import dev.weg.alfa.modules.models.productionOrder.ProductionOrder
+import dev.weg.alfa.modules.models.movementBatch.MovementBatch
 import dev.weg.alfa.modules.models.simpleModels.MovementStatus
 import dev.weg.alfa.modules.models.simpleModels.MovementType
 import dev.weg.alfa.modules.models.simpleModels.Sector
@@ -9,7 +9,7 @@ import dev.weg.alfa.modules.models.stock.Stock
 
 fun MovementRequest.toEntity(
     stock: Stock,
-    productionOrder: ProductionOrder?,
+    movementBatch: MovementBatch?,
     type: MovementType,
     employee: Employee,
     status: MovementStatus,
@@ -21,7 +21,7 @@ fun MovementRequest.toEntity(
     date = date,
     observation = observation,
     stock = stock,
-    productionOrder = productionOrder,
+    movementBatch = movementBatch,
     type = type,
     employee = employee,
     status = status,
@@ -37,7 +37,7 @@ fun Movement.toResponse(): MovementResponse =
     observation = observation,
     stockId = stock.id,
     stockItemName = stock.item.description,
-    productionOrderId = productionOrder?.id,
+    movementBatchId = movementBatch?.id,
     type = type.name,
     employee = employee.name,
     status = status.name,
@@ -46,12 +46,12 @@ fun Movement.toResponse(): MovementResponse =
 
 fun Movement.applyPatch(
     patch: MovementPatch,
-    productionOrder: ProductionOrder? = this.productionOrder,
+    movementBatch: MovementBatch? = this.movementBatch,
     status: MovementStatus = this.status
 ): Movement =
     this.copy(
     quantity = patch.quantity ?: this.quantity,
     price = patch.price ?: this.price,
     observation = patch.observation ?: this.observation,
-    productionOrder = patch.productionOrderId?.let { productionOrder } ?: this.productionOrder,
+    movementBatch = patch.movementBatchId?.let { movementBatch } ?: this.movementBatch,
     status = status)

@@ -1,8 +1,12 @@
 package dev.weg.alfa.modules.services
 
+import dev.weg.alfa.modules.models.dtos.PageDTO
 import dev.weg.alfa.modules.models.movement.*
 import dev.weg.alfa.modules.models.stock.Stock
-import dev.weg.alfa.modules.repositories.*
+import dev.weg.alfa.modules.repositories.EmployeeRepository
+import dev.weg.alfa.modules.repositories.MovementBatchRepository
+import dev.weg.alfa.modules.repositories.MovementRepository
+import dev.weg.alfa.modules.repositories.StockRepository
 import dev.weg.alfa.modules.repositories.simpleEntities.MovementStatusRepository
 import dev.weg.alfa.modules.repositories.simpleEntities.MovementTypeRepository
 import dev.weg.alfa.modules.repositories.simpleEntities.SectorRepository
@@ -11,13 +15,14 @@ import dev.weg.alfa.modules.repositories.utils.findByIdOrThrow
 import jakarta.transaction.Transactional
 import org.slf4j.LoggerFactory
 import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 
 @Service
 class MovementService(
     private val repository: MovementRepository,
     private val stockRepository: StockRepository,
-    private val productionOrderRepository: ProductionOrderRepository,
+    private val movementBatchRepository: MovementBatchRepository,
     private val movementTypeRepository: MovementTypeRepository,
     private val employeeRepository: EmployeeRepository,
     private val movementStatusRepository: MovementStatusRepository,
@@ -30,7 +35,7 @@ class MovementService(
         logger.info("Creating Movement for stock ID=${request.stockId}")
 
         logger.debug("Fetching dependencies for Movement creation...")
-        val productionOrder = productionOrderRepository.findByIdIfNotNull(request.productionOrderId)
+        val movementBatch = movementBatchRepository.findByIdIfNotNull(request.movementBatchId)
         val stock = stockRepository.findByIdOrThrow(request.stockId)
         val type = movementTypeRepository.findByIdOrThrow(request.typeId)
         val employee = employeeRepository.findByIdOrThrow(request.employeeId)
@@ -40,7 +45,7 @@ class MovementService(
 
         val newMovement = request.toEntity(
             stock = stock,
-            productionOrder = productionOrder,
+            movementBatch = movementBatch,
             type = type,
             employee = employee,
             status = status,
@@ -67,11 +72,34 @@ class MovementService(
         return movement.toResponse()
     }
 
-    fun getAllMovements(): List<MovementResponse> {
+    fun getAllMovements(
+        stockId: Int?,
+        text: String?,
+        typeId: Int?,
+        statusId: Int?,
+        pageable: Pageable
+    ): PageDTO<MovementResponse> {
         logger.info("Fetching all Movements")
-        val movements = repository.findAll()
-        logger.info("Found ${movements.size} movements")
-        return movements.map { it.toResponse() }
+        val movements = repository.findFiltered(
+            stockId = stockId,
+            text = text,
+            typeId = typeId,
+            statusId = statusId,
+            pageable = pageable
+        )
+        val total = repository.count()
+        logger.debug("Found {} matching records out of total {} movements", movements.size, total)
+        val pageDTO = PageDTO(
+            content = movements.map { it.toResponse() },
+            totalElements = total,
+            totalPages = (total / pageable.pageSize).toInt() + 1,
+            currentPage = pageable.pageNumber,
+            pageSize = pageable.pageSize
+        )
+        logger.info("Returning filtered Stock page with {} elements (page {}/{})",
+            pageDTO.content.size, pageDTO.currentPage + 1, pageDTO.totalPages
+        )
+        return pageDTO
     }
 
     fun updateMovement(movementId: Int, patch: MovementPatch): MovementResponse {
@@ -79,12 +107,12 @@ class MovementService(
         logger.debug("Applying patch: {}", patch)
 
         val oldMovement = repository.findByIdOrThrow(movementId)
-        val productionOrder = productionOrderRepository.findByIdIfNotNull(patch.productionOrderId)
+        val movementBatch = movementBatchRepository.findByIdIfNotNull(patch.movementBatchId)
         val status = patch.statusId?.let { movementStatusRepository.findByIdOrThrow(it) }
 
         val updatedMovement = oldMovement.applyPatch(
             patch = patch,
-            productionOrder = productionOrder,
+            movementBatch = movementBatch,
             status = status ?: oldMovement.status
         )
 

@@ -14,6 +14,8 @@ import jakarta.persistence.Table
 data class BusinessPartner(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int = 0,
+
+    @Column(name = "\"name\"")
     val name: String,
     val cnpj: String,
     val relation: String,

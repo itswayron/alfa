@@ -23,4 +23,27 @@ interface MovementRepository : JpaRepository<Movement, Int> {
         @Param("stock") stock: Stock,
         pageable: Pageable
     ): List<Movement>
+
+    fun findAllByMovementBatchId(batchId: Int, pageable: Pageable?): List<Movement>
+
+    fun findAllByMovementBatchId(batchId: Int): List<Movement>
+
+    @Query(
+        """SELECT m FROM Movement m
+           WHERE (:stockId IS NULL OR m.stock.id = :stockId)
+           AND ( :text IS NULL OR 
+                 LOWER(CAST(CAST(m.stock.item.code AS string) AS string)) LIKE LOWER(CONCAT('%', CAST(:text AS string), '%')) OR
+                 LOWER(CAST(CAST(m.stock.item.description AS string) AS string)) LIKE LOWER(CONCAT('%', CAST(:text AS string), '%'))
+               )
+           AND (:typeId IS NULL OR m.type.id = :typeId)
+           AND (:statusId IS NULL OR m.status.id = :statusId)
+    """
+    )
+    fun findFiltered(
+        @Param("stockId") stockId: Int?,
+        @Param("text") text: String?,
+        @Param("typeId") typeId: Int?,
+        @Param("statusId") statusId: Int?,
+        pageable: Pageable
+    ): List<Movement>
 }

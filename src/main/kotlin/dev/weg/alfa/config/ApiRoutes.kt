@@ -22,7 +22,7 @@ object ApiRoutes {
     const val ITEM = "/item"
     const val POSITION = "/position"
     const val STOCK = "/stock"
-    const val PRODUCTION_ORDER = "/production_order"
+    const val MOVEMENT_BATCH = "/movement_batch"
 
     // Empréstimos
     const val TOOL = "/tool"

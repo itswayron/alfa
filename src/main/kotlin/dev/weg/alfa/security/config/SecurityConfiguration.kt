@@ -42,7 +42,7 @@ class SecurityConfiguration(private val authenticationProvider: AuthenticationPr
             "${ApiRoutes.MOVEMENT_TYPES}/**",
             "${ApiRoutes.PARTNER}/**",
             "${ApiRoutes.POSITION}/**",
-            "${ApiRoutes.PRODUCTION_ORDER}/**",
+            "${ApiRoutes.MOVEMENT_BATCH}/**",
             "${ApiRoutes.SECTOR}/**",
             "${ApiRoutes.STOCK}/**",
             "${ApiRoutes.SUBGROUP}/**",

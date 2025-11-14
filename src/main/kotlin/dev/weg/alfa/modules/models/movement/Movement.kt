@@ -2,7 +2,7 @@ package dev.weg.alfa.modules.models.movement
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import dev.weg.alfa.modules.models.employee.Employee
-import dev.weg.alfa.modules.models.productionOrder.ProductionOrder
+import dev.weg.alfa.modules.models.movementBatch.MovementBatch
 import dev.weg.alfa.modules.models.simpleModels.MovementStatus
 import dev.weg.alfa.modules.models.simpleModels.MovementType
 import dev.weg.alfa.modules.models.simpleModels.Sector
@@ -26,7 +26,7 @@ data class Movement(
     val quantity: Double,
     val price: Double?,
     val date: LocalDateTime = LocalDateTime.now(),
-    val observation: String,
+    val observation: String?,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "stock_id", nullable = false)
@@ -34,7 +34,7 @@ data class Movement(
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "production_order_id", nullable = true)
-    val productionOrder: ProductionOrder?,
+    val movementBatch: MovementBatch?,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "type_id", nullable = false)
