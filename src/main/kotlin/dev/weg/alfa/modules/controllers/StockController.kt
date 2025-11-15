@@ -2,6 +2,7 @@ package dev.weg.alfa.modules.controllers
 
 import dev.weg.alfa.config.ApiRoutes
 import dev.weg.alfa.modules.models.dtos.PageDTO
+import dev.weg.alfa.modules.models.stock.StockFilter
 import dev.weg.alfa.modules.models.stock.StockPatch
 import dev.weg.alfa.modules.models.stock.StockRequest
 import dev.weg.alfa.modules.models.stock.StockResponse
@@ -51,12 +52,14 @@ class StockController(private val service: StockService) {
         @RequestParam(defaultValue = "id") sort: String,
         @RequestParam(defaultValue = "DESC") direction: String,
     ): ResponseEntity<PageDTO<StockResponse>> {
+        val filter = StockFilter(text, groupId, subgroupId, supplierId, isActive)
         val pageable = PageRequest.of(
             page,
             size,
             Sort.by(Sort.Direction.fromString(direction), sort)
         )
-        val response = service.getFilteredStocks(text, groupId, subgroupId, supplierId, isActive, pageable)
+
+        val response = service.getFilteredStocks(filter, pageable)
         return ResponseEntity(response, HttpStatus.OK)
     }
 

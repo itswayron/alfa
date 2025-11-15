@@ -3,11 +3,11 @@ package dev.weg.alfa.modules.services
 import dev.weg.alfa.modules.models.dtos.PageDTO
 import dev.weg.alfa.modules.models.dtos.toDTO
 import dev.weg.alfa.modules.models.stock.*
+import dev.weg.alfa.modules.repositories.ItemRepository
 import dev.weg.alfa.modules.repositories.PositionRepository
 import dev.weg.alfa.modules.repositories.StockRepository
-import dev.weg.alfa.modules.repositories.utils.findByIdOrThrow
-import dev.weg.alfa.modules.repositories.ItemRepository
 import dev.weg.alfa.modules.repositories.simpleEntities.SectorRepository
+import dev.weg.alfa.modules.repositories.utils.findByIdOrThrow
 import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
@@ -48,40 +48,21 @@ class StockService(
     }
 
     fun getFilteredStocks(
-        text: String?,
-        groupId: Int?,
-        subgroupId: Int?,
-        supplierId: Int?,
-        isActive: Boolean?,
+        filter: StockFilter,
         pageable: Pageable,
     ): PageDTO<StockResponse> {
-        logger.info("Fetching filtered Stocks with filters: text='{}', groupId={}, subgroupId={}, supplierId={}, pageable={}",
-            text, groupId, subgroupId, supplierId, pageable
-        )
+        logger.info("Fetching filtered Stocks with filter={}, pageable={}", filter, pageable)
         logger.debug("Querying database with applied filters...")
-        val stocks = stockRepository.findFiltered(
-            text = text,
-            groupId = groupId,
-            subgroupId = subgroupId,
-            supplierId = supplierId,
-            isActive = isActive,
-            pageable = pageable,
-        )
+        val spec = filter.toSpecification()
+        val stocks = stockRepository.findAll(spec, pageable)
 
-        val total = stockRepository.count()
-        logger.debug("Found {} matching records out of total {} stocks", stocks.size, total)
+        logger.debug("Found {} matching records out of total {} stocks", stocks.numberOfElements, stockRepository.count())
 
-        val pageDTO = PageDTO(
-            content = stocks.map { it.toResponse() },
-            totalElements = total,
-            totalPages = (total / pageable.pageSize).toInt() + 1,
-            currentPage = pageable.pageNumber,
-            pageSize = pageable.pageSize
-        )
-        logger.info("Returning filtered Stock page with {} elements (page {}/{})",
+        val pageDTO = stocks.map { it.toResponse() }.toDTO()
+        logger.info(
+            "Returning filtered Stock page with {} elements (page {}/{})",
             pageDTO.content.size, pageDTO.currentPage + 1, pageDTO.totalPages
         )
-
         return pageDTO
     }
 

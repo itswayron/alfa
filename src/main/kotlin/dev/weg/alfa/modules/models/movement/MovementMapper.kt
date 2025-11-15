@@ -1,11 +1,13 @@
 package dev.weg.alfa.modules.models.movement
 
+import dev.weg.alfa.infra.persistence.specification.MovementSpecificationBuilder
 import dev.weg.alfa.modules.models.employee.Employee
 import dev.weg.alfa.modules.models.movementBatch.MovementBatch
 import dev.weg.alfa.modules.models.simpleModels.MovementStatus
 import dev.weg.alfa.modules.models.simpleModels.MovementType
 import dev.weg.alfa.modules.models.simpleModels.Sector
 import dev.weg.alfa.modules.models.stock.Stock
+import org.springframework.data.jpa.domain.Specification
 
 fun MovementRequest.toEntity(
     stock: Stock,
@@ -55,3 +57,16 @@ fun Movement.applyPatch(
     observation = patch.observation ?: this.observation,
     movementBatch = patch.movementBatchId?.let { movementBatch } ?: this.movementBatch,
     status = status)
+
+fun MovementFilter.toSpecification(): Specification<Movement> =
+    MovementSpecificationBuilder()
+        .whereStockId(stockId)
+        .whereBatchId(batchId)
+        .whereType(typeId)
+        .whereStatus(statusId)
+        .whereSector(sectorId)
+        .whereEmployee(employeeId)
+        .whereObservation(observation)
+        .whereDateFrom(dateFrom)
+        .whereDateTo(dateTo)
+        .build()

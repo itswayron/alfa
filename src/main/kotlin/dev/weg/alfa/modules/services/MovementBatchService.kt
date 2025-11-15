@@ -1,6 +1,7 @@
 package dev.weg.alfa.modules.services
 
 import dev.weg.alfa.modules.models.dtos.PageDTO
+import dev.weg.alfa.modules.models.dtos.toDTO
 import dev.weg.alfa.modules.models.movement.MovementResponse
 import dev.weg.alfa.modules.models.movement.toResponse
 import dev.weg.alfa.modules.models.movementBatch.*
@@ -60,23 +61,20 @@ class MovementBatchService(
     }
 
     fun getBatches(
-        code: String?,
-        document: String?,
-        text: String?,
+        filter: MovementBatchFilter,
         pageable: Pageable,
     ): PageDTO<MovementBatchResponse> {
-        logger.info("Fetching batches from the repository.")
+        logger.info("Fetching filtered Batches with filters={}, pageable={}", filter, pageable)
+        val specs = filter.toSpecification()
+        val batches = repository.findAll(specs, pageable)
 
-        val batches = repository.findFiltered(code, document, text, pageable)
-        val total = repository.count()
-        logger.debug("Found {} matching records out of total {} batches", batches.size, total)
-        val pageDTO = PageDTO(
-            content = batches.map { it.toResponse(emptyList()) },
-            totalElements = total,
-            totalPages = (total / pageable.pageSize).toInt() + 1,
-            currentPage = pageable.pageNumber,
-            pageSize = pageable.pageSize
+        logger.debug(
+            "Found {} matching records out of total {} batches",
+            batches.numberOfElements,
+            repository.count()
         )
+
+        val pageDTO = batches.map { it.toResponse(emptyList()) }.toDTO()
         logger.info(
             "Returning filtered batches page with {} elements (page {}/{})",
             pageDTO.content.size, pageDTO.currentPage + 1, pageDTO.totalPages

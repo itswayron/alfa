@@ -1,7 +1,9 @@
 package dev.weg.alfa.modules.models.movementBatch
 
+import dev.weg.alfa.infra.persistence.specification.MovementBatchSpecificationBuilder
 import dev.weg.alfa.modules.models.businessPartner.BusinessPartner
 import dev.weg.alfa.modules.models.movement.MovementResponse
+import org.springframework.data.jpa.domain.Specification
 
 fun MovementBatchRequest.toEntity(partner: BusinessPartner?): MovementBatch =
     MovementBatch(
@@ -33,3 +35,12 @@ fun MovementBatch.applyPatch(patch: MovementBatchPatch, partner: BusinessPartner
         observation = patch.observation ?: this.observation,
         businessPartner = partner ?: this.businessPartner,
     )
+
+fun MovementBatchFilter.toSpecification() : Specification<MovementBatch> =
+    MovementBatchSpecificationBuilder()
+        .whereCode(this.code)
+        .whereDocument(this.document)
+        .whereBusinessPartner(this.partnerId)
+        .whereDateFrom(this.startDate)
+        .whereDateTo(this.endDate)
+        .build()

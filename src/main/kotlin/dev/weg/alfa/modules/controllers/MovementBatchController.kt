@@ -2,6 +2,7 @@ package dev.weg.alfa.modules.controllers
 
 import dev.weg.alfa.config.ApiRoutes
 import dev.weg.alfa.modules.models.dtos.PageDTO
+import dev.weg.alfa.modules.models.movementBatch.MovementBatchFilter
 import dev.weg.alfa.modules.models.movementBatch.MovementBatchPatch
 import dev.weg.alfa.modules.models.movementBatch.MovementBatchRequest
 import dev.weg.alfa.modules.models.movementBatch.MovementBatchResponse
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Sort
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.time.LocalDateTime
 
 @RestController
 @RequestMapping(ApiRoutes.MOVEMENT_BATCH)
@@ -31,14 +33,17 @@ class MovementBatchController(private val service: MovementBatchService) {
     fun getBatches(
         @RequestParam(required = false) code: String?,
         @RequestParam(required = false) document: String?,
-        @RequestParam(required = false) text: String?,
+        @RequestParam(required = false) partnerId: Int?,
+        @RequestParam(required = false) startDate: LocalDateTime?,
+        @RequestParam(required = false) endDate: LocalDateTime?,
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "10") size: Int,
         @RequestParam(defaultValue = "date") sort: String,
         @RequestParam(defaultValue = "DESC") direction: String,
     ): ResponseEntity<PageDTO<MovementBatchResponse>> {
+        val filter = MovementBatchFilter(code, document, partnerId, startDate, endDate)
         val pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(direction), sort))
-        val response = service.getBatches(code, document, text, pageable)
+        val response = service.getBatches(filter, pageable)
         return ResponseEntity.status(HttpStatus.OK).body(response)
     }
 

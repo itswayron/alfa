@@ -1,8 +1,10 @@
 package dev.weg.alfa.modules.models.stock
 
+import dev.weg.alfa.infra.persistence.specification.StockSpecificationBuilder
 import dev.weg.alfa.modules.models.item.Item
 import dev.weg.alfa.modules.models.position.Position
 import dev.weg.alfa.modules.models.simpleModels.Sector
+import org.springframework.data.jpa.domain.Specification
 
 fun StockRequest.toEntity(item: Item, sector: Sector, position: Position): Stock =
     Stock(
@@ -67,3 +69,12 @@ fun Stock.applyPatch(
         sector = sector ?: this.sector,
         position = position ?: this.position
     )
+
+fun StockFilter.toSpecification(): Specification<Stock> =
+    StockSpecificationBuilder()
+        .whereText(this.text)
+        .whereGroup(this.groupId)
+        .whereSubgroup(this.subgroupId)
+        .whereSupplier(this.supplierId)
+        .whereActive(this.isActive)
+        .build()

@@ -1,6 +1,7 @@
 package dev.weg.alfa.modules.services
 
 import dev.weg.alfa.modules.models.dtos.PageDTO
+import dev.weg.alfa.modules.models.dtos.toDTO
 import dev.weg.alfa.modules.models.movement.*
 import dev.weg.alfa.modules.models.stock.Stock
 import dev.weg.alfa.modules.repositories.EmployeeRepository
@@ -73,30 +74,17 @@ class MovementService(
     }
 
     fun getAllMovements(
-        stockId: Int?,
-        text: String?,
-        typeId: Int?,
-        statusId: Int?,
+        filter: MovementFilter,
         pageable: Pageable
     ): PageDTO<MovementResponse> {
-        logger.info("Fetching all Movements")
-        val movements = repository.findFiltered(
-            stockId = stockId,
-            text = text,
-            typeId = typeId,
-            statusId = statusId,
-            pageable = pageable
-        )
-        val total = repository.count()
-        logger.debug("Found {} matching records out of total {} movements", movements.size, total)
-        val pageDTO = PageDTO(
-            content = movements.map { it.toResponse() },
-            totalElements = total,
-            totalPages = (total / pageable.pageSize).toInt() + 1,
-            currentPage = pageable.pageNumber,
-            pageSize = pageable.pageSize
-        )
-        logger.info("Returning filtered Stock page with {} elements (page {}/{})",
+        logger.info("Fetching filtered Stocks with filter={}, pageable={}", filter, pageable)
+        val specs = filter.toSpecification()
+        val page = repository.findAll(specs, pageable)
+
+        logger.debug("Found {} matching records out of total {} movements", page.numberOfElements, repository.count())
+        val pageDTO = page.map { it.toResponse() }.toDTO()
+        logger.info(
+            "Returning filtered Stock page with {} elements (page {}/{})",
             pageDTO.content.size, pageDTO.currentPage + 1, pageDTO.totalPages
         )
         return pageDTO
