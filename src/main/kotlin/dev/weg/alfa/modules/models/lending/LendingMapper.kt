@@ -5,11 +5,15 @@ import dev.weg.alfa.modules.models.simpleModels.LendingStatus
 import dev.weg.alfa.modules.models.tool.Tool
 import java.time.LocalDateTime
 
-fun LendingRequest.toEntity(status: LendingStatus, employee: Employee, tool: Tool): Lending =
+fun LendingRequest.toEntity(
+    status: LendingStatus,
+    employee: Employee,
+    tool: Tool
+): Lending =
     Lending(
         id = 0,
         status = status,
-        departureTime = LocalDateTime.now(),
+        departureTime = this.departureTime ?: LocalDateTime.now(),
         timeOfReturn = null,
         employee = employee,
         tool = tool,
@@ -38,3 +42,11 @@ fun Lending.applyPatch(patch: LendingPatch, newStatus: LendingStatus? = null): L
         employee = this.employee,
         tool = this.tool
     )
+
+fun Lending.returnWith(dto: ReturnLending, status: LendingStatus): Lending {
+    this.timeOfReturn = dto.timeOfReturn
+    this.observation = dto.observation ?: this.observation
+    this.status = status
+    return this
+}
+

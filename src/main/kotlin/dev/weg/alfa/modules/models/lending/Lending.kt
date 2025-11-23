@@ -16,19 +16,19 @@ import java.time.LocalDateTime
 
 @Entity
 @Table(name = "lending")
-@JsonIgnoreProperties("hibernateLazyInitializer","handler")
+@JsonIgnoreProperties("hibernateLazyInitializer", "handler")
 data class Lending(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Int,
+    val id: Int = 0,
     val departureTime: LocalDateTime = LocalDateTime.now(),
     val estimatedReturn: LocalDateTime,
-    val timeOfReturn: LocalDateTime?=null,
-    val observation: String?=null,
+    var timeOfReturn: LocalDateTime? = null,
+    var observation: String? = null,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "status_id", nullable = false)
-    val status: LendingStatus,
+    var status: LendingStatus,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id", nullable = false)

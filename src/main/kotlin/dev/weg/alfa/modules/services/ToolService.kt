@@ -1,10 +1,13 @@
 package dev.weg.alfa.modules.services
 
+import dev.weg.alfa.modules.models.dtos.PageDTO
+import dev.weg.alfa.modules.models.dtos.toDTO
 import dev.weg.alfa.modules.models.tool.*
 import dev.weg.alfa.modules.repositories.ToolRepository
-import dev.weg.alfa.modules.repositories.utils.findByIdOrThrow
 import dev.weg.alfa.modules.repositories.simpleEntities.SubgroupRepository
+import dev.weg.alfa.modules.repositories.utils.findByIdOrThrow
 import org.slf4j.LoggerFactory
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 
 @Service
@@ -22,11 +25,15 @@ class ToolService(
         return response
     }
 
-    fun getAllTool(): List<ToolResponse> {
-        logger.info("Retrieving all tools from the database.")
-        val tools = toolRepository.findAll()
-        logger.info("Found ${tools.size} tools on the database.")
-        val response = tools.map { it.toResponse() }
+    fun getFilteredTools(
+        filter: ToolFilter,
+        pageable: Pageable,
+    ): PageDTO<ToolResponse> {
+        logger.info("Fetching tools with filters='{}'", filter)
+        val spec = filter.toSpecification()
+        val page = toolRepository.findAll(spec, pageable)
+        logger.info("Retrieved {} tools matching the criteria.", page.content.size)
+        val response = page.map { it.toResponse() }.toDTO()
         return response
     }
 

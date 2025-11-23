@@ -21,9 +21,9 @@ data class Tool(
     val name: String,
     val description: String,
     val maximumUsages: Int,
-    val actualUsages: Int,
+    var actualUsages: Int,
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "subgroup_id", nullable = false)
     val subgroup: Subgroup,
-    val isLoan: Boolean,
+    var isLoan: Boolean,
 )

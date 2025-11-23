@@ -1,6 +1,8 @@
 package dev.weg.alfa.modules.models.tool
 
+import dev.weg.alfa.infra.persistence.specification.ToolSpecificationBuilder
 import dev.weg.alfa.modules.models.simpleModels.Subgroup
+import org.springframework.data.jpa.domain.Specification
 
 fun ToolRequest.toEntity(
     subgroup: Subgroup,
@@ -39,3 +41,10 @@ fun Tool.applyPatch(
         subgroup = subgroup ?: this.subgroup,
         isLoan = patch.isLoan ?: this.isLoan,
     )
+
+fun ToolFilter.toSpecification(): Specification<Tool> =
+    ToolSpecificationBuilder()
+        .whereText(this.text)
+        .whereSubgroup(this.subgroupId)
+        .whereIsLoan(this.isLoan)
+        .build()
