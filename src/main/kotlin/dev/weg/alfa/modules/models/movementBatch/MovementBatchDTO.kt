@@ -21,6 +21,17 @@ data class MovementBatchRequest(
     val movementsList: List<MovementRequest>,
 )
 
+data class MovementBatchResponseWithList(
+    val id: Int,
+    val code: String,
+    val document: String?,
+    val date: LocalDateTime,
+    val businessPartner: String?,
+    val observation: String? = null,
+    val movementsSize: Long,
+    val movementList: List<MovementResponse>,
+)
+
 data class MovementBatchResponse(
     val id: Int,
     val code: String,
@@ -28,5 +39,5 @@ data class MovementBatchResponse(
     val date: LocalDateTime,
     val businessPartner: String?,
     val observation: String? = null,
-    val movementList: List<MovementResponse>,
+    val movementsSize: Long,
 )

@@ -14,7 +14,19 @@ fun MovementBatchRequest.toEntity(partner: BusinessPartner?): MovementBatch =
         businessPartner = partner
     )
 
-fun MovementBatch.toResponse(movementsList: List<MovementResponse>): MovementBatchResponse =
+fun MovementBatch.toResponseWithList(movementsList: List<MovementResponse>): MovementBatchResponseWithList =
+    MovementBatchResponseWithList(
+        id = this.id,
+        code = this.code,
+        document = this.document,
+        date = this.date,
+        businessPartner = this.businessPartner?.name,
+        observation = this.observation,
+        movementsSize = movementsList.size.toLong(),
+        movementList = movementsList,
+    )
+
+fun MovementBatch.toResponse(totalMovementsSize: Long) : MovementBatchResponse =
     MovementBatchResponse(
         id = this.id,
         code = this.code,
@@ -22,9 +34,8 @@ fun MovementBatch.toResponse(movementsList: List<MovementResponse>): MovementBat
         date = this.date,
         businessPartner = this.businessPartner?.name,
         observation = this.observation,
-        movementList = movementsList,
+        movementsSize = totalMovementsSize
     )
-
 
 fun MovementBatch.applyPatch(patch: MovementBatchPatch, partner: BusinessPartner?): MovementBatch =
     MovementBatch(

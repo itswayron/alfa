@@ -59,7 +59,7 @@ class MovementBatchSpecificationBuilder {
     }
 
     fun build(): Specification<MovementBatch> {
-        return Specification { root, query, cb ->
+        return Specification { root, _, cb ->
             val finalPredicates = predicates.map { it(root, cb) }.toTypedArray()
             cb.and(*finalPredicates)
         }

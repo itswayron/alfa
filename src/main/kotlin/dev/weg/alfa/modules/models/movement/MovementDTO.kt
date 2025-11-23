@@ -32,6 +32,7 @@ data class MovementResponse(
     val stockId: Int,
     val stockItemName: String?,
     val movementBatchId: Int? = null,
+    val movementBatchCode: String? = null,
     val type: String,
     val employee: String,
     val status: String,

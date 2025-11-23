@@ -32,19 +32,20 @@ fun MovementRequest.toEntity(
 
 fun Movement.toResponse(): MovementResponse =
     MovementResponse(
-    id = id,
-    quantity = quantity,
-    price = price,
-    date = date,
-    observation = observation,
-    stockId = stock.id,
-    stockItemName = stock.item.description,
-    movementBatchId = movementBatch?.id,
-    type = type.name,
-    employee = employee.name,
-    status = status.name,
-    sector = sector.name
-)
+        id = id,
+        quantity = quantity,
+        price = price,
+        date = date,
+        observation = observation,
+        stockId = stock.id,
+        stockItemName = stock.item.description,
+        movementBatchId = movementBatch?.id,
+        movementBatchCode = movementBatch?.code,
+        type = type.name,
+        employee = employee.name,
+        status = status.name,
+        sector = sector.name
+    )
 
 fun Movement.applyPatch(
     patch: MovementPatch,
@@ -52,11 +53,12 @@ fun Movement.applyPatch(
     status: MovementStatus = this.status
 ): Movement =
     this.copy(
-    quantity = patch.quantity ?: this.quantity,
-    price = patch.price ?: this.price,
-    observation = patch.observation ?: this.observation,
-    movementBatch = patch.movementBatchId?.let { movementBatch } ?: this.movementBatch,
-    status = status)
+        quantity = patch.quantity ?: this.quantity,
+        price = patch.price ?: this.price,
+        observation = patch.observation ?: this.observation,
+        movementBatch = patch.movementBatchId?.let { movementBatch } ?: this.movementBatch,
+        status = status
+    )
 
 fun MovementFilter.toSpecification(): Specification<Movement> =
     MovementSpecificationBuilder()

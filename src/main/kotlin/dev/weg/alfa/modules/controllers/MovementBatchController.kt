@@ -2,10 +2,7 @@ package dev.weg.alfa.modules.controllers
 
 import dev.weg.alfa.config.ApiRoutes
 import dev.weg.alfa.modules.models.dtos.PageDTO
-import dev.weg.alfa.modules.models.movementBatch.MovementBatchFilter
-import dev.weg.alfa.modules.models.movementBatch.MovementBatchPatch
-import dev.weg.alfa.modules.models.movementBatch.MovementBatchRequest
-import dev.weg.alfa.modules.models.movementBatch.MovementBatchResponse
+import dev.weg.alfa.modules.models.movementBatch.*
 import dev.weg.alfa.modules.services.MovementBatchService
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
@@ -18,13 +15,13 @@ import java.time.LocalDateTime
 @RequestMapping(ApiRoutes.MOVEMENT_BATCH)
 class MovementBatchController(private val service: MovementBatchService) {
     @PostMapping
-    fun createMovementBatch(@RequestBody request: MovementBatchRequest): ResponseEntity<MovementBatchResponse> {
+    fun createMovementBatch(@RequestBody request: MovementBatchRequest): ResponseEntity<MovementBatchResponseWithList> {
         val response = service.createMovementBatch(request)
         return ResponseEntity.status(HttpStatus.CREATED).body(response)
     }
 
     @GetMapping("/{identifier}")
-    fun getBatchByIdentifier(@PathVariable identifier: String): ResponseEntity<MovementBatchResponse> {
+    fun getBatchByIdentifier(@PathVariable identifier: String): ResponseEntity<MovementBatchResponseWithList> {
         val response = service.getBatchByIdentifier(identifier)
         return ResponseEntity.status(HttpStatus.OK).body(response)
     }

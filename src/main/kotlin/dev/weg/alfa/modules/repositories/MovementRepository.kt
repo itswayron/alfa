@@ -28,4 +28,6 @@ interface MovementRepository : JpaRepository<Movement, Int>, JpaSpecificationExe
     fun findAllByMovementBatchId(batchId: Int, pageable: Pageable?): List<Movement>
 
     fun findAllByMovementBatchId(batchId: Int): List<Movement>
+
+    fun countByMovementBatchId(batchId: Int): Long
 }

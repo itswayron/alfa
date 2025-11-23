@@ -27,7 +27,7 @@ class MovementBatchService(
     private val logger = LoggerFactory.getLogger(this::class.java)
 
     @Transactional
-    fun createMovementBatch(request: MovementBatchRequest): MovementBatchResponse {
+    fun createMovementBatch(request: MovementBatchRequest): MovementBatchResponseWithList {
         logger.info("Creating Movement Batch with code: ${request.code}")
 
         val mainSupplier = partnerRepository.findByIdIfNotNull(request.partnerId)
@@ -43,10 +43,10 @@ class MovementBatchService(
             movementService.createMovement(req)
         }
 
-        return entity.toResponse(movements)
+        return entity.toResponseWithList(movements)
     }
 
-    fun getBatchByIdentifier(identifier: String): MovementBatchResponse {
+    fun getBatchByIdentifier(identifier: String): MovementBatchResponseWithList {
         logger.info("Fetching Movement Batch with identifier: $identifier")
         val batch = repository.findByCode(identifier) ?: identifier.toIntOrNull()?.let { id ->
             repository.findByIdOrThrow(id)
@@ -55,9 +55,10 @@ class MovementBatchService(
         logger.info("Retrieved Movement Batch with ID: $identifier code: ${batch.code}")
         val movements = movementRepository.findAllByMovementBatchId(batch.id).map {
             it.toResponse()
+            // Possible N+1 problem
         }
 
-        return batch.toResponse(movements)
+        return batch.toResponseWithList(movements)
     }
 
     fun getBatches(
@@ -74,7 +75,9 @@ class MovementBatchService(
             repository.count()
         )
 
-        val pageDTO = batches.map { it.toResponse(emptyList()) }.toDTO()
+        val pageDTO = batches.map {
+            it.toResponse(movementRepository.countByMovementBatchId(it.id))
+        }.toDTO()
         logger.info(
             "Returning filtered batches page with {} elements (page {}/{})",
             pageDTO.content.size, pageDTO.currentPage + 1, pageDTO.totalPages
@@ -97,7 +100,7 @@ class MovementBatchService(
         )
 
         // validator.validate(updatedOrder)
-        val response = repository.save(updatedOrder).toResponse(emptyList())
+        val response = repository.save(updatedOrder).toResponse(movementRepository.countByMovementBatchId(id))
         logger.info("Movement Batch updated: ID={}, code='{}'", response.id, response.code)
 
         return response
