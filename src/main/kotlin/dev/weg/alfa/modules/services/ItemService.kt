@@ -108,7 +108,7 @@ class ItemService(
         val item = repository.findByIdOrThrow(id)
         item.deleteImageIfExists()
 
-        val imagePath = imageService.saveImage("item", item.id.toString(), imageFile)
+        val imagePath = imageService.saveImage(ImageService.EntityType.ITEM, item.id.toString(), imageFile)
         item.imagePath = imagePath
 
         repository.save(item)

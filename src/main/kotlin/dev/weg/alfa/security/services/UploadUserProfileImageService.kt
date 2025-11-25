@@ -22,7 +22,7 @@ class UploadUserProfileImageService(
         logger.info("Uploading profile image for user: ${user.username}")
 
         user.deleteImageIfExists()
-        val imagePath = imageService.saveImage("user", user.id.toString(), imageFile)
+        val imagePath = imageService.saveImage(ImageService.EntityType.USER, user.id.toString(), imageFile)
         logger.debug("Saving new profile image for userId='{}'.", user.id)
 
         user.profileImagePath = imagePath
