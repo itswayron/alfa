@@ -1,6 +1,8 @@
 package dev.weg.alfa.modules.models.lending
 
+import dev.weg.alfa.modules.models.employee.Employee
 import dev.weg.alfa.modules.models.simpleModels.LendingStatus
+import dev.weg.alfa.modules.models.tool.ToolResponse
 import java.time.LocalDateTime
 
 data class LendingRequest(
@@ -18,6 +20,8 @@ data class LendingResponse(
     val estimatedReturn: LocalDateTime,
     val timeOfReturn: LocalDateTime? = null,
     val observation: String? = null,
+    val employee: Employee,
+    val tool: ToolResponse,
 )
 
 data class LendingPatch(

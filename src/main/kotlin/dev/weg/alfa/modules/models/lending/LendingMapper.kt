@@ -3,6 +3,7 @@ package dev.weg.alfa.modules.models.lending
 import dev.weg.alfa.modules.models.employee.Employee
 import dev.weg.alfa.modules.models.simpleModels.LendingStatus
 import dev.weg.alfa.modules.models.tool.Tool
+import dev.weg.alfa.modules.models.tool.toResponse
 import java.time.LocalDateTime
 
 fun LendingRequest.toEntity(
@@ -29,6 +30,8 @@ fun Lending.toResponse(): LendingResponse =
         estimatedReturn = this.estimatedReturn,
         timeOfReturn = this.timeOfReturn,
         observation = this.observation,
+        employee = this.employee,
+        tool = this.tool.toResponse()
     )
 
 fun Lending.applyPatch(patch: LendingPatch, newStatus: LendingStatus? = null): Lending =
