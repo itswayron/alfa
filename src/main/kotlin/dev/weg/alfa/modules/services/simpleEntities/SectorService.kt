@@ -7,6 +7,7 @@ import dev.weg.alfa.modules.repositories.simpleEntities.SectorRepository
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
+// Tests: When and if this class grows in behavior, create unit tests.
 @Service
 class SectorService(private val repository: SectorRepository) {
     private val logger = LoggerFactory.getLogger(this::class.java)

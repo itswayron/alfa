@@ -19,6 +19,29 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 
+// TODO: Unit Test : Should create movement successfully saving entity and updating stock amount
+// TODO: Unit Test : Should apply correct quantity sign logic and update new stock amount
+// TODO: Unit Test : Should fail creation when resulting stock goes negative
+// TODO: Unit Test : Should calculate average price only when movement type affects average price
+// TODO: Unit Test : Should correctly calculate weighted average price from last movements
+// TODO: Unit Test : Should ignore average price calculation when no movements found
+// TODO: Unit Test : Should use default price=0.0 when movement price is null in average price calculation
+
+// TODO: Unit Test : Should retrieve movement by id and map to response DTO
+// TODO: Unit Test : Should filter and paginate movements returning valid PageDTO
+
+// TODO: Unit Test : Should update movement applying only provided patch fields
+// TODO: Unit Test : Should update movementBatch only when patch contains movementBatchId
+// TODO: Unit Test : Should update movementStatus only when patch contains statusId
+
+// TODO: Unit Test : Should delete movement by id and call repository delete
+
+// TODO: Integration Test : Should persist full movement lifecycle updating stock and average price
+// TODO: Integration Test : Should block movement creation when resulting stock becomes negative
+// TODO: Integration Test : Should apply correct stock updates across multiple sequential movements
+// TODO: Integration Test : Should calculate average price correctly in real database scenario
+// TODO: Integration Test : Should update movement via patch and persist changes in database
+// TODO: Integration Test : Should filter and paginate movements using real database queries
 @Service
 class MovementService(
     private val repository: MovementRepository,

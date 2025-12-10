@@ -16,6 +16,33 @@ import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 
+// TODO: Unit Test : Should sanitize ItemRequest fields before creation
+// TODO: Unit Test : Should throw when groupId is invalid during item creation
+// TODO: Unit Test : Should throw when subgroupId is invalid during item creation
+// TODO: Unit Test : Should throw when measurementUnityId is invalid during item creation
+// TODO: Unit Test : Should create a new item successfully when all dependencies are valid
+
+// TODO: Unit Test : Should retrieve item by ID and map to response correctly
+
+// TODO: Unit Test : Should map Page<Item> to PageDTO<ItemResponse> in getItems
+
+// TODO: Unit Test : Should apply partial update preserving unspecified fields
+// TODO: Unit Test : Should apply partial update replacing only provided fields
+// TODO: Unit Test : Should throw when patch references invalid group/subgroup/unit/supplier
+// TODO: Unit Test : Should save patched item with correct final state
+
+// TODO: Unit Test : Should delete item with existing image and trigger image deletion
+// TODO: Unit Test : Should delete item without image without calling image service
+
+// TODO: Unit Test : Should upload new image after deleting previous one
+// TODO: Unit Test : Should upload image for item without previous image
+
+// TODO: Unit Test : Should delete only the image when calling deleteImage() (not the item)
+
+// TODO: Integration Test : Should create an item end-to-end with DB and return correct response
+// TODO: Integration Test : Should update item partially and persist changes correctly
+// TODO: Integration Test : Should return paginated items correctly
+// TODO: Integration Test : Should delete item from database
 @Service
 class ItemService(
     private val repository: ItemRepository,

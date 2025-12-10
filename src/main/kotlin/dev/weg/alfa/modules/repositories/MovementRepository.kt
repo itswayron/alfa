@@ -11,6 +11,12 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface MovementRepository : JpaRepository<Movement, Int>, JpaSpecificationExecutor<Movement> {
+
+    // TODO: Integration Test : findLastMovementsAffectingAveragePrice should return only movements for the given stock
+    // TODO: Integration Test : findLastMovementsAffectingAveragePrice should filter out movements where affectsAveragePrice = false
+    // TODO: Integration Test : findLastMovementsAffectingAveragePrice should filter out movements with status != 'CONCLUIDO'
+    // TODO: Integration Test : findLastMovementsAffectingAveragePrice should return results ordered by date descending
+    // TODO: Integration Test : findLastMovementsAffectingAveragePrice should respect pagination and return limited number of records
     @Query(
         """
         SELECT m FROM Movement m 

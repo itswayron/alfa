@@ -12,6 +12,23 @@ import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 
+// TODO: Unit Test : Should create stock using correct repositories and return proper DTO
+// TODO: Unit Test : Should throw when itemId does not exist during creation
+// TODO: Unit Test : Should throw when sectorId does not exist during creation
+// TODO: Unit Test : Should throw when positionId does not exist during creation
+
+// TODO: Unit Test : Should update stock applying only patched fields
+// TODO: Unit Test : Should fetch sector only when sectorId is present in patch
+// TODO: Unit Test : Should fetch position only when positionId is present in patch
+// TODO: Unit Test : Should propagate exception when stockId does not exist during update
+
+// TODO: Unit Test : Should delete stock calling repository delete with correct entity
+
+// TODO: Integration Test : Should persist full stock lifecycle (create → fetch → delete)
+// TODO: Integration Test : Should update stock partially and persist changes correctly
+// TODO: Integration Test : Should filter stocks using specification
+// TODO: Integration Test : Should paginate results correctly
+// TODO: Integration Test : Should fail creation when FK references invalid entity
 @Service
 class StockService(
     private val stockRepository: StockRepository,

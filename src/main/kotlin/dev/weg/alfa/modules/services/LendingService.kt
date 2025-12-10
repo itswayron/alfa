@@ -15,6 +15,25 @@ import jakarta.transaction.Transactional
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
+// TODO: Unit Test : Should create lending successfully updating tool state and saving lending
+// TODO: Unit Test : Should fail creation when tool is already loaned
+// TODO: Unit Test : Should fail creation when tool reached maximum usages
+// TODO: Unit Test : Should save tool before saving lending during creation
+
+// TODO: Unit Test : Should return tool successfully updating usages and status
+// TODO: Unit Test : Should fail return when returnTime is before departureTime
+// TODO: Unit Test : Should fail return when tool is not marked as loaned
+// TODO: Unit Test : Should save updated tool before saving updated lending on return
+
+// TODO: Unit Test : Should retrieve all lendings and convert them to response DTOs
+
+// TODO: Unit Test : Should delete lending by id calling repository methods correctly
+
+// TODO: Integration Test : Should persist full lending lifecycle (create → return → fetch)
+// TODO: Integration Test : Should fail creation for loaned or exhausted tool
+// TODO: Integration Test : Should fail return with invalid timestamps or inconsistent tool state
+// TODO: Integration Test : Should increment tool actual usages after return
+// TODO: Integration Test : Should delete lending and reflect changes in database
 @Service
 class LendingService(
     private val repositoryLending: LendingRepository,

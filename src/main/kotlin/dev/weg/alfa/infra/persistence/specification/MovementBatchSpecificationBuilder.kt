@@ -7,6 +7,7 @@ import jakarta.persistence.criteria.Root
 import org.springframework.data.jpa.domain.Specification
 import java.time.LocalDateTime
 
+//TODO: Create testes checking the Specifications, testing with an H2 database and verify the results
 class MovementBatchSpecificationBuilder {
     private val predicates = mutableListOf<(root: Root<MovementBatch>, cb: CriteriaBuilder) -> Predicate>()
 

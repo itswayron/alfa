@@ -7,6 +7,9 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.security.core.context.SecurityContextHolder
 
+// TODO: Unit Test : getCurrentUser should return user when username exists
+// TODO: Unit Test : getCurrentUser should throw UserNotFoundException when username does not exist
+// TODO: Unit Test : getCurrentUser should handle missing or null authentication (define expected behavior)
 fun UserRepository.getCurrentUser(): User {
     val logger: Logger = LoggerFactory.getLogger(this::class.java)
 

@@ -16,6 +16,32 @@ import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 
+// TODO: Unit Test : Should create a movement batch with supplier and call movementService for each movement
+// TODO: Unit Test : Should create a movement batch without supplier (null partner) and still persist entity
+// TODO: Unit Test : Should propagate exception thrown by movementService during creation
+// TODO: Integration Test : Should persist batch and its movements with transactional consistency
+// TODO: Integration Test : Should rollback entire operation if a movement creation fails
+
+// TODO: Unit Test : Should fetch batch by code and return its movements
+// TODO: Unit Test : Should fetch batch by numeric identifier (ID) when code is not found
+// TODO: Unit Test : Should throw EntityNotFoundException when identifier is invalid
+// TODO: Integration Test : Should fetch batch by code in real database
+// TODO: Integration Test : Should fetch batch by ID in real database
+
+// TODO: Unit Test : Should list batches using specification filter
+// TODO: Unit Test : Should map movement count for each batch in paginated result
+// TODO: Unit Test : Should return empty page when no batch matches filter
+// TODO: Integration Test : Should correctly filter and paginate batches
+
+// TODO: Unit Test : Should update supplier when patch contains supplierId
+// TODO: Unit Test : Should not change supplier when patch has null supplierId
+// TODO: Unit Test : Should apply patch fields correctly using applyPatch
+// TODO: Unit Test : Should throw when batch does not exist during update
+// TODO: Integration Test : Should update batch fields and persist changes
+
+// TODO: Unit Test : Should delete existing movement batch
+// TODO: Unit Test : Should throw EntityNotFoundException when deleting non-existing batch
+// TODO: Integration Test : Should delete batch and evaluate cascade behavior on movements
 @Service
 class MovementBatchService(
     private val repository: MovementBatchRepository,

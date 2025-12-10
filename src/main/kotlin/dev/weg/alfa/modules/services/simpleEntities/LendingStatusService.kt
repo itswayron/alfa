@@ -5,6 +5,7 @@ import dev.weg.alfa.modules.repositories.simpleEntities.LendingStatusRepository
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
+// Tests: When and if this class grows in behavior, create unit tests.
 @Service
 class LendingStatusService(private val repository: LendingStatusRepository) {
     private val logger = LoggerFactory.getLogger(this::class.java)

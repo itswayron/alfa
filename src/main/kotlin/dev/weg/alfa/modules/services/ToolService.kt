@@ -10,6 +10,19 @@ import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 
+// TODO: Unit Test : Should create tool when subgroup exists
+// TODO: Unit Test : Should throw when creating tool with non-existent subgroup
+
+// TODO: Unit Test : Should return filtered tools using specification
+// TODO: Unit Test : Should correctly map paginated tools to DTO
+
+// TODO: Unit Test : Should update tool when it exists
+// TODO: Unit Test : Should update tool with new subgroup when subgroupID changes
+// TODO: Unit Test : Should throw when updating non-existent tool
+// TODO: Unit Test : Should throw when updating tool with non-existent subgroup
+
+// TODO: Unit Test : Should delete tool when it exists
+// TODO: Unit Test : Should throw when deleting non-existent tool
 @Service
 class ToolService(
     private val toolRepository: ToolRepository,

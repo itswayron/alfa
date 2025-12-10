@@ -6,6 +6,7 @@ import jakarta.persistence.criteria.Predicate
 import jakarta.persistence.criteria.Root
 import org.springframework.data.jpa.domain.Specification
 
+//TODO: Create testes checking the Specifications, testing with an H2 database and verify the results
 class StockSpecificationBuilder {
     private val predicates = mutableListOf<(root: Root<Stock>, cb: CriteriaBuilder) -> Predicate>()
 

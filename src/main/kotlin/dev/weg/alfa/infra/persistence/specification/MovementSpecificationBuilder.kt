@@ -7,8 +7,8 @@ import jakarta.persistence.criteria.Root
 import org.springframework.data.jpa.domain.Specification
 import java.time.LocalDateTime
 
+//TODO: Create testes checking the Specifications, testing with an H2 database and verify the results
 class MovementSpecificationBuilder {
-
     private val predicates = mutableListOf<(root: Root<Movement>, cb: CriteriaBuilder) -> Predicate>()
 
     fun whereStockId(stockId: Int?): MovementSpecificationBuilder {

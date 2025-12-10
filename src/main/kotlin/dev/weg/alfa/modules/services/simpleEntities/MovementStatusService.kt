@@ -5,6 +5,7 @@ import dev.weg.alfa.modules.repositories.simpleEntities.MovementStatusRepository
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
+// Tests: When and if this class grows in behavior, create unit tests.
 @Service
 class MovementStatusService(private val repository: MovementStatusRepository) {
     private val logger = LoggerFactory.getLogger(this::class.java)

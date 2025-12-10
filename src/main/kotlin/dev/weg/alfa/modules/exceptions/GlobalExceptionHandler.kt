@@ -12,6 +12,19 @@ import org.springframework.web.multipart.MaxUploadSizeExceededException
 @RestControllerAdvice
 class GlobalExceptionHandler {
 
+    // TODO: Unit Test : Should return ApiError from ApiException using toApiError() with correct status
+    // TODO: Unit Test : Should return 404 ApiError when handling EntityNotFoundException
+    // TODO: Unit Test : Should return 500 ApiError when handling non-ApiException and non-EntityNotFoundException
+    // TODO: Unit Test : Should include exception message in ApiError.details for generic exception in handleCustomExceptions
+    // TODO: Unit Test : Should return 500 ApiError with localizedMessage in details when calling handleUnknownException
+    // TODO: Unit Test : Should return 413 ApiError with custom file-size message when handling MaxUploadSizeExceededException
+
+    // TODO: Integration Test : Should map ApiException thrown in controller to correct JSON ApiError via GlobalExceptionHandler
+    // TODO: Integration Test : Should map EntityNotFoundException to 404 JSON ApiError
+    // TODO: Integration Test : Should map unexpected RuntimeException to 500 JSON ApiError using handleUnknownException
+    // TODO: Integration Test : Should map MaxUploadSizeExceededException to 413 JSON ApiError
+
+
     @ExceptionHandler(
         EntityNotFoundException::class
     )

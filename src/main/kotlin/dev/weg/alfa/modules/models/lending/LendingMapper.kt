@@ -52,4 +52,3 @@ fun Lending.returnWith(dto: ReturnLending, status: LendingStatus): Lending {
     this.status = status
     return this
 }
-

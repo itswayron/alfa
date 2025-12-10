@@ -7,6 +7,11 @@ import dev.weg.alfa.modules.repositories.utils.findByIdOrThrow
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
+// TODO: Unit Test : Should sanitize BusinessPartner fields on create
+// TODO: Unit Test : Should apply patch updating only non-null fields
+// TODO: Unit Test : Should preserve old values when patch fields are all null
+// TODO: Unit Test : Should throw when partner ID does not exist in findPartnerById
+// TODO: Unit Test : Should delete partner by ID using repository
 @Service
 class BusinessPartnerService(
     private val repository: BusinessPartnerRepository,

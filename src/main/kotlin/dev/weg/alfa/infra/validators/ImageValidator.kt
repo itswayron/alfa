@@ -17,6 +17,14 @@ class ImageValidator : Validator<MultipartFile> {
         ImageIO.scanForPlugins()
     }
 
+    // TODO: Test: Should throw ImageNotValidException when file is empty.
+    // TODO: Test: Should throw ImageNotValidException when contentType is not an image/*.
+    // TODO: Test: Should throw ImageNotValidException when file size exceeds maxSizeBytes.
+    // TODO: Test: Should throw ImageNotValidException when ImageIO.read() returns null (unsupported format).
+    // TODO: Test: Should throw ImageNotValidException when image dimensions are below minimum (200x200).
+    // TODO: Test: Should NOT throw when file is valid and meets all constraints.
+    // TODO: Test: Should accumulate multiple error messages when more than one validation fails.
+    // TODO: Test: Should call ImageIO.read() exactly once in validateImageDimensions().
     override fun validate(t: MultipartFile) {
         logger.debug("Validating image: ${t.name}")
         val errors = mutableListOf<String>()
