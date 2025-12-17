@@ -5,9 +5,6 @@ import dev.weg.alfa.modules.exceptions.ExceptionProvider
 import jakarta.persistence.EntityNotFoundException
 import org.springframework.data.jpa.repository.JpaRepository
 
-// TODO: Unit Test : findByIdOrThrow should return entity when repository finds it
-// TODO: Unit Test : findByIdOrThrow should throw custom exception when repository implements ExceptionProvider
-// TODO: Unit Test : findByIdOrThrow should throw EntityNotFoundException when repository does not implement ExceptionProvider
 inline fun <reified T : Any, ID : Any> JpaRepository<T, ID>.findByIdOrThrow(id: ID): T {
     val callerClassName = Throwable().stackTrace[1].className
     val logger = LoggerFactory.getLogger(Class.forName(callerClassName))

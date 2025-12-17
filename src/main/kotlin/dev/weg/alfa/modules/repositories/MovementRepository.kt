@@ -2,6 +2,7 @@ package dev.weg.alfa.modules.repositories
 
 import dev.weg.alfa.modules.models.movement.Movement
 import dev.weg.alfa.modules.models.stock.Stock
+import jakarta.persistence.Id
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor
@@ -36,4 +37,6 @@ interface MovementRepository : JpaRepository<Movement, Int>, JpaSpecificationExe
     fun findAllByMovementBatchId(batchId: Int): List<Movement>
 
     fun countByMovementBatchId(batchId: Int): Long
+
+    fun findAllByStockId(stockId: Int): List<Movement>
 }

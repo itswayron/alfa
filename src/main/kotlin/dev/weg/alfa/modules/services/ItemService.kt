@@ -65,7 +65,7 @@ class ItemService(
         val unit = unitRepository.findByIdOrThrow(request.measurementUnityId)
         val supplier = partnerRepository.findByIdIfNotNull(request.mainSupplierId)
 
-        val newItem = request.toEntity(
+        val newItem = sanitizedRequest.toEntity(
             group = group, subgroup = subGroup, unit = unit, supplier = supplier
         )
 

@@ -8,17 +8,10 @@ import dev.weg.alfa.modules.repositories.simpleEntities.SectorRepository
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
-// TODO: Unit Test : Should create employee when sector exists
-// TODO: Unit Test : Should throw when sector does not exist on create
-// TODO: Unit Test : Should update employee with new sector when both exist
-// TODO: Unit Test : Should throw when employee does not exist on update
-// TODO: Unit Test : Should throw when sector does not exist on update
-// TODO: Unit Test : Should delete employee when exists
-// TODO: Unit Test : Should throw when deleting non-existent employee
 @Service
 class EmployeeService(
     private val employeeRepository: EmployeeRepository,
-    private val sectorRepository: SectorRepository
+    private val sectorRepository: SectorRepository,
 ) {
     private val logger = LoggerFactory.getLogger(this::class.java)
 
