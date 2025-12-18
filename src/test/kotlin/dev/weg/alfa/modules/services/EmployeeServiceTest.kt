@@ -167,7 +167,7 @@ class EmployeeServiceTest : BaseTest() {
         }
 
         verify(exactly = 1) { employeeRepo.findById(404) }
-        verify(exactly = 0) { sectorRepo.findById(any()) }
+        verify(exactly = 0) { sectorRepo.findById(any<Int>()) }
         verify(exactly = 0) { employeeRepo.save(any<Employee>()) }
     }
 
@@ -242,7 +242,7 @@ class EmployeeServiceTest : BaseTest() {
         }
 
         verify(exactly = 1) { employeeRepo.findById(999) }
-        verify(exactly = 0) { employeeRepo.delete(any()) }
+        verify(exactly = 0) { employeeRepo.delete(any<Employee>()) }
     }
 
     @Test

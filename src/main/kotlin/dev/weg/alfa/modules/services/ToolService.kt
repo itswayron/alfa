@@ -5,24 +5,12 @@ import dev.weg.alfa.modules.models.dtos.toDTO
 import dev.weg.alfa.modules.models.tool.*
 import dev.weg.alfa.modules.repositories.ToolRepository
 import dev.weg.alfa.modules.repositories.simpleEntities.SubgroupRepository
+import dev.weg.alfa.modules.repositories.utils.findByIdIfNotNull
 import dev.weg.alfa.modules.repositories.utils.findByIdOrThrow
 import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 
-// TODO: Unit Test : Should create tool when subgroup exists
-// TODO: Unit Test : Should throw when creating tool with non-existent subgroup
-
-// TODO: Unit Test : Should return filtered tools using specification
-// TODO: Unit Test : Should correctly map paginated tools to DTO
-
-// TODO: Unit Test : Should update tool when it exists
-// TODO: Unit Test : Should update tool with new subgroup when subgroupID changes
-// TODO: Unit Test : Should throw when updating non-existent tool
-// TODO: Unit Test : Should throw when updating tool with non-existent subgroup
-
-// TODO: Unit Test : Should delete tool when it exists
-// TODO: Unit Test : Should throw when deleting non-existent tool
 @Service
 class ToolService(
     private val toolRepository: ToolRepository,
@@ -54,12 +42,7 @@ class ToolService(
         val (id, request) = command
         logger.info("Updating tool with $id with name: ${request.name}.")
         val oldTool = toolRepository.findByIdOrThrow(id)
-        val newSubgroupId = request.subgroupID
-        val newSubgroup = if (newSubgroupId != null) {
-            subgroupRepository.findByIdOrThrow(newSubgroupId)
-        } else {
-            null
-        }
+        val newSubgroup = subgroupRepository.findByIdIfNotNull(request.subgroupID)
         val updatedTool = oldTool.applyPatch(
             patch = request,
             subgroup = newSubgroup

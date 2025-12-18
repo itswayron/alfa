@@ -13,6 +13,7 @@ import org.springframework.test.context.TestPropertySource
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
+// TODO: Change this H2 database to a Testcontainers PostgreSQL with docker, to better reflect production environment
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
 @TestPropertySource(
@@ -26,9 +27,14 @@ import kotlin.test.assertTrue
 )
 class MovementRepositoryTest : BaseTest() {
 
-    @Autowired lateinit var jdbc: JdbcTemplate
-    @Autowired lateinit var movementRepository: MovementRepository
-    @Autowired lateinit var stockRepository: StockRepository
+    @Autowired
+    lateinit var jdbc: JdbcTemplate
+
+    @Autowired
+    lateinit var movementRepository: MovementRepository
+
+    @Autowired
+    lateinit var stockRepository: StockRepository
 
     @BeforeEach
     fun setupSchema() {

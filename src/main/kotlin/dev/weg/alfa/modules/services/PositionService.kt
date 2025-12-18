@@ -6,10 +6,6 @@ import dev.weg.alfa.modules.repositories.utils.findByIdOrThrow
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
-// TODO: Unit Test : Should update position when it exists
-// TODO: Unit Test : Should throw when updating non-existent position
-// TODO: Unit Test : Should delete position when it exists
-// TODO: Unit Test : Should throw when deleting non-existent position
 @Service
 class PositionService(private val repository: PositionRepository) {
     private val logger = LoggerFactory.getLogger(this::class.java)
