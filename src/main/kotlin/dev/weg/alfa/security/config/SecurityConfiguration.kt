@@ -24,6 +24,7 @@ class SecurityConfiguration(private val authenticationProvider: AuthenticationPr
     fun securityFilterChain(
         http: HttpSecurity, jwtAuthenticationFilter: JwtAuthenticationFilter
     ): DefaultSecurityFilterChain = http.csrf { it.disable() }.cors {}.authorizeHttpRequests { registry ->
+        registry.requestMatchers(ApiRoutes.PING).permitAll()
         registry.requestMatchers("${ApiRoutes.AUTH}/status").authenticated()
         registry.requestMatchers("${ApiRoutes.AUTH}/**").permitAll().requestMatchers("${ApiRoutes.USER}/**")
             .permitAll().requestMatchers("/error").permitAll()
