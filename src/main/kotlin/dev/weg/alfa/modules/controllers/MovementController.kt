@@ -2,10 +2,7 @@ package dev.weg.alfa.modules.controllers
 
 import dev.weg.alfa.config.ApiRoutes
 import dev.weg.alfa.modules.models.dtos.PageDTO
-import dev.weg.alfa.modules.models.movement.MovementFilter
-import dev.weg.alfa.modules.models.movement.MovementPatch
-import dev.weg.alfa.modules.models.movement.MovementRequest
-import dev.weg.alfa.modules.models.movement.MovementResponse
+import dev.weg.alfa.modules.models.movement.*
 import dev.weg.alfa.modules.services.MovementService
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
@@ -33,8 +30,8 @@ class MovementController(private val service: MovementService) {
     fun getAllMovements(
         @RequestParam(required = false) stockId: Int?,
         @RequestParam(required = false) batchId: Int?,
-        @RequestParam(required = false) typeId: Int?,
-        @RequestParam(required = false) statusId: Int?,
+        @RequestParam(required = false) type: MovementType?,
+        @RequestParam(required = false) status: MovementStatus?,
         @RequestParam(required = false) sectorId: Int?,
         @RequestParam(required = false) employeeId: Int?,
         @RequestParam(required = false) observation: String?,
@@ -45,7 +42,7 @@ class MovementController(private val service: MovementService) {
         @RequestParam(defaultValue = "date") sort: String,
         @RequestParam(defaultValue = "DESC") direction: String,
     ): ResponseEntity<PageDTO<MovementResponse>> {
-        val filter = MovementFilter(stockId, batchId, typeId, statusId, sectorId, employeeId, observation, dateFrom, dateTo)
+        val filter = MovementFilter(stockId, batchId, type, status, sectorId, employeeId, observation, dateFrom, dateTo)
         val pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(direction), sort))
 
         val response = service.getAllMovements(filter, pageable)

@@ -45,10 +45,3 @@ fun Lending.applyPatch(patch: LendingPatch, newStatus: LendingStatus? = null): L
         employee = this.employee,
         tool = this.tool
     )
-
-fun Lending.returnWith(dto: ReturnLending, status: LendingStatus): Lending {
-    this.timeOfReturn = dto.timeOfReturn
-    this.observation = dto.observation ?: this.observation
-    this.status = status
-    return this
-}

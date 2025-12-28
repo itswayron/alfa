@@ -5,8 +5,8 @@ import java.time.LocalDateTime
 data class MovementFilter(
     val stockId: Int? = null,
     val batchId: Int? = null,
-    val typeId: Int? = null,
-    val statusId: Int? = null,
+    val type: MovementType? = null,
+    val status: MovementStatus? = null,
     val sectorId: Int? = null,
     val employeeId: Int? = null,
     val observation: String? = null,

@@ -1,6 +1,8 @@
 package dev.weg.alfa.infra.persistence.specification
 
 import dev.weg.alfa.modules.models.movement.Movement
+import dev.weg.alfa.modules.models.movement.MovementStatus
+import dev.weg.alfa.modules.models.movement.MovementType
 import jakarta.persistence.criteria.CriteriaBuilder
 import jakarta.persistence.criteria.Predicate
 import jakarta.persistence.criteria.Root
@@ -29,19 +31,19 @@ class MovementSpecificationBuilder {
         return this
     }
 
-    fun whereType(typeId: Int?): MovementSpecificationBuilder {
-        if (typeId != null) {
+    fun whereType(type: MovementType?): MovementSpecificationBuilder {
+        if (type != null) {
             predicates += { root, cb ->
-                cb.equal(root.join<Movement, Any>("type").get<Int>("id"), typeId)
+                cb.equal(root.get<MovementType>("type"), type)
             }
         }
         return this
     }
 
-    fun whereStatus(statusId: Int?): MovementSpecificationBuilder {
-        if (statusId != null) {
+    fun whereStatus(status: MovementStatus?): MovementSpecificationBuilder {
+        if (status != null) {
             predicates += { root, cb ->
-                cb.equal(root.join<Movement, Any>("status").get<Int>("id"), statusId)
+                cb.equal(root.get<MovementStatus>("status"),status)
             }
         }
         return this

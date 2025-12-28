@@ -2,18 +2,11 @@ package dev.weg.alfa.modules.models.tool
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import dev.weg.alfa.modules.models.simpleModels.Subgroup
-import jakarta.persistence.Entity
-import jakarta.persistence.FetchType
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import jakarta.persistence.JoinColumn
-import jakarta.persistence.ManyToOne
-import jakarta.persistence.Table
+import jakarta.persistence.*
 
 @Entity
 @Table(name = "tool")
-@JsonIgnoreProperties("hibernateLazyInitializer","handler")
+@JsonIgnoreProperties("hibernateLazyInitializer", "handler")
 data class Tool(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,4 +19,26 @@ data class Tool(
     @JoinColumn(name = "subgroup_id", nullable = false)
     val subgroup: Subgroup,
     var isLoan: Boolean,
-)
+) {
+
+    fun setLent(): Tool {
+        if (isLoan || maximumUsages >= actualUsages) {
+            // TODO: create a better way to validate toolUsage (i.e. a toolStatus variable)
+            throw IllegalStateException("Tool $name ID=${id} is already loaned.")
+            // TODO: Create custom exception for this case
+        }
+        isLoan = true
+        return this
+    }
+
+    fun unsetLent(): Tool {
+        if (!isLoan) {
+            throw IllegalStateException("Can't return an available tool")
+            // TODO: Create custom exception for this case
+        }
+
+        actualUsages++
+        isLoan = false
+        return this
+    }
+}

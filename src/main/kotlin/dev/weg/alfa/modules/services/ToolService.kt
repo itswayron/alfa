@@ -5,7 +5,6 @@ import dev.weg.alfa.modules.models.dtos.toDTO
 import dev.weg.alfa.modules.models.tool.*
 import dev.weg.alfa.modules.repositories.ToolRepository
 import dev.weg.alfa.modules.repositories.simpleEntities.SubgroupRepository
-import dev.weg.alfa.modules.repositories.utils.findByIdIfNotNull
 import dev.weg.alfa.modules.repositories.utils.findByIdOrThrow
 import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Pageable
@@ -42,7 +41,13 @@ class ToolService(
         val (id, request) = command
         logger.info("Updating tool with $id with name: ${request.name}.")
         val oldTool = toolRepository.findByIdOrThrow(id)
-        val newSubgroup = subgroupRepository.findByIdIfNotNull(request.subgroupID)
+
+        val newSubgroup = if (request.subgroupID != null) {
+            subgroupRepository.findByIdOrThrow(request.subgroupID)
+        } else {
+            oldTool.subgroup
+        }
+
         val updatedTool = oldTool.applyPatch(
             patch = request,
             subgroup = newSubgroup

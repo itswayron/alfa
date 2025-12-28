@@ -47,8 +47,7 @@ class MovementBatchService(
     private val repository: MovementBatchRepository,
     private val partnerRepository: BusinessPartnerRepository,
     private val movementService: MovementService,
-    private val movementRepository: MovementRepository,
-    //private val validator: Validator<MovementBatch>,
+    private val movementRepository: MovementRepository
 ) {
     private val logger = LoggerFactory.getLogger(this::class.java)
 
@@ -57,10 +56,8 @@ class MovementBatchService(
         logger.info("Creating Movement Batch with code: ${request.code}")
 
         val mainSupplier = partnerRepository.findByIdIfNotNull(request.partnerId)
-
         val newOrder = request.toEntity(mainSupplier)
 
-        // validator.validate(newOrder)
         val entity = repository.save(newOrder)
         logger.info("Movement Batch: ${entity.code} created with id: ${entity.id}")
 
@@ -125,7 +122,6 @@ class MovementBatchService(
             partner = newSupplier
         )
 
-        // validator.validate(updatedOrder)
         val response = repository.save(updatedOrder).toResponse(movementRepository.countByMovementBatchId(id))
         logger.info("Movement Batch updated: ID={}, code='{}'", response.id, response.code)
 

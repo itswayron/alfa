@@ -1,0 +1,34 @@
+ALTER TABLE movement
+DROP COLUMN IF EXISTS type_id;
+
+DROP TYPE IF EXISTS movement_type_enum;
+
+CREATE TYPE movement_type_enum AS ENUM (
+    'ENTRY',
+    'ENTRY_ADJUSTMENT',
+    'EXIT',
+    'CONSUMPTION',
+    'EXIT_ADJUSTMENT',
+    'INTERNAL_MOVEMENT',
+    'AUDIT'
+);
+
+ALTER TABLE movement
+ADD COLUMN type_enum movement_type_enum;
+
+UPDATE movement
+SET type_enum = CASE type_id
+    WHEN 1 THEN 'ENTRY'
+    WHEN 2 THEN 'ENTRY_ADJUSTMENT'
+    WHEN 3 THEN 'EXIT'
+    WHEN 4 THEN 'CONSUMPTION'
+    WHEN 5 THEN 'EXIT_ADJUSTMENT'
+    WHEN 6 THEN 'INTERNAL_MOVEMENT'
+    WHEN 7 THEN 'AUDIT'
+END;
+
+ALTER TABLE movement
+ALTER COLUMN type_enum SET NOT NULL;
+
+ALTER TABLE movement
+DROP COLUMN type_id;

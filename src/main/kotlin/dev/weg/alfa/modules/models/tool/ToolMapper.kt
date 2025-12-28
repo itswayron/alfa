@@ -30,15 +30,15 @@ fun Tool.toResponse(): ToolResponse =
 
 fun Tool.applyPatch(
     patch: ToolPatch,
-    subgroup: Subgroup?
+    subgroup: Subgroup,
 ): Tool =
     Tool(
         id = this.id,
+        subgroup = subgroup,
         name = patch.name ?: this.name,
         description = patch.description ?: this.description,
         maximumUsages = patch.maximumUsages ?: this.maximumUsages,
         actualUsages = this.actualUsages,
-        subgroup = subgroup ?: this.subgroup,
         isLoan = patch.isLoan ?: this.isLoan,
     )
 

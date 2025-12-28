@@ -27,7 +27,7 @@ data class ItemResponse(
     val mainSupplier: String? = null,
 )
 
-class ItemRequest(
+data class ItemRequest(
     val code: String,
     val description: String,
     val groupId: Int,

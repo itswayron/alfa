@@ -33,4 +33,6 @@ object ApiRoutes {
     const val MOVEMENT = "/movement"
     const val MOVEMENT_STATUS = "/movement_status"
     const val MOVEMENT_TYPES = "/movement_types"
+
+    const val PING = "/ping"
 }

@@ -1,8 +1,7 @@
 package dev.weg.alfa.modules.controllers.simpleEntities
 
 import dev.weg.alfa.config.ApiRoutes
-import dev.weg.alfa.modules.models.simpleModels.MovementStatus
-import dev.weg.alfa.modules.services.simpleEntities.MovementStatusService
+import dev.weg.alfa.modules.models.movement.MovementStatus
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -11,10 +10,11 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping(ApiRoutes.MOVEMENT_STATUS)
-class MovementStatusController(private val service: MovementStatusService) {
+class MovementStatusController {
+
     @GetMapping
     fun getAllMovementStatus(): ResponseEntity<List<MovementStatus>> {
-        val response = ResponseEntity.status(HttpStatus.OK).body(service.getAllMovementStatus())
-        return response
+        val types = MovementStatus.entries.toList()
+        return ResponseEntity(types, HttpStatus.OK)
     }
 }

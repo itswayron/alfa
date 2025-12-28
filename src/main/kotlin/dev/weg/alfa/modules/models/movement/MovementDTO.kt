@@ -9,9 +9,9 @@ data class MovementRequest(
     val stockId: Int,
     val movementBatchId: Int?,
     val date: LocalDateTime = LocalDateTime.now(),
-    val typeId: Int,
+    val type: MovementType,
     val employeeId: Int,
-    val statusId: Int,
+    val status: MovementStatus,
     val sectorId: Int,
 )
 
@@ -20,7 +20,7 @@ data class MovementPatch(
     val price: Double? = null,
     val observation: String? = null,
     val movementBatchId: Int? = null,
-    val statusId: Int? = null,
+    val status: MovementStatus? = null,
 )
 
 data class MovementResponse(
