@@ -1,6 +1,7 @@
 package dev.weg.alfa.modules.models.user
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import dev.weg.alfa.security.models.role.Role
 import jakarta.persistence.*
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
@@ -29,8 +30,9 @@ data class User(
     @Column(name = "password")
     var passwordField: String,
 
-    @Enumerated(EnumType.STRING)
-    var role: Role = Role.USER,
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "role_id", nullable = false)
+    var role: Role,
 
     val createdAt: LocalDateTime = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS),
     var updatedAt: LocalDateTime = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS),
@@ -38,7 +40,15 @@ data class User(
     ) : UserDetails {
 
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
-        return mutableListOf(SimpleGrantedAuthority("ROLE_${role.name}"))
+        val authorities = mutableListOf<GrantedAuthority>()
+
+        authorities += SimpleGrantedAuthority("ROLE_${role.name}")
+
+        role.permissions.forEach { permission ->
+            authorities += SimpleGrantedAuthority(permission.name)
+        }
+
+        return authorities
     }
 
     override fun getPassword() = passwordField

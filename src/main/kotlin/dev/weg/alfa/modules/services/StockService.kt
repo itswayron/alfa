@@ -10,6 +10,7 @@ import dev.weg.alfa.modules.repositories.simpleEntities.SectorRepository
 import dev.weg.alfa.modules.repositories.utils.findByIdOrThrow
 import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Pageable
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Service
 
 // TODO: Unit Test : Should create stock using correct repositories and return proper DTO
@@ -38,6 +39,7 @@ class StockService(
 ) {
     private val logger = LoggerFactory.getLogger(this::class.java)
 
+    @PreAuthorize("hasAuthority('CREATE_STOCK')")
     fun createStock(request: StockRequest): StockResponse {
         logger.info("Creating Stock for item ID=${request.itemId}")
 
@@ -52,18 +54,21 @@ class StockService(
         return savedStock.toResponse()
     }
 
+    @PreAuthorize("hasAuthority('VIEW_STOCK')")
     fun getStockById(id: Int): StockResponse {
         logger.info("Fetching Stock with ID=$id")
         val stock = stockRepository.findByIdOrThrow(id)
         return stock.toResponse()
     }
 
+    @PreAuthorize("hasAuthority('VIEW_STOCK')")
     fun getStocks(pageable: Pageable): PageDTO<StockResponse> {
         logger.info("Fetching all Stocks, pageable=$pageable")
         val page = stockRepository.findAll(pageable)
         return page.map { it.toResponse() }.toDTO()
     }
 
+    @PreAuthorize("hasAuthority('VIEW_STOCK')")
     fun getFilteredStocks(
         filter: StockFilter,
         pageable: Pageable,
@@ -83,6 +88,7 @@ class StockService(
         return pageDTO
     }
 
+    @PreAuthorize("hasAuthority('UPDATE_STOCK')")
     fun updateStock(stockId: Int, patch: StockPatch): StockResponse {
         logger.info("Patching Stock ID=$stockId with data: $patch")
         val oldStock = stockRepository.findByIdOrThrow(stockId)
@@ -97,6 +103,7 @@ class StockService(
         return savedStock.toResponse()
     }
 
+    @PreAuthorize("hasAuthority('DELETE_STOCK')")
     fun deleteStock(stockId: Int) {
         logger.info("Deleting Stock with ID=$stockId")
         val stock = stockRepository.findByIdOrThrow(stockId)

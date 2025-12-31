@@ -14,6 +14,7 @@ import jakarta.persistence.EntityNotFoundException
 import jakarta.transaction.Transactional
 import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Pageable
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Service
 
 // TODO: Unit Test : Should create a movement batch with supplier and call movementService for each movement
@@ -52,6 +53,7 @@ class MovementBatchService(
     private val logger = LoggerFactory.getLogger(this::class.java)
 
     @Transactional
+    @PreAuthorize("hasAuthority('CREATE_BATCH')")
     fun createMovementBatch(request: MovementBatchRequest): MovementBatchResponseWithList {
         logger.info("Creating Movement Batch with code: ${request.code}")
 
@@ -69,6 +71,7 @@ class MovementBatchService(
         return entity.toResponseWithList(movements)
     }
 
+    @PreAuthorize("hasAuthority('VIEW_BATCH')")
     fun getBatchByIdentifier(identifier: String): MovementBatchResponseWithList {
         logger.info("Fetching Movement Batch with identifier: $identifier")
         val batch = repository.findByCode(identifier) ?: identifier.toIntOrNull()?.let { id ->
@@ -84,6 +87,7 @@ class MovementBatchService(
         return batch.toResponseWithList(movements)
     }
 
+    @PreAuthorize("hasAuthority('VIEW_BATCH')")
     fun getBatches(
         filter: MovementBatchFilter,
         pageable: Pageable,
@@ -108,6 +112,7 @@ class MovementBatchService(
         return pageDTO
     }
 
+    @PreAuthorize("hasAuthority('UPDATE_BATCH')")
     fun updateMovementBatch(command: Pair<Int, MovementBatchPatch>): MovementBatchResponse {
         val (id, patch) = command
         logger.info("Updating Movement Batch ID={} with patch: {}", id, patch)
@@ -128,6 +133,7 @@ class MovementBatchService(
         return response
     }
 
+    @PreAuthorize("hasAuthority('DELETE_BATCH')")
     fun deleteMovementBatchById(id: Int) {
         logger.info("Deleting Movement Batch with ID='{}'", id)
         val deletedOrder = repository.findByIdOrThrow(id)

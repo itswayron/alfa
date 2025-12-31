@@ -3,9 +3,10 @@ package dev.weg.alfa.modules.services
 import dev.weg.alfa.modules.models.employee.Employee
 import dev.weg.alfa.modules.models.employee.EmployeeRequest
 import dev.weg.alfa.modules.repositories.EmployeeRepository
-import dev.weg.alfa.modules.repositories.utils.findByIdOrThrow
 import dev.weg.alfa.modules.repositories.simpleEntities.SectorRepository
+import dev.weg.alfa.modules.repositories.utils.findByIdOrThrow
 import org.slf4j.LoggerFactory
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Service
 
 @Service
@@ -15,6 +16,7 @@ class EmployeeService(
 ) {
     private val logger = LoggerFactory.getLogger(this::class.java)
 
+    @PreAuthorize("hasAuthority('CREATE_EMPLOYEE')")
     fun createEmployee(request: EmployeeRequest): Employee {
         logger.info("Creating Employee with name: ${request.name} and sector with id ${request.sectorId}.")
         val sector = sectorRepository.findByIdOrThrow(request.sectorId)
@@ -23,6 +25,7 @@ class EmployeeService(
         return response
     }
 
+    @PreAuthorize("hasAuthority('READ_EMPLOYEE')")
     fun getAllEmployee(): List<Employee> {
         logger.info("Retrieving all employees from the database.")
         val response = employeeRepository.findAll()
@@ -30,6 +33,7 @@ class EmployeeService(
         return response
     }
 
+    @PreAuthorize("hasAuthority('UPDATE_EMPLOYEE')")
     fun editEmployee(command: Pair<Int, EmployeeRequest>): Employee {
         val (id, request) = command
         logger.info("Updating Employee with $id with name: ${request.name}.")
@@ -46,6 +50,7 @@ class EmployeeService(
         return updatedEmployee
     }
 
+    @PreAuthorize("hasAuthority('DELETE_EMPLOYEE')")
     fun deleteEmployeeById(id: Int) {
         logger.info("Deleting Employee with id: $id.")
         val delete = employeeRepository.findByIdOrThrow(id)

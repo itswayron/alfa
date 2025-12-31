@@ -2,9 +2,10 @@ package dev.weg.alfa.modules.services.simpleEntities
 
 import dev.weg.alfa.modules.models.dtos.NameRequest
 import dev.weg.alfa.modules.models.simpleModels.Sector
-import dev.weg.alfa.modules.repositories.utils.findByIdOrThrow
 import dev.weg.alfa.modules.repositories.simpleEntities.SectorRepository
+import dev.weg.alfa.modules.repositories.utils.findByIdOrThrow
 import org.slf4j.LoggerFactory
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Service
 
 // Tests: When and if this class grows in behavior, create unit tests.
@@ -12,12 +13,14 @@ import org.springframework.stereotype.Service
 class SectorService(private val repository: SectorRepository) {
     private val logger = LoggerFactory.getLogger(this::class.java)
 
+    @PreAuthorize("hasAuthority('MANAGE_SECTOR')")
     fun createSector(request: NameRequest): Sector {
         logger.info("Creating Sector with name: ${request.name}")
         val response = repository.save(Sector(name = request.name))
         return response
     }
 
+    @PreAuthorize("hasAuthority('VIEW_SECTOR')")
     fun getAllSectors(): List<Sector> {
         logger.info("Retrieving all sectors from the database")
         val response = repository.findAll()
@@ -25,6 +28,7 @@ class SectorService(private val repository: SectorRepository) {
         return response
     }
 
+    @PreAuthorize("hasAuthority('MANAGE_SECTOR')")
     fun editSector(command: Pair<Int, NameRequest>): Sector {
         val (id, newSector) = command
         logger.info("Update Sector with $id with name:${newSector.name}")
@@ -34,6 +38,7 @@ class SectorService(private val repository: SectorRepository) {
         return response
     }
 
+    @PreAuthorize("hasAuthority('MANAGE_SECTOR')")
     fun deleteSectorById(id: Int) {
         logger.info("Deleting Sector With Id $id")
         val delete = repository.findByIdOrThrow(id)

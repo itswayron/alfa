@@ -9,4 +9,5 @@ interface UserRepository : JpaRepository<User, Int>, ExceptionProvider<Int> {
   fun findByEmailField(email: String): User?
   fun existsByEmailField(email: String): Boolean
   fun existsByUsernameField(username: String): Boolean
+    fun existsByRoleId(roleId: Int): Boolean
 }

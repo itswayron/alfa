@@ -5,9 +5,12 @@ import dev.weg.alfa.modules.models.user.User
 import dev.weg.alfa.modules.models.user.UserRequest
 import dev.weg.alfa.modules.models.user.UserResponse
 import dev.weg.alfa.modules.repositories.user.UserRepository
+import dev.weg.alfa.modules.repositories.utils.findByIdOrThrow
 import dev.weg.alfa.modules.repositories.utils.getCurrentUser
 import dev.weg.alfa.modules.validators.Validator
 import dev.weg.alfa.security.config.SecurityLogger
+import dev.weg.alfa.security.models.role.RoleResponse
+import dev.weg.alfa.security.repositories.RoleRepository
 import dev.weg.alfa.security.validators.UserPersistenceValidator
 import dev.weg.alfa.utils.maskLast
 import org.springframework.security.core.userdetails.UserDetails
@@ -21,7 +24,8 @@ class UserService(
     private val encoder: PasswordEncoder,
     private val userRequestValidator: Validator<UserRequest>,
     private val persistenceValidator: UserPersistenceValidator,
-    private val passwordValidator: Validator<String>
+    private val passwordValidator: Validator<String>,
+    private val roleRepository: RoleRepository,
 ) : UserDetailsService {
 
     override fun loadUserByUsername(usernameOrEmail: String): UserDetails {
@@ -47,12 +51,15 @@ class UserService(
 
         userRequestValidator.validate(sanitizedRequest)
         passwordValidator.validate(sanitizedRequest.password)
+        val role = roleRepository.findByIdOrThrow(request.roleId)
 
         val user = User(
+            id = 0,
             name = sanitizedRequest.name,
             emailField = sanitizedRequest.email,
             passwordField = encoder.encode(sanitizedRequest.password),
             usernameField = sanitizedRequest.username,
+            role = role,
         )
 
         persistenceValidator.validateNewUser(user)
@@ -101,5 +108,10 @@ class UserService(
             username = this.usernameField,
             email = this.emailField,
             createdAt = this.createdAt,
+            role = RoleResponse(
+                id = this.role.id,
+                name = this.role.name,
+                permissions = this.role.permissions
+            ),
         )
 }

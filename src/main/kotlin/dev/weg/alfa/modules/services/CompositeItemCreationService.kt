@@ -4,6 +4,7 @@ import dev.weg.alfa.modules.models.compositeItem.CompositeItemRequest
 import dev.weg.alfa.modules.models.stock.StockRequest
 import dev.weg.alfa.modules.models.stock.StockResponse
 import org.slf4j.LoggerFactory
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -19,6 +20,7 @@ class CompositeItemCreationService(
     private val logger = LoggerFactory.getLogger(this::class.java)
 
     @Transactional
+    @PreAuthorize("hasAuthority('COMPOSITE_ITEM_CREATION')")
     fun execute(request: CompositeItemRequest): StockResponse {
         logger.info("Creating Composite Item=({}) with associated Stock.", request.item)
         logger.debug("Full request: {}", request)

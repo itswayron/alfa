@@ -13,6 +13,7 @@ import dev.weg.alfa.modules.repositories.utils.findByIdIfNotNull
 import dev.weg.alfa.modules.repositories.utils.findByIdOrThrow
 import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Pageable
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 
@@ -55,6 +56,7 @@ class ItemService(
 ) {
     private val logger = LoggerFactory.getLogger(this::class.java)
 
+    @PreAuthorize("hasAuthority('MANAGE_ITEM')")
     fun createItem(request: ItemRequest): ItemResponse {
         val sanitizedRequest = request.sanitized()
         logger.info("Creating item: ${sanitizedRequest.description}")
@@ -76,6 +78,7 @@ class ItemService(
         return response
     }
 
+    @PreAuthorize("hasAuthority('VIEW_ITEM')")
     fun getItemById(id: Int): ItemResponse {
         logger.info("Fetching item with ID: $id")
 
@@ -86,6 +89,7 @@ class ItemService(
         return response
     }
 
+    @PreAuthorize("hasAuthority('VIEW_ITEM')")
     fun getItems(pageable: Pageable): PageDTO<ItemResponse> {
         logger.info("Fetching items from the repository.")
 
@@ -96,6 +100,7 @@ class ItemService(
         return response
     }
 
+    @PreAuthorize("hasAuthority('MANAGE_ITEM')")
     fun updateItem(command: Pair<Int, ItemPatch>): ItemResponse {
         val (id, itemUpdated) = command
         logger.info("Updating item ID={} with patch: {}", id, itemUpdated)
@@ -120,6 +125,7 @@ class ItemService(
         return response
     }
 
+    @PreAuthorize("hasAuthority('MANAGE_ITEM')")
     fun deleteItem(id: Int) {
         logger.info("Deleting item with ID='{}'", id)
         val deletedItem = repository.findByIdOrThrow(id)
@@ -130,6 +136,7 @@ class ItemService(
         logger.info("Item deleted successfully. ID='{}'", id)
     }
 
+    @PreAuthorize("hasAuthority('MANAGE_ITEM')")
     fun uploadItemImage(id: Int, imageFile: MultipartFile) {
         logger.info("Upload item photo for item ID={}", id)
         val item = repository.findByIdOrThrow(id)
@@ -142,6 +149,7 @@ class ItemService(
         logger.info("Item image updated successfully for item ID={}", item.id)
     }
 
+    @PreAuthorize("hasAuthority('MANAGE_ITEM')")
     fun deleteImage(id: Int) {
         logger.info("Deleting image of Item ID='{}'", id)
         val item = repository.findByIdOrThrow(id)

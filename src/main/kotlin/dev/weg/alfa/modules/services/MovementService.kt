@@ -14,6 +14,7 @@ import dev.weg.alfa.modules.repositories.utils.findByIdOrThrow
 import jakarta.transaction.Transactional
 import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Pageable
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Service
 
 // TODO: Unit Test : Should create movement successfully saving entity and updating stock amount
@@ -50,6 +51,7 @@ class MovementService(
     private val logger = LoggerFactory.getLogger(this::class.java)
 
     @Transactional
+    @PreAuthorize("hasAuthority('CREATE_MOVEMENT')")
     fun createMovement(request: MovementRequest): MovementResponse {
         logger.info("Creating Movement for stock ID=${request.stockId}")
 
@@ -81,6 +83,7 @@ class MovementService(
         return saved.toResponse()
     }
 
+    @PreAuthorize("hasAuthority('VIEW_MOVEMENT')")
     fun getMovementById(id: Int): MovementResponse {
         logger.info("Fetching Movement with ID=$id")
         val movement = repository.findByIdOrThrow(id)
@@ -88,6 +91,7 @@ class MovementService(
         return movement.toResponse()
     }
 
+    @PreAuthorize("hasAuthority('VIEW_MOVEMENT')")
     fun getAllMovements(
         filter: MovementFilter,
         pageable: Pageable
@@ -105,6 +109,7 @@ class MovementService(
         return pageDTO
     }
 
+    @PreAuthorize("hasAuthority('UPDATE_MOVEMENT')")
     fun updateMovement(movementId: Int, patch: MovementPatch): MovementResponse {
         logger.info("Updating Movement ID=$movementId")
         logger.debug("Applying patch: {}", patch)
@@ -125,6 +130,7 @@ class MovementService(
         return saved.toResponse()
     }
 
+    @PreAuthorize("hasAuthority('DELETE_MOVEMENT')")
     fun deleteMovement(id: Int) {
         logger.info("Deleting Movement ID=$id")
         val movement = repository.findByIdOrThrow(id)

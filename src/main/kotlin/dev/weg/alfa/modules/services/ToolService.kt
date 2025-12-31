@@ -8,6 +8,7 @@ import dev.weg.alfa.modules.repositories.simpleEntities.SubgroupRepository
 import dev.weg.alfa.modules.repositories.utils.findByIdOrThrow
 import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Pageable
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Service
 
 @Service
@@ -17,6 +18,7 @@ class ToolService(
 ) {
     private val logger = LoggerFactory.getLogger(this::class.java)
 
+    @PreAuthorize("hasAuthority('MANAGE_ITEM')")
     fun createTool(request: ToolRequest): ToolResponse {
         logger.info("Creating Tool with name: ${request.name}")
         val subgroup = subgroupRepository.findByIdOrThrow(request.subgroupID)
@@ -25,6 +27,7 @@ class ToolService(
         return response
     }
 
+    @PreAuthorize("hasAuthority('VIEW_ITEM')")
     fun getFilteredTools(
         filter: ToolFilter,
         pageable: Pageable,
@@ -37,6 +40,7 @@ class ToolService(
         return response
     }
 
+    @PreAuthorize("hasAuthority('MANAGE_ITEM')")
     fun updateTool(command: Pair<Int, ToolPatch>): ToolResponse {
         val (id, request) = command
         logger.info("Updating tool with $id with name: ${request.name}.")
@@ -56,6 +60,7 @@ class ToolService(
         return newTool.toResponse()
     }
 
+    @PreAuthorize("hasAuthority('MANAGE_ITEM')")
     fun deleteToolById(id: Int) {
         logger.info("Deleting Tool with id: $id.")
         val delete = toolRepository.findByIdOrThrow(id)

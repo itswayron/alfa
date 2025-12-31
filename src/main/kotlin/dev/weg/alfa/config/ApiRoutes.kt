@@ -35,4 +35,8 @@ object ApiRoutes {
     const val MOVEMENT_TYPES = "/movement_types"
 
     const val PING = "/ping"
+
+    // Roles and permissions
+    const val PERMISSION = "/permissions"
+    const val ROLE = "/roles"
 }

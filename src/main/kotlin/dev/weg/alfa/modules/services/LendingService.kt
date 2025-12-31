@@ -8,6 +8,7 @@ import dev.weg.alfa.modules.repositories.ToolRepository
 import dev.weg.alfa.modules.repositories.utils.findByIdOrThrow
 import jakarta.transaction.Transactional
 import org.slf4j.LoggerFactory
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Service
 
 // TODO: Unit Test : Should create lending successfully updating tool state and saving lending
@@ -38,6 +39,7 @@ class LendingService(
     private val logger = LoggerFactory.getLogger(this::class.java)
 
     @Transactional
+    @PreAuthorize("hasAuthority('CREATE_AND_RETURN_LENDING')")
     fun createLending(request: LendingRequest): LendingResponse {
         val employee = employeeRepository.findByIdOrThrow(request.employeeId)
         val tool = toolRepository.findByIdOrThrow(request.toolId)
@@ -56,6 +58,7 @@ class LendingService(
     }
 
     @Transactional
+    @PreAuthorize("hasAuthority('CREATE_AND_RETURN_LENDING')")
     fun returnTool(lendingId: Int, returnLending: ReturnLending): LendingResponse {
         val lending = lendingRepository.findByIdOrThrow(lendingId)
         val tool = lending.tool
@@ -71,6 +74,7 @@ class LendingService(
         return response
     }
 
+    @PreAuthorize("hasAuthority('VIEW_LENDING')")
     fun getAllLending(): List<LendingResponse> {
         logger.info("Retrieving all Lendings from the database.")
         val lendings = lendingRepository.findAll()
@@ -79,6 +83,7 @@ class LendingService(
         return response
     }
 
+    @PreAuthorize("hasAuthority('MANAGE_LENDING')")
     fun deleteLendingById(id: Int) {
         logger.info("Deleting Lending with id: $id.")
         val delete = lendingRepository.findByIdOrThrow(id)
