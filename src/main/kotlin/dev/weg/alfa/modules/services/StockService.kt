@@ -1,5 +1,8 @@
 package dev.weg.alfa.modules.services
 
+import dev.weg.alfa.infra.audit.annotations.Auditable
+import dev.weg.alfa.infra.audit.aspects.AuditContext
+import dev.weg.alfa.infra.audit.model.StockAction
 import dev.weg.alfa.modules.models.dtos.PageDTO
 import dev.weg.alfa.modules.models.dtos.toDTO
 import dev.weg.alfa.modules.models.stock.*
@@ -40,6 +43,7 @@ class StockService(
     private val logger = LoggerFactory.getLogger(this::class.java)
 
     @PreAuthorize("hasAuthority('CREATE_STOCK')")
+    @Auditable(action = StockAction.CREATED)
     fun createStock(request: StockRequest): StockResponse {
         logger.info("Creating Stock for item ID=${request.itemId}")
 
@@ -51,6 +55,8 @@ class StockService(
         val savedStock = stockRepository.save(newStock)
 
         logger.info("Stock created with ID=${savedStock.id} for item '${item.description}'")
+
+        AuditContext.created(savedStock.toAuditPayload())
         return savedStock.toResponse()
     }
 
@@ -89,6 +95,7 @@ class StockService(
     }
 
     @PreAuthorize("hasAuthority('UPDATE_STOCK')")
+    @Auditable(action = StockAction.UPDATED)
     fun updateStock(stockId: Int, patch: StockPatch): StockResponse {
         logger.info("Patching Stock ID=$stockId with data: $patch")
         val oldStock = stockRepository.findByIdOrThrow(stockId)
@@ -100,14 +107,17 @@ class StockService(
         val savedStock = stockRepository.save(updatedStock)
 
         logger.info("Stock updated: ID=${savedStock.id}, item='${savedStock.item.description}'")
+        AuditContext.updated(oldStock.toAuditPayload(), savedStock.toAuditPayload())
         return savedStock.toResponse()
     }
 
     @PreAuthorize("hasAuthority('DELETE_STOCK')")
+    @Auditable(action = StockAction.DELETED)
     fun deleteStock(stockId: Int) {
         logger.info("Deleting Stock with ID=$stockId")
         val stock = stockRepository.findByIdOrThrow(stockId)
         stockRepository.delete(stock)
         logger.info("Stock deleted successfully: ID=$stockId, item='${stock.item.description}'")
+        AuditContext.deleted(stock.toAuditPayload())
     }
 }

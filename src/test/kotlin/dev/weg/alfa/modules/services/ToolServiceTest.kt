@@ -1,6 +1,7 @@
 package dev.weg.alfa.modules.services
 
 import BaseTest
+import dev.weg.alfa.infra.audit.aspects.AuditContext
 import dev.weg.alfa.modules.models.simpleModels.Subgroup
 import dev.weg.alfa.modules.models.tool.Tool
 import dev.weg.alfa.modules.models.tool.ToolFilter
@@ -12,6 +13,7 @@ import dev.weg.alfa.modules.repositories.utils.FakeJpaRepository
 import io.mockk.spyk
 import io.mockk.verify
 import jakarta.persistence.EntityNotFoundException
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -55,6 +57,11 @@ class ToolServiceTest : BaseTest() {
     private class FakeSubgroupRepository(
         findByIdAnswer: (Int) -> Optional<Subgroup>
     ) : FakeJpaRepository<Subgroup, Int>(findByIdAnswer), SubgroupRepository
+
+    @AfterEach
+    fun clearAuditContext() {
+        AuditContext.consume()
+    }
 
     @Test
     fun `createTool should create when subgroup exists`() {

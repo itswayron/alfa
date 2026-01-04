@@ -15,6 +15,7 @@ enum class PermissionScope {
     SUBGROUP,
     STOCK,
     ROLES_AND_PERMISSIONS,
+    AUDIT,
 }
 
 enum class Permission(
@@ -71,6 +72,8 @@ enum class Permission(
     VIEW_PERMISSIONS(PermissionScope.ROLES_AND_PERMISSIONS),
     VIEW_ROLES(PermissionScope.ROLES_AND_PERMISSIONS),
     MANAGE_ROLES(PermissionScope.ROLES_AND_PERMISSIONS),
+
+    VIEW_AUDITS(PermissionScope.AUDIT),
 
     ;
 }

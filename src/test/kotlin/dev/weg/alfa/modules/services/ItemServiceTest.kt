@@ -1,9 +1,12 @@
 package dev.weg.alfa.modules.services
 
 import BaseTest
+import dev.weg.alfa.infra.audit.aspects.AuditContext
 import dev.weg.alfa.infra.services.ImageService
 import dev.weg.alfa.modules.models.businessPartner.BusinessPartner
-import dev.weg.alfa.modules.models.item.*
+import dev.weg.alfa.modules.models.item.Item
+import dev.weg.alfa.modules.models.item.ItemPatch
+import dev.weg.alfa.modules.models.item.ItemRequest
 import dev.weg.alfa.modules.models.simpleModels.Group
 import dev.weg.alfa.modules.models.simpleModels.MeasurementUnity
 import dev.weg.alfa.modules.models.simpleModels.Subgroup
@@ -15,6 +18,7 @@ import dev.weg.alfa.modules.repositories.simpleEntities.SubgroupRepository
 import dev.weg.alfa.modules.repositories.utils.FakeJpaRepository
 import io.mockk.spyk
 import io.mockk.verify
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.util.*
@@ -54,6 +58,11 @@ class ItemServiceTest : BaseTest() {
     private class FakePartnerRepository(
         findByIdAnswer: (Int) -> Optional<BusinessPartner>
     ) : FakeJpaRepository<BusinessPartner, Int>(findByIdAnswer), BusinessPartnerRepository
+
+    @AfterEach
+    fun clearAuditContext() {
+        AuditContext.consume()
+    }
 
     @Test
     fun `createItem should sanitize ItemRequest fields on create`() {

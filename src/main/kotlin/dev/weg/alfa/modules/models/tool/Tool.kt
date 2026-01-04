@@ -22,7 +22,7 @@ data class Tool(
 ) {
 
     fun setLent(): Tool {
-        if (isLoan || maximumUsages >= actualUsages) {
+        if (isLoan || actualUsages >= maximumUsages) {
             // TODO: create a better way to validate toolUsage (i.e. a toolStatus variable)
             throw IllegalStateException("Tool $name ID=${id} is already loaned.")
             // TODO: Create custom exception for this case

@@ -1,6 +1,7 @@
 package dev.weg.alfa.modules.services
 
 import BaseTest
+import dev.weg.alfa.infra.audit.aspects.AuditContext
 import dev.weg.alfa.modules.models.position.Position
 import dev.weg.alfa.modules.models.position.PositionPatch
 import dev.weg.alfa.modules.repositories.PositionRepository
@@ -8,6 +9,7 @@ import dev.weg.alfa.modules.repositories.utils.FakeJpaRepository
 import io.mockk.spyk
 import io.mockk.verify
 import jakarta.persistence.EntityNotFoundException
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.util.*
@@ -31,6 +33,11 @@ class PositionServiceTest : BaseTest() {
         override fun delete(entity: Position) {
             deleteAnswer(entity)
         }
+    }
+
+    @AfterEach
+    fun clearAuditContext() {
+        AuditContext.consume()
     }
 
     @Test

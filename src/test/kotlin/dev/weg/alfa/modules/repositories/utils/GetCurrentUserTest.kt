@@ -16,7 +16,7 @@ import org.junit.jupiter.api.assertThrows
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
-import java.util.Optional
+import java.util.*
 
 class GetCurrentUserTest : BaseTest() {
 
@@ -33,6 +33,9 @@ class GetCurrentUserTest : BaseTest() {
             throw UnsupportedOperationException("Not needed for these tests")
 
         override fun existsByUsernameField(username: String): Boolean =
+            throw UnsupportedOperationException("Not needed for these tests")
+
+        override fun existsByRoleId(roleId: Int): Boolean =
             throw UnsupportedOperationException("Not needed for these tests")
 
         override fun notFoundException(id: Int): EntityNotFoundException =

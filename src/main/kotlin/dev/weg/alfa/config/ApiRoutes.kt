@@ -39,4 +39,6 @@ object ApiRoutes {
     // Roles and permissions
     const val PERMISSION = "/permissions"
     const val ROLE = "/roles"
+
+    const val AUDIT = "/audit"
 }

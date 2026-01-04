@@ -1,6 +1,7 @@
 package dev.weg.alfa.modules.services
 
 import BaseTest
+import dev.weg.alfa.infra.audit.aspects.AuditContext
 import dev.weg.alfa.modules.models.businessPartner.BusinessPartner
 import dev.weg.alfa.modules.models.businessPartner.BusinessPartnerPatch
 import dev.weg.alfa.modules.repositories.BusinessPartnerRepository
@@ -8,6 +9,7 @@ import dev.weg.alfa.modules.repositories.utils.FakeJpaRepository
 import io.mockk.spyk
 import io.mockk.verify
 import jakarta.persistence.EntityNotFoundException
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -33,6 +35,11 @@ class BusinessPartnerServiceTest : BaseTest() {
         override fun deleteById(id: Int) {
             deleteByIdAnswer(id)
         }
+    }
+
+    @AfterEach
+    fun clearAuditContext() {
+        AuditContext.consume()
     }
 
     @Test
@@ -168,10 +175,18 @@ class BusinessPartnerServiceTest : BaseTest() {
 
     @Test
     fun `deletePartner should delete partner by ID using repository`() {
+        val existing = BusinessPartner(
+            id = 123,
+            name = "Partner",
+            cnpj = "1",
+            relation = "R"
+        )
         var deletedId: Int? = null
         val repo = spyk(
             FakeBusinessPartnerRepository(
-                findByIdAnswer = { Optional.empty() },
+                findByIdAnswer = { id ->
+                    if (id == 123) Optional.of(existing) else Optional.empty()
+                },
                 saveAnswer = { it },
                 deleteByIdAnswer = { id -> deletedId = id }
             )

@@ -1,6 +1,7 @@
 package dev.weg.alfa.modules.services
 
 import BaseTest
+import dev.weg.alfa.infra.audit.aspects.AuditContext
 import dev.weg.alfa.modules.models.employee.Employee
 import dev.weg.alfa.modules.models.employee.EmployeeRequest
 import dev.weg.alfa.modules.models.simpleModels.Sector
@@ -10,6 +11,7 @@ import dev.weg.alfa.modules.repositories.utils.FakeJpaRepository
 import io.mockk.spyk
 import io.mockk.verify
 import jakarta.persistence.EntityNotFoundException
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertSame
 import org.junit.jupiter.api.Test
@@ -40,6 +42,11 @@ class EmployeeServiceTest : BaseTest() {
     private class FakeSectorRepository(
         findByIdAnswer: (Int) -> Optional<Sector>
     ) : FakeJpaRepository<Sector, Int>(findByIdAnswer), SectorRepository
+
+    @AfterEach
+    fun clearAuditContext() {
+        AuditContext.consume()
+    }
 
     @Test
     fun `createEmployee should create employee when sector exists`() {

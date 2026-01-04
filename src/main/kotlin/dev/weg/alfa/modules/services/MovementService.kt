@@ -1,9 +1,13 @@
 package dev.weg.alfa.modules.services
 
+import dev.weg.alfa.infra.audit.annotations.Auditable
+import dev.weg.alfa.infra.audit.aspects.AuditContext
+import dev.weg.alfa.infra.audit.model.MovementAction
 import dev.weg.alfa.modules.models.dtos.PageDTO
 import dev.weg.alfa.modules.models.dtos.toDTO
 import dev.weg.alfa.modules.models.movement.*
 import dev.weg.alfa.modules.models.stock.Stock
+import dev.weg.alfa.modules.models.stock.toAuditPayload
 import dev.weg.alfa.modules.repositories.EmployeeRepository
 import dev.weg.alfa.modules.repositories.MovementBatchRepository
 import dev.weg.alfa.modules.repositories.MovementRepository
@@ -52,6 +56,7 @@ class MovementService(
 
     @Transactional
     @PreAuthorize("hasAuthority('CREATE_MOVEMENT')")
+    @Auditable(action = MovementAction.CREATED)
     fun createMovement(request: MovementRequest): MovementResponse {
         logger.info("Creating Movement for stock ID=${request.stockId}")
 
@@ -61,6 +66,7 @@ class MovementService(
         val employee = employeeRepository.findByIdOrThrow(request.employeeId)
         val sector = sectorRepository.findByIdOrThrow(request.sectorId)
         logger.trace("All dependencies successfully fetched for Movement creation")
+        AuditContext.before(stock.toAuditPayload())
 
         val newMovement = request.toEntity(
             stock = stock,
@@ -79,6 +85,7 @@ class MovementService(
         val saved = repository.save(newMovement)
         stockRepository.save(newCalculatedStock)
 
+        AuditContext.after(saved.toAuditPayload())
         logger.info("Movement created with ID=${saved.id} for stock '${stock.item.description}'")
         return saved.toResponse()
     }
@@ -110,6 +117,7 @@ class MovementService(
     }
 
     @PreAuthorize("hasAuthority('UPDATE_MOVEMENT')")
+    @Auditable(action = MovementAction.UPDATED)
     fun updateMovement(movementId: Int, patch: MovementPatch): MovementResponse {
         logger.info("Updating Movement ID=$movementId")
         logger.debug("Applying patch: {}", patch)
@@ -126,17 +134,22 @@ class MovementService(
         recalculateStock(updatedMovement.stock)
         logger.info("Movement updated successfully ID=${saved.id}")
         logger.trace("Updated Movement entity: {}", saved)
-
+        AuditContext.updated(
+            oldMovement.toAuditPayload(),
+            saved.toAuditPayload()
+        )
         return saved.toResponse()
     }
 
     @PreAuthorize("hasAuthority('DELETE_MOVEMENT')")
+    @Auditable(action = MovementAction.DELETED)
     fun deleteMovement(id: Int) {
         logger.info("Deleting Movement ID=$id")
         val movement = repository.findByIdOrThrow(id)
         repository.delete(movement)
         recalculateStock(movement.stock)
         logger.info("Movement deleted successfully ID=$id")
+        AuditContext.deleted(movement.toAuditPayload())
     }
 
     @Transactional

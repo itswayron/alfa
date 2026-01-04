@@ -1,5 +1,8 @@
 package dev.weg.alfa.modules.services
 
+import dev.weg.alfa.infra.audit.annotations.Auditable
+import dev.weg.alfa.infra.audit.aspects.AuditContext
+import dev.weg.alfa.infra.audit.model.ItemAction
 import dev.weg.alfa.infra.services.ImageService
 import dev.weg.alfa.modules.models.dtos.PageDTO
 import dev.weg.alfa.modules.models.dtos.toDTO
@@ -33,7 +36,7 @@ import org.springframework.web.multipart.MultipartFile
 // TODO: Unit Test : Should save patched item with correct final state
 
 // TODO: Unit Test : Should delete item with existing image and trigger image deletion
-// TODO: Unit Test : Should delete item without image without calling image service
+// TODO: Unit Test : Should delete item without image without calling image services
 
 // TODO: Unit Test : Should upload new image after deleting previous one
 // TODO: Unit Test : Should upload image for item without previous image
@@ -57,6 +60,7 @@ class ItemService(
     private val logger = LoggerFactory.getLogger(this::class.java)
 
     @PreAuthorize("hasAuthority('MANAGE_ITEM')")
+    @Auditable(action = ItemAction.CREATED)
     fun createItem(request: ItemRequest): ItemResponse {
         val sanitizedRequest = request.sanitized()
         logger.info("Creating item: ${sanitizedRequest.description}")
@@ -73,7 +77,7 @@ class ItemService(
 
         val entity = repository.save(newItem)
         logger.info("Item: ${entity.description} created with id; ${entity.id}")
-
+        AuditContext.created(entity.toAuditPayload())
         val response = entity.toResponse()
         return response
     }
@@ -101,6 +105,7 @@ class ItemService(
     }
 
     @PreAuthorize("hasAuthority('MANAGE_ITEM')")
+    @Auditable(action = ItemAction.UPDATED)
     fun updateItem(command: Pair<Int, ItemPatch>): ItemResponse {
         val (id, itemUpdated) = command
         logger.info("Updating item ID={} with patch: {}", id, itemUpdated)
@@ -119,9 +124,14 @@ class ItemService(
 
         // validator.validate(newItem)
 
-        val response = repository.save(newItem).toResponse()
-        logger.info("Item updated: ID={}, description='{}'", response.id, response.description)
+        val saved = repository.save(newItem)
+        val response = saved.toResponse()
 
+        logger.info("Item updated: ID={}, description='{}'", response.id, response.description)
+        AuditContext.updated(
+            oldItem.toAuditPayload(),
+            saved.toAuditPayload()
+        )
         return response
     }
 
@@ -134,26 +144,35 @@ class ItemService(
         deletedItem.deleteImageIfExists()
         repository.deleteById(deletedItem.id)
         logger.info("Item deleted successfully. ID='{}'", id)
+        AuditContext.deleted(deletedItem.toAuditPayload())
     }
 
     @PreAuthorize("hasAuthority('MANAGE_ITEM')")
+    @Auditable(action = ItemAction.IMAGE_UPLOADED)
     fun uploadItemImage(id: Int, imageFile: MultipartFile) {
         logger.info("Upload item photo for item ID={}", id)
-        val item = repository.findByIdOrThrow(id)
-        item.deleteImageIfExists()
+        val oldItem = repository.findByIdOrThrow(id)
+        oldItem.deleteImageIfExists()
 
-        val imagePath = imageService.saveImage(ImageService.EntityType.ITEM, item.id.toString(), imageFile)
-        item.imagePath = imagePath
+        val imagePath = imageService.saveImage(ImageService.EntityType.ITEM, oldItem.id.toString(), imageFile)
+        oldItem.imagePath = imagePath
 
-        repository.save(item)
-        logger.info("Item image updated successfully for item ID={}", item.id)
+        val saved = repository.save(oldItem)
+        logger.info("Item image updated successfully for item ID={}", saved.id)
+        AuditContext.updated(
+            oldItem.toAuditPayload(),
+            saved.toAuditPayload()
+        )
     }
 
     @PreAuthorize("hasAuthority('MANAGE_ITEM')")
+    @Auditable(action = ItemAction.IMAGE_DELETED)
     fun deleteImage(id: Int) {
         logger.info("Deleting image of Item ID='{}'", id)
         val item = repository.findByIdOrThrow(id)
+        AuditContext.before(item.toAuditPayload())
         item.deleteImageIfExists()
+        AuditContext.after(item.toAuditPayload())
     }
 
     private fun ItemRequest.sanitized(): ItemRequest = ItemRequest(

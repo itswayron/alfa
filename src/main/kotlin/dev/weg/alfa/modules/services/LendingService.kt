@@ -1,7 +1,11 @@
 package dev.weg.alfa.modules.services
 
+import dev.weg.alfa.infra.audit.annotations.Auditable
+import dev.weg.alfa.infra.audit.aspects.AuditContext
+import dev.weg.alfa.infra.audit.model.LendingAction
 import dev.weg.alfa.modules.models.lending.*
 import dev.weg.alfa.modules.models.simpleModels.LendingStatus
+import dev.weg.alfa.modules.models.tool.toAuditPayload
 import dev.weg.alfa.modules.repositories.EmployeeRepository
 import dev.weg.alfa.modules.repositories.LendingRepository
 import dev.weg.alfa.modules.repositories.ToolRepository
@@ -40,10 +44,12 @@ class LendingService(
 
     @Transactional
     @PreAuthorize("hasAuthority('CREATE_AND_RETURN_LENDING')")
+    @Auditable(LendingAction.CREATED)
     fun createLending(request: LendingRequest): LendingResponse {
         val employee = employeeRepository.findByIdOrThrow(request.employeeId)
         val tool = toolRepository.findByIdOrThrow(request.toolId)
         logger.info("Creating a loan for the tool ${tool.name} by employee ${employee.name}")
+        AuditContext.before(tool.toAuditPayload())
 
         val lending = request.toEntity(
             status = LendingStatus.PENDING,
@@ -52,17 +58,20 @@ class LendingService(
         )
         val loanedTool = tool.setLent()
         toolRepository.save(loanedTool)
-
-        val response = lendingRepository.save(lending).toResponse()
-        return response
+        val saved = lendingRepository.save(lending)
+        logger.info("Lending created for tool ${tool.name} by employee ${employee.name} estimated return at ${lending.estimatedReturn}")
+        AuditContext.after(saved.toAuditPayload())
+        return saved.toResponse()
     }
 
     @Transactional
     @PreAuthorize("hasAuthority('CREATE_AND_RETURN_LENDING')")
+    @Auditable(action = LendingAction.RETURNED)
     fun returnTool(lendingId: Int, returnLending: ReturnLending): LendingResponse {
         val lending = lendingRepository.findByIdOrThrow(lendingId)
         val tool = lending.tool
         logger.info("Returning lending ID=${lendingId} tool ID=${tool.id} at ${returnLending.timeOfReturn}")
+        AuditContext.before(tool.toAuditPayload())
 
         val updatedLending = lending.returnWith(returnLending, LendingStatus.RETURNED)
         val returnedTool = tool.unsetLent()
@@ -70,6 +79,8 @@ class LendingService(
         toolRepository.save(returnedTool)
         val savedLending = lendingRepository.save(updatedLending)
 
+        logger.info("Lending ID=${lendingId} returned for tool ID=${tool.id}")
+        AuditContext.after(savedLending.toAuditPayload())
         val response = savedLending.toResponse()
         return response
     }
@@ -84,10 +95,18 @@ class LendingService(
     }
 
     @PreAuthorize("hasAuthority('MANAGE_LENDING')")
+    @Transactional
+    @Auditable(action = LendingAction.DELETED)
     fun deleteLendingById(id: Int) {
         logger.info("Deleting Lending with id: $id.")
         val delete = lendingRepository.findByIdOrThrow(id)
+        val tool = delete.tool
+        if (delete.timeOfReturn != null && tool.isLoan) {
+            tool.isLoan = false
+        }
+        toolRepository.save(tool)
         lendingRepository.delete(delete)
         logger.info("Lending with ID $id deleted with successfully.")
+        AuditContext.deleted(delete.toAuditPayload())
     }
 }

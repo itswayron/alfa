@@ -1,5 +1,8 @@
 package dev.weg.alfa.modules.services
 
+import dev.weg.alfa.infra.audit.annotations.Auditable
+import dev.weg.alfa.infra.audit.aspects.AuditContext
+import dev.weg.alfa.infra.audit.model.BatchAction
 import dev.weg.alfa.modules.models.dtos.PageDTO
 import dev.weg.alfa.modules.models.dtos.toDTO
 import dev.weg.alfa.modules.models.movement.MovementResponse
@@ -54,6 +57,7 @@ class MovementBatchService(
 
     @Transactional
     @PreAuthorize("hasAuthority('CREATE_BATCH')")
+    @Auditable(action = BatchAction.CREATED)
     fun createMovementBatch(request: MovementBatchRequest): MovementBatchResponseWithList {
         logger.info("Creating Movement Batch with code: ${request.code}")
 
@@ -68,6 +72,7 @@ class MovementBatchService(
             movementService.createMovement(req)
         }
 
+        AuditContext.created(entity.toAuditPayload())
         return entity.toResponseWithList(movements)
     }
 
@@ -113,6 +118,7 @@ class MovementBatchService(
     }
 
     @PreAuthorize("hasAuthority('UPDATE_BATCH')")
+    @Auditable(action = BatchAction.UPDATED)
     fun updateMovementBatch(command: Pair<Int, MovementBatchPatch>): MovementBatchResponse {
         val (id, patch) = command
         logger.info("Updating Movement Batch ID={} with patch: {}", id, patch)
@@ -129,17 +135,21 @@ class MovementBatchService(
 
         val response = repository.save(updatedOrder).toResponse(movementRepository.countByMovementBatchId(id))
         logger.info("Movement Batch updated: ID={}, code='{}'", response.id, response.code)
-
+        AuditContext.updated(
+            oldOrder.toAuditPayload(),
+            updatedOrder.toAuditPayload(),
+        )
         return response
     }
 
     @PreAuthorize("hasAuthority('DELETE_BATCH')")
+    @Auditable(action = BatchAction.DELETED)
     fun deleteMovementBatchById(id: Int) {
         logger.info("Deleting Movement Batch with ID='{}'", id)
         val deletedOrder = repository.findByIdOrThrow(id)
         logger.info("Order to delete found ID='{}', code='{}'", deletedOrder.id, deletedOrder.code)
-
         repository.deleteById(deletedOrder.id)
         logger.info("Movement Batch deleted successfully. ID='{}'", id)
+        AuditContext.deleted(deletedOrder.toAuditPayload())
     }
 }
